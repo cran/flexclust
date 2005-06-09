@@ -1,0 +1,36 @@
+useDynLib(flexclust)
+
+import(graphics)
+import(grid)
+import(stats)
+
+exportPattern("^dist.*", "^cent.*")
+
+export(
+       cclust,
+       kcca,
+       kccaFamily,
+       qtclust,
+       stepFlexclust
+       )
+
+
+exportClasses(
+              cclustControl,
+              flexclust,
+              flexclustControl,
+              kcca,
+              kccaFamily,
+              stepFlexclust
+              ) 
+
+exportMethods(
+              barplot,
+              coerce,
+              getModel,
+              image,
+              plot,
+              predict,
+              show
+              )
+
