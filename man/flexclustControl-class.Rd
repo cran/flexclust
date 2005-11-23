@@ -1,3 +1,7 @@
+%
+%  Copyright (C) 2005 Friedrich Leisch
+%  $Id: flexclustControl-class.Rd 1779 2005-08-18 09:23:15Z leisch $
+%
 \name{flexclustControl-class}
 \docType{class}
 \alias{flexclustControl-class}
@@ -48,12 +52,29 @@
       one of \code{"polynomial"} or \code{"exponential"}.}
     \item{\code{pol.rate}:}{Positive number for polynomial learning rate
       of form \eqn{1/iter^par}.}
-    \item{\code{exp.rate}}{Vector of length 2 with paramters for
+    \item{\code{exp.rate}}{Vector of length 2 with parameters for
       exponential learning rate of form
       \eqn{par1*(par2/par1)^(iter/iter.max)}}.
-    \item{\code{ng.rate}:}{Vector of length 3 with parameters for neural
-      gas.}
+    \item{\code{ng.rate}:}{Vector of length 4 with parameters for neural
+      gas, see details below.}
   }
+}
+\section{Learning Rate of Neural Gas}{
+  The neural gas algorithm uses updates of form
+  \deqn{cnew = cold + e*exp(-m/l)*(x - cold)}
+  for every centroid, where \eqn{m} is the order (minus 1) of the
+  centroid with
+  respect to distance to data point \eqn{x} (0=closest, 1=second,
+  \ldots). The parameters \eqn{e} and \eqn{l} are given by
+  \deqn{e = par1*(par2/par1)^(iter/iter.max),}
+  \deqn{l = par3*(par4/par3)^(iter/iter.max).}
+  See Martinetz et al (1993) for details of the algorithm, and the
+  examples section on how to obtain default values.
+}
+\references{
+  Martinetz T., Berkovich S., and Schulten K (1993). `Neural-Gas'
+  Network for Vector Quantization and its Application to Time-Series
+  Prediction. IEEE Transactions on Neural Networks, 4 (4), pp. 558--569.
 }
 \author{Friedrich Leisch}
 \seealso{
@@ -70,4 +91,7 @@ as(mycont, "flexclustControl")
 
 ## some additional slots
 as(mycont, "cclustControl")
+
+## default values for ng.rate
+new("cclustControl")@ng.rate
 }

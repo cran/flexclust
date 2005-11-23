@@ -1,3 +1,7 @@
+%
+%  Copyright (C) 2005 Friedrich Leisch
+%  $Id: dentitio.Rd 1661 2005-06-10 08:08:02Z leisch $
+%
 \name{dentitio}
 \alias{dentitio}
 \docType{data}

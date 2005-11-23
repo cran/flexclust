@@ -1,3 +1,8 @@
+#
+#  Copyright (C) 2005 Friedrich Leisch
+#  $Id: qtclust.R 1860 2005-10-18 15:35:43Z leisch $
+#
+
 qtclust <- function(x, radius, family=kccaFamily("kmeans"),
                     control=NULL)
 {
@@ -34,10 +39,15 @@ qtclust <- function(x, radius, family=kccaFamily("kmeans"),
             d = family@dist(x[ok,,drop=FALSE], x[m,,drop=FALSE])
 
             if(sum(d<=radius)>nfound){
-                dok <- d<=radius
+                dok <- (d <= radius)
+                dok2 <- (d <= 2*radius)
                 nfound <- sum(dok)
             }
         }
+        
+        ## We do not need to consider the following points
+        ok[ok][!dok2] <- FALSE
+        dok <- dok[dok2]
 
         ## now try to add as many points as possible to the cluster
         ## without increasing the diameter.
@@ -52,17 +62,21 @@ qtclust <- function(x, radius, family=kccaFamily("kmeans"),
                 ## create a set of candidates for addition, then
                 ## iteratively remove all violating the diameter for
                 ## the larger set
-                dok <- d[cbind(1:nrow(d), max.col(d))] <= 2*radius
+                dok[d[cbind(1:nrow(d), max.col(d))] <= 2*radius] <- TRUE
                 cand <- which(dok != olddok)
+                candok <- rep(FALSE, length(cand))
+                candok[1] <- TRUE
+                
                 if(length(cand)>1){
-                    d <- family@dist(x[ok,,drop=FALSE][cand,,drop=FALSE],
-                                     x[ok,,drop=FALSE][cand,,drop=FALSE])
-                    for(n in 1:length(cand)){
-                        if(max(d[n,1:(n-1)])> 2*radius){
+                    for(n in 2:length(cand)){
+                        d <- family@dist(x[ok,,drop=FALSE][cand[candok],,drop=FALSE],
+                                         x[ok,,drop=FALSE][n,,drop=FALSE])
+
+                        if(max(d) <= 2*radius){
+                            candok[n] <- TRUE
+                        }
+                        else{
                             dok[cand[n]] <- FALSE
-                            ## don't consider this point in the
-                            ## following iterations
-                            d[,n] <- 0
                         }
                     }
                 }
@@ -80,7 +94,10 @@ qtclust <- function(x, radius, family=kccaFamily("kmeans"),
 
     ok <- cluster>0
     if(!any(ok)){
-        stop("Could not find a valid clustering, try again with different radius")
+        stop("Could not find a valid clustering, try again with different radius.")
+    }
+    if(all(cluster==1)){
+        stop("All points in one cluster, try smaller radius.")
     }
 
     cluster[!ok] <- NA

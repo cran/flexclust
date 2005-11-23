@@ -1,3 +1,7 @@
+%
+%  Copyright (C) 2005 Friedrich Leisch
+%  $Id: kcca.Rd 1779 2005-08-18 09:23:15Z leisch $
+%
 \name{kcca}
 \alias{kcca}
 \alias{kccaFamily}
@@ -5,6 +9,7 @@
 \alias{kcca-class}
 \alias{kccaFamily-class}
 \alias{show,kcca-method}
+\alias{summary,kcca-method}
 \title{K-Centroids Cluster Analysis}
 \description{
   Perform k-centroids clustering on a data matrix.
@@ -12,7 +17,9 @@
 \usage{
 kcca(x, k, family=kccaFamily("kmeans"), weights=NULL, group=NULL, control=NULL)
 kccaFamily(which=NULL, dist=NULL, cent=NULL, name=which, similarity=FALSE,
-           preproc = NULL, trim=0)
+           preproc = NULL, trim=0, groupFun = "majorityClusters")
+
+\S4method{summary}{kcca}(object)
 }
 \arguments{
   \item{x}{A numeric matrix of data, or an object that can be coerced to
@@ -53,6 +60,11 @@ kccaFamily(which=NULL, dist=NULL, cent=NULL, name=which, similarity=FALSE,
   \item{trim}{A number in between 0 and 0.5, if non-zero then trimmed
     means are used for the \code{kmeans} family, ignored by all other
     families.}
+
+  \item{groupFun}{Function or name of function to obtain clusters for
+    grouped data, currently an experimental feature.}
+
+  \item{object}{Object of class \code{"kcca"}.}
 }
 \details{
   If \code{group} is not \code{NULL}, then observations from the same
@@ -66,7 +78,7 @@ kccaFamily(which=NULL, dist=NULL, cent=NULL, name=which, similarity=FALSE,
 \author{Friedrich Leisch}
 \seealso{\code{\link{stepFlexclust}}, \code{\link{cclust}}}
 \examples{
-data("Nclus", package="flexmix")
+data("Nclus")
 plot(Nclus)
 
 ## try kmeans 

@@ -1,3 +1,8 @@
+#
+#  Copyright (C) 2005 Friedrich Leisch
+#  $Id: cclust.R 1661 2005-06-10 08:08:02Z leisch $
+#
+
 cclust <- function (x, k, dist = "euclidean", method = "kmeans",
                     weights=NULL, control=NULL)
 {

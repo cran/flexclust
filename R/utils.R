@@ -1,19 +1,6 @@
 #
-#  Copyright (C) 2004,2005 Friedrich Leisch
-#
-#  This program is free software; you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation; either version 2 of the License, or
-#  (at your option) any later version.
-#
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with this program; if not, write to the Free Software
-#  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#  Copyright (C) 2005 Friedrich Leisch
+#  $Id: utils.R 1769 2005-08-08 16:02:38Z leisch $
 #
 
 list2object = function(from, to){
@@ -31,3 +18,17 @@ printIter = function(iter, logLik, label="Log-likelihood")
     cat(formatC(iter, width=4),
         label, ":", formatC(logLik, width=12, format="f"),"\n")
     
+
+
+
+## library(colorspace)
+## dput(x[c(1,3,5,7,2,4,6,8)])
+
+## x = hcl(seq(0, 360*7/8, length = 8), c=30)
+LightColors <- c("#F9C3CD", "#D0D4A8", "#9DDDD5", "#D1CCF5",
+                 "#EDCAB2", "#AFDCB8", "#ACD7ED", "#EFC4E8")
+    
+## x = hcl(seq(0, 360*7/8, length = 8), c=100, l=65)
+FullColors <- c("#FF648A", "#96A100", "#00BCA3", "#9885FF",
+                "#DC8400", "#00B430", "#00AEEF", "#F45BE1")
+

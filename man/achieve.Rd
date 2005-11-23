@@ -1,3 +1,7 @@
+%
+%  Copyright (C) 2005 Friedrich Leisch
+%  $Id: achieve.Rd 1661 2005-06-10 08:08:02Z leisch $
+%
 \name{achieve}
 \alias{achieve}
 \docType{data}

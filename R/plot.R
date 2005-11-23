@@ -1,6 +1,12 @@
+#
+#  Copyright (C) 2005 Friedrich Leisch
+#  $Id: plot.R 1911 2005-11-17 11:29:23Z leisch $
+#
+
 setMethod("plot", signature(x="kcca",y="missing"),
 function(x, y, which=1:2, project=NULL,
-         data=NULL, points=!is.null(data), hull=!is.null(data),
+         data=NULL, points=!is.null(data),
+         hull=!is.null(data), hull.args=NULL, 
          number = TRUE, simlines=TRUE,
          lwd=1, maxlwd=8*lwd, cex=1.5, numcol="black", nodes=16,
          add=FALSE, xlab="", ylab="", xlim = NULL,
@@ -28,12 +34,15 @@ function(x, y, which=1:2, project=NULL,
         HULLFUN <- get(hull, mode="function")
         hull <- !is.null(data)
     }        
-    else{
+    else if(hull){
         ## change to clusterHulls when published
-        HULLFUN <- clusterEllipses
+        if(require("ellipse"))
+            HULLFUN <- clusterEllipses
+        else
+            hull <- FALSE
     }
 
-    if(is.null(col)) col <- rep(1:8, length=x@k)
+    if(is.null(col)) col <- rep(FullColors, length=x@k)
 
     if(!is.null(data)){
         distmat <- x@family@dist(data, x@centers)
@@ -70,7 +79,13 @@ function(x, y, which=1:2, project=NULL,
             points(data, pch=pch, ...)
     }
 
-    if(hull && !is.null(data)) HULLFUN(data, cluster, cldist, col)
+    if(hull && !is.null(data))
+        do.call("HULLFUN",
+                c(list(data=data,
+                       cluster=cluster,
+                       dist=cldist,
+                       col=col),
+                  hull.args))
     
     if(simlines){
         sim <- maxlwd*(x@clsim+t(x@clsim))/2
@@ -93,36 +108,13 @@ function(x, y, which=1:2, project=NULL,
     invisible()
 })
 
-clusterHulls <- function(data, cluster, dist, col)
-{
-    col <- rep(col, length=max(cluster))
-
-    for(k in 1:max(cluster)){
-        ok <- cluster==k
-        if(length(ok)>3){
-            ok1 <- ok & (dist < median(dist[ok]))
-            if(length(ok1)>3){
-                hpts <- chull(data[ok1,])
-                polygon(data[ok1,][c(hpts, hpts[1]),],
-                        border=col[k], lwd=2*par("lwd"))
-            }
-            ok1 <- ok & (dist < 2.5*median(dist[ok]))
-            if(length(ok1)>3){
-                hpts <- chull(data[ok1,])
-                polygon(data[ok1,][c(hpts, hpts[1]),], border=col[k], lty=2)
-            }
-        }
-    }
-}
-
 clusterEllipses <- function(data, cluster, dist, col)
 {
-    require("ellipse")
     col <- rep(col, length=max(cluster))
     for(k in 1:max(cluster)){
         ok <- cluster==k
         if(length(ok)>3){
-            lines(ellipse(cov(data[ok,]), centre=colMeans(data[ok,])),
+            lines(ellipse::ellipse(cov(data[ok,]), centre=colMeans(data[ok,])),
                   col=col[k])
         }
     }
@@ -133,7 +125,8 @@ clusterEllipses <- function(data, cluster, dist, col)
 
 setMethod("image", signature(x="kcca"),
 function(x, which = 1:2, npoints = 100,
-         xlab = "", ylab = "", fastcol = TRUE, col=NULL, ...) 
+         xlab = "", ylab = "", fastcol = TRUE, col=NULL,
+         clwd=0, graph=TRUE, ...) 
 {
     if(length(which)!=2)
         stop(sQuote(which), "must be a vector of length 2")
@@ -156,12 +149,17 @@ function(x, which = 1:2, npoints = 100,
         neib2 <- neighbours(Z)
         Z <- Z[[1]]
     }
-    
-    image(X, Y, matrix(Z, nrow=length(X)),
+
+    Z <- matrix(Z, nrow=length(X))
+    image(X, Y, Z,
           col=neighbourColors(neib2, col=col), xlab=xlab, ylab=ylab)
 
-    sim <- (x@clsim+t(x@clsim))/2
-    plot(x, which=which, add=TRUE, ...)
+    if(clwd>0)
+        contour(X, Y, Z, levels=seq(1.5, max(Z)),
+                add=TRUE, drawlabels=FALSE, lwd=clwd)
+
+    if(graph)
+        plot(x, which=which, add=TRUE, ...)
     
     invisible(list(x=X,y=Y,z=Z))
 })
@@ -170,12 +168,8 @@ function(x, which = 1:2, npoints = 100,
 
 neighbourColors <- function(object, col=NULL)
 {
-    ## library(colorspace)
-    ## x = hcl(seq(0, 360*7/8, length = 8), c=30)
-    ## dput(x[c(1,3,5,7,2,4,6,8)])
     if(is.null(col))
-        col <- c("#F9C3CD", "#D0D4A8", "#9DDDD5", "#D1CCF5",
-                 "#EDCAB2", "#AFDCB8", "#ACD7ED", "#EFC4E8")
+        col <- LightColors
     
     icol <- seq(along=col)
     z <- rep(NA, length(object))
@@ -214,19 +208,23 @@ function (height, bycluster = TRUE, oneplot = TRUE,
           data = NULL, FUN=colMeans, 
           main = deparse(substitute(height)), 
           which = 1:height@k,
-          names.arg = NULL, xcent=TRUE, oma=par("oma"),
-          ...) 
+          names.arg = NULL, oma=par("oma"),
+          col=NULL, mcol="darkred", srt=45, ...)
 {
     object <- height
     opar <- par(c("mfrow", "oma", "mgp", "xpd", "oma"))
     on.exit(par(opar))
-    par(xpd = NA)
     n <- length(which)
+
+    if(is.null(col))
+        col <- LightColors
+    
+    col <- rep(col, length=object@k)
 
     if(is.null(data)){
         cluster <- object@cluster
         centers <- object@centers
-        size <- object@size
+        size <- info(object, "size")
         datacent <- object@xcent
     }
     else{
@@ -244,9 +242,10 @@ function (height, bycluster = TRUE, oneplot = TRUE,
     
     ylim <- range(centers)
     
-    if (is.null(names.arg)) 
+    if (is.null(names.arg))
         names.arg <- colnames(centers)
     if (bycluster) {
+        par(xpd=NA)
         if (oneplot) {
             if (n <= 3) {
                 par(mfrow = c(n, 1), oma=oma)
@@ -256,15 +255,16 @@ function (height, bycluster = TRUE, oneplot = TRUE,
             }
         }
         for (k in which) {
-            mid <- barplot(centers[k, ], col = "grey", 
-                names.arg = NULL, ylim = ylim, ...)
-            if (!is.null(names.arg)) {
-                text(mid + 0.3 * (mid[2] - mid[1]), 0, adj = 1, 
-                  srt = 45, paste(names.arg, "  "))
+            mid <- barplot(centers[k, ], col = col[k], 
+                           names.arg = "", ylim = ylim, ...)
+            if (!is.null(names.arg)){
+                text(mid + 0.005 * min(srt, 90-srt) * (mid[2] - mid[1]),
+                     ylim[1] - par("cxy")[2], adj = ifelse(srt==0, 0.5, 1),
+                     srt = srt, paste(names.arg, "  "))
             }
-            if (xcent && !is.null(datacent)) {
-                points(mid, datacent, pch = 16, col = "red")
-                points(mid, datacent, type = "h", col = "red")
+            if (!is.null(mcol) && !is.null(datacent)) {
+                points(mid, datacent, pch = 16, col = mcol)
+                points(mid, datacent, type = "h", col = mcol)
             }
             title(main = paste("Cluster ", k, ": ", size[k], 
                 " points (", round(100 * size[k]/sum(size), 
@@ -277,11 +277,11 @@ function (height, bycluster = TRUE, oneplot = TRUE,
             par(mfrow = c(a, ceiling(ncol(centers)/a)))
         }
         for (k in 1:ncol(centers)) {
-            barplot(centers[which, k, drop = FALSE], col = "grey", 
-                    ylim = ylim, ...)
+            barplot(centers[which, k], col = col[which], 
+                    ylim = ylim, xlab="", ...)
             title(main = names.arg[k])
-            if (xcent && !is.null(datacent)) {
-                abline(h = datacent[k], col = "red")
+            if (!is.null(mcol) && !is.null(datacent)) {
+                abline(h = datacent[k], col = mcol)
             }
         }
     }
@@ -291,26 +291,82 @@ function (height, bycluster = TRUE, oneplot = TRUE,
 ###**********************************************************
 
 setMethod("plot", signature(x="stepFlexclust", y="missing"),
-function(x, y, xlab=NULL, ylab=NULL, type=c("barplot", "lines"),
-         ...)
+function(x, y, type=c("barplot", "lines"), totaldist=NULL,
+          xlab=NULL, ylab=NULL, ...)
 {
     type <- match.arg(type)
     X <- x@K
-    Y <- sapply(x@models, function(z) sum(z@withindist))
+    Y <- sapply(x@models, function(z) info(z, "distsum"))
 
+    if(is.null(totaldist))
+        totaldist <- 2 %in% X
+
+    if(totaldist){
+        X <- c(1, X)
+        Y <- c(x@models[[1]]@totaldist, Y)
+    }
+        
     if(is.null(xlab))
         xlab <- "number of clusters"
     if(is.null(ylab))
          ylab <- "sum of within cluster distances"
 
-    
     if (type == "barplot") 
-        barplot(Y, names = X, xlab=xlab, ylab = ylab, ...)
+        barplot(Y, names = X,
+                xlab=xlab, ylab = ylab, ...)
     else {
         plot(X, Y, type = "b", axes = FALSE,
              xlab = xlab, ylab = ylab, ...)
         axis(2)
         axis(1, at = X, labels = X)
     }
+
     invisible()
+})
+
+###**********************************************************
+
+setMethod("pairs", signature(x="kcca"),
+function(x, which=NULL, project=NULL, oma=NULL, ...)
+{
+    if(is.null(which))
+        which <- 1:ncol(x@centers)
+
+    if(is.null(oma))
+        oma <- rep(3,4)
+
+    if(is.null(project)){
+        NAMES <- colnames(x@centers)[which]
+    }
+    else{
+        pc <- predict(project, x@centers)
+        NAMES <- colnames(pc)[which]
+    }
+
+    n <- length(which)
+
+    opar <- par("mar", "oma", "mfrow")
+    on.exit(par(opar))
+
+    par(mfcol=c(n, n), oma=oma, mar=rep(0.2,4))
+
+    for(k in 1:n){
+        for(l in 1:n){
+
+            if(k!=l){
+                plot(x, which=which[c(k,l)], project=project, axes=FALSE, ...)
+                if(l==1) axis(side=3)
+                if(l==n) axis(side=1)
+                if(k==1) axis(side=2)
+                if(k==n) axis(side=4)
+            }
+            else{
+                plot.new()
+                plot.window(0:1, 0:1)
+                text(0.5, 0.5, NAMES[k], cex=2)
+            }
+            box()
+        }
+    }
+    
 })

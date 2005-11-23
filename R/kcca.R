@@ -1,3 +1,8 @@
+#
+#  Copyright (C) 2005 Friedrich Leisch
+#  $Id: kcca.R 1910 2005-11-17 08:22:18Z gruen $
+#
+
 normWeights <- function(x) x/mean(x)
 
 mlogit <- function(x){
@@ -11,7 +16,7 @@ mlogit <- function(x){
 kccaFamily <- function(which=NULL, dist=NULL,
                        cent=NULL, name=which,
                        similarity=FALSE, preproc=NULL,
-                       trim=0)
+                       trim=0, groupFun="majorityClusters")
 {
     if(is.null(which) && is.null(dist))
         stop("either ", sQuote("which")," or ", sQuote("dist"),
@@ -87,8 +92,11 @@ kccaFamily <- function(which=NULL, dist=NULL,
                 return(apply(distmat, 1, which.max))
             }
             else{
-                r <- t(apply(- distmat, 1,
-                             rank, ties.method="random"))
+                ## <FIXME> kann ma t() einsparen?
+                r <- t(matrix(apply(- distmat, 1,
+                                    rank, ties.method="random"),
+                              nrow=ncol(distmat)))
+                ## </FIXME>
                 z <- list()
                 for(k in 1:n)
                     z[[k]] <- apply(r, 1, function(x) which(x==k))
@@ -106,8 +114,9 @@ kccaFamily <- function(which=NULL, dist=NULL,
                 return(apply(distmat, 1, which.min))
             }
             else{
-                r <- t(apply(distmat, 1,
-                             rank, ties.method="random"))
+              r <- t(matrix(apply(distmat, 1,
+                                  rank, ties.method="random"),
+                            nrow=ncol(distmat)))
                 z <- list()
                 for(k in 1:n)
                     z[[k]] <- apply(r, 1, function(x) which(x==k))
@@ -126,6 +135,11 @@ kccaFamily <- function(which=NULL, dist=NULL,
         }
         centers
     }
+
+    if(is.character(groupFun))
+        groupFun <- get(groupFun, mode="function")
+    z@groupFun <- groupFun
+ 
     
     z
 }
@@ -145,7 +159,14 @@ kcca <- function(x, k, family=kccaFamily("kmeans"), weights=NULL,
         control@classify="hard"
     }
 
-    if(!is.null(group)) group <- rep(group, length=N)
+    if(!is.null(group))
+    {       
+        if(length(group)>N)
+            warning("group vector longer than nrow(x)")
+        
+        group <- rep(group, length=N)
+        group <- as.factor(group)
+    }
     
     if(!is.null(weights))
     {
@@ -156,12 +177,8 @@ kcca <- function(x, k, family=kccaFamily("kmeans"), weights=NULL,
 
         if(!is.null(group))
             stop("Weighted clustering for grouped data is not implemented yet.")
-        
-        if(is.null(weights))
-            weights <- rep(1, N)
-        else
-            weights <- rep(weight, length=N)
- 
+        ## recycle to number of observations
+        weights <- rep(weights, length=N)
     }
     
     centers <- initCenters(x, k, family)
@@ -175,7 +192,8 @@ kcca <- function(x, k, family=kccaFamily("kmeans"), weights=NULL,
         for(iter in 1:control@iter.max){
             
             clustold <- cluster
-            cluster <- family@cluster(x, centers)
+            distmat <- family@dist(x, centers)
+            cluster <- family@cluster(x, distmat=distmat)
 
             if(control@classify == "simann"){
                 cluster <- perturbClusters(cluster, sannprob)
@@ -183,10 +201,10 @@ kcca <- function(x, k, family=kccaFamily("kmeans"), weights=NULL,
             }
 
             if(!is.null(group))
-                cluster <- groupedClusters(cluster, group)
-                    
+                cluster <- family@groupFun(cluster, group, distmat)
+            
             centers <- family@allcent(x, cluster=cluster, k=k)
-
+            
             changes <- sum(cluster!=clustold)
             if(control@verbose && (iter%%control@verbose==0))
                 printIter(iter, changes, "Changes")
@@ -230,7 +248,6 @@ kcca <- function(x, k, family=kccaFamily("kmeans"), weights=NULL,
         stop("Unknown classification method")
 
     centers <- centers[complete.cases(centers),,drop=FALSE]
-    colnames(centers) <- colnames(x)
     
     newKccaObject(x=x, family=family, centers=centers, group=group,
                   iter=iter,
@@ -256,6 +273,8 @@ initCenters <- function(x, k, family)
             centers <- family@allcent(x, cluster=cluster, k=k)
         }
         else{
+            k <- as.integer(k)
+            if(k<2) stop("number of clusters must be at least 2")
             ## we need to avoid duplicates here
             ux <- unique(x)
             if(nrow(ux) < k)
@@ -270,11 +289,13 @@ initCenters <- function(x, k, family)
 
 newKccaObject <- function(x, family, centers, group=NULL, ...)
 {
+    colnames(centers) <- colnames(x)
+
     distmat <- family@dist(x, centers)
     cluster <- family@cluster(n=2, distmat=distmat)
 
     if(!is.null(group))
-        cluster <- groupedClusters(cluster, group)
+        cluster <- family@groupFun(cluster, group, distmat)
 
     if(ncol(distmat)>1){
         ## at least 2 clusters
@@ -288,7 +309,19 @@ newKccaObject <- function(x, family, centers, group=NULL, ...)
         clsim <- as.matrix(1)
     }
         
-    withindist <- as.vector(tapply(cldist[,1], cluster[[1]], sum))
+    size <- as.vector(table(cluster[[1]]))
+    
+    clusinfo <-
+        data.frame(size=size,
+                   av_dist = as.vector(tapply(cldist[,1],
+                                        cluster[[1]], sum))/size,
+                   max_dist = as.vector(tapply(cldist[,1],
+                                        cluster[[1]], max)),
+                   separation = as.vector(tapply(cldist[,2],
+                                        cluster[[1]], min)))
+
+    xcent <- family@cent(x)
+    totaldist <- sum(family@dist(x, matrix(xcent,nrow=1)))
     
     z <- new("kcca", k=as(nrow(centers),"integer"),
              centers=centers,
@@ -296,9 +329,9 @@ newKccaObject <- function(x, family, centers, group=NULL, ...)
              second=as.integer(cluster[[2]]),
              family=family, 
              xrange=apply(x,2,range),
-             xcent=family@cent(x),
-             size=table(cluster[[1]]),
-             withindist=withindist,
+             xcent=xcent,
+             totaldist=totaldist,
+             clusinfo=clusinfo,
              clsim=clsim,
              cldist=cldist, ...)
     z
@@ -311,14 +344,18 @@ clusterSim <- function(distmat, cluster)
     z <- matrix(0, ncol=K, nrow=K)
 
     for(k in 1:K){
-        for(n in 1:K){
-            if(k!=n){
-                ok <- cluster[[1]]==k & cluster[[2]]==n
-                if(any(ok)){
-                    z[k,n] <- 2*mean(distmat[ok,k]/
-                                     (distmat[ok,k]+distmat[ok,n]))
+        ok1 <- cluster[[1]]==k
+        if(any(ok1)){
+            for(n in 1:K){
+                if(k!=n){
+                    ok2 <- ok1 & cluster[[2]]==n
+                    if(any(ok2)){
+                        z[k,n] <- 2*sum(distmat[ok2,k]/
+                                        (distmat[ok2,k]+distmat[ok2,n]))
+                    }
                 }
             }
+            z[k,] <- z[k,]/sum(ok1)
         }
     }
     diag(z) <- 1
@@ -338,7 +375,7 @@ perturbClusters <- function(cluster, prob)
 
 ## Assign each observation to the cluster where the majority from its
 ## group belongs to
-groupedClusters <- function(cluster, group)
+majorityClusters <- function(cluster, group, distmat)
 {
     getMax <- function(a)
     {
@@ -375,8 +412,65 @@ groupedClusters <- function(cluster, group)
     z
 }
     
-                
+## Assign each observation to a cluster where no other member from its
+## group belongs to
+differentClusters <- function(cluster, group, distmat)
+{
+    if(max(table(group)) > ncol(distmat))
+        stop("Number of group members must be smaller or equal as number of clusters")
+       
+    INF <- 2*sum(distmat, na.rm=TRUE)
+    distmat[is.na(distmat)] <- INF
+    if(is.list(cluster)){
+        z <- getDifferentCluster(cluster[[1]], group, distmat)
+        distmat[cbind(1:nrow(distmat), z)] <- INF
+        cluster <- list(z,
+                        getDifferentCluster(cluster[[2]], group, distmat))
+    }
+    else{
+        cluster <- getDifferentCluster(cluster, group, distmat)
+    }
 
+    cluster    
+}
+    
+getDifferentCluster <- function(cluster, group, distmat)
+{
+    x <- table(group, cluster)
+    ok <- (apply(x, 1, max)==1)
+    nok.names <- unique(row.names(x[!ok,,drop=FALSE]))
+    
+    for(n in nok.names){
+        ok <- group==n
+        if(sum(ok)>1)
+            cluster[ok] <- solve_LSAP1(distmat[ok,])
+    }
+    cluster
+}
+
+solve_LSAP1 <- function (x, maximum = FALSE) 
+{
+    require("clue")
+    if (!is.matrix(x) || any(x < 0)) 
+        stop("x must be a matrix with nonnegative entries.")
+
+    if(nrow(x)>ncol(x))
+        stop("x must have less or equal rows than columns")
+
+    nr <- nrow(x)
+    nc <- ncol(x)
+    if(ncol(x) > nrow(x))
+        x <- rbind(x, matrix(2*sum(x), nrow=(ncol(x)-nrow(x)), ncol=ncol(x)))
+
+    if (maximum)
+        x <- max(x) - x
+    
+    storage.mode(x) <- "double"
+    out <- .C("solve_LSAP", x, nc, p = integer(nc), PACKAGE = "clue")$p + 1
+    out <- out[1:nr]
+    class(out) <- "solve_LSAP"
+    out
+}    
 
 ###**********************************************************
 
@@ -387,29 +481,26 @@ function(object)
     cat("call:", deparse(object@call,0.75*getOption("width")),
         sep="\n")
     cat("\ncluster sizes:\n")
-    ## the size slot does not contain the NA count for qtclust objects
-    print(table(object@cluster, exclude=NULL))
+    print(table(cluster(object), exclude=NULL))
+    cat("\n")
+})
+        
+setMethod("summary", "kcca",
+function(object)
+{
+    cat("kcca object of family", sQuote(object@family@name),"\n\n")
+    cat("call:", deparse(object@call,0.75*getOption("width")),
+        sep="\n")
+    cat("\ncluster info:\n")
+    print(object@clusinfo)
     cat("\n")
     if(!object@converged) cat("no ")
     cat("convergence after", object@iter, "iterations\n")
-    cat("sum of within cluster",
-        ifelse(object@family@similarity, "similarities", "distances"),
-        ":", sum(object@withindist), "\n")
-})
-        
-setMethod("predict", signature(object="kcca"),
-function(object, newdata=NULL, ...)
-{
-    if(is.null(newdata))
-        return(object@cluster)
-    else{
-        newdata <- as(newdata, "matrix")
-        newdata <- object@family@preproc(newdata)
-        return(object@family@cluster(newdata, object@centers))
-    }
+    cat("sum of within cluster distances:", info(object, "distsum"),"\n")
 })
 
 ###**********************************************************
+
 
 setGeneric("neighbours",
 function(object, symm=TRUE, ...) standardGeneric("neighbours"))
@@ -464,33 +555,18 @@ function(object, freq=TRUE, distance=FALSE, ...)
 stepFlexclust <- function(..., K=NULL, nrep=3, verbose=TRUE,
                           FUN=kcca, drop=TRUE)
 {
-
     MYCALL <- match.call()
     
     bestKcca <- function(...)
     {
-        distsum <- NULL
+        distsum <- Inf
         for(m in 1:nrep){
             if(verbose) cat(" *")
             x = FUN(...)
-            if(is.null(distsum)){
-                if(x@family@similarity)
-                    distsum <- -Inf
-                else
-                    distsum <- Inf
-            }
-
-            if(x@family@similarity){
-                if(sum(x@withindist) > distsum){
-                    z <- x
-                    distsum <- sum(x@withindist)
-                }
-            }
-            else{
-                if(sum(x@withindist) < distsum){
-                    z <- x
-                    distsum <- sum(x@withindist)
-                }
+            newdistsum <- info(x, "distsum")
+            if(newdistsum < distsum){
+              z <- x
+              distsum <- newdistsum
             }
         }
         z
@@ -539,15 +615,16 @@ function(object)
         sep="\n")
     cat("\n")
     
-    z1 <- sapply(object@models, function(x) x@iter)
-    z2 <- sapply(object@models, function(x) x@converged)
-
-    z <- data.frame(iter=z1, converged=z2)
-    if("withindist" %in% slotNames(object@models[[1]]))
-        z$distsum <- sapply(object@models, function(x) sum(x@withindist))
+    z <- data.frame(iter = sapply(object@models, function(x) x@iter),
+                    converged = sapply(object@models, function(x) x@converged),
+                    distsum = sapply(object@models,
+                                     function(x) info(x, "distsum")))
+    z1 <- data.frame(iter = NA,
+                     converged = NA,
+                     distsum = object@models[[1]]@totaldist)
+    z <- rbind(z1, z)
     
-    print(z)
-
+    print(z, na.string="")
 })
     
 setGeneric("getModel",

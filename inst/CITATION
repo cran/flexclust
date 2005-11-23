@@ -1,0 +1,30 @@
+citHeader("To cite package flexclust in publications use:")
+
+## desc <- packageDescription("flexclust")
+## year <- sub(".*(20[[:digit:]]{2}).*", "\\1", desc$Date)
+## vers <- paste("R package version", desc$Version)
+
+## citEntry(entry="Manual",
+##          title = "flexclust: Flexible Cluster Algorithms",
+##          author = person(first="Friedrich", last="Leisch"),
+## 	 year = year,
+##          note = vers,
+	 
+## 	 textVersion =
+##            paste("Friedrich Leisch (", year,
+##                  "). flexclust: Flexible Cluster Algorithms. ",
+##                  vers, ".", sep=""))
+
+
+citEntry(entry="Article",
+         author = "Friedrich Leisch",
+         title = "A Toolbox for K-Centroids Cluster Analysis",
+         journal = "Computational Statistics and Data Analysis",
+         year = 2006,
+         note = "Accepted for publication",
+
+         textVersion = paste("Friedrich Leisch.",
+         "A Toolbox for K-Centroids Cluster Analysis.",
+         "Computational Statistics and Data Analysis, 2006.",
+         "Accepted for publication."))
+

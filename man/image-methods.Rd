@@ -1,3 +1,7 @@
+%
+%  Copyright (C) 2005 Friedrich Leisch
+%  $Id: image-methods.Rd 1839 2005-09-29 19:23:15Z leisch $
+%
 \name{image-methods}
 \docType{methods}
 \alias{image,kcca-method}
@@ -7,7 +11,8 @@
 }
 \usage{
 \S4method{image}{kcca}(x, which = 1:2, npoints = 100,
-         xlab = "", ylab = "", fastcol = TRUE, col=NULL, ...)
+         xlab = "", ylab = "", fastcol = TRUE, col=NULL,
+         clwd=0, graph=TRUE, ...)
 }
 \arguments{
   \item{x}{An object of class \code{"kcca"}.}
@@ -18,6 +23,11 @@
     segments having the same color. If \code{FALSE}, neighbouring
     segments always have different colors at a speed penalty.}
   \item{col}{Vector of background colors for the segments.}
+  \item{clwd}{Line width of contour lines at cluster boundaries, use
+    larger values for \code{npoints} than the default to get smooth
+    lines. (Warning: We really need a smarter way to draw cluster
+    boundaries!)}
+  \item{graph}{Logical, add a neighborhood graph to the plot?}
   \item{xlab, ylab, \ldots}{Graphical parameters.}
 }
 \seealso{

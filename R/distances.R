@@ -1,3 +1,8 @@
+#
+#  Copyright (C) 2005 Friedrich Leisch
+#  $Id: distances.R 1860 2005-10-18 15:35:43Z leisch $
+#
+
 distEuclidean <- function(x, centers)
 {
     if(ncol(x)!=ncol(centers))
@@ -48,6 +53,70 @@ distJaccard <- function(x, centers)
     1 - xc/nenner
 }
 
+distCanberra <- function(x, centers)
+{
+    if(ncol(x)!=ncol(centers))
+        stop(sQuote("x")," and ",sQuote("centers"),
+             " must have the same number of columns")
+    z <- matrix(0, nrow=nrow(x), ncol=nrow(centers))
+    tx <- t(x)
+    for(k in 1:nrow(centers)){
+        d <- abs(tx-centers[k,])
+        s <- abs(tx+centers[k,])
+        q <- d/s
+        q[s<.Machine$double.eps] <- 0
+        ## in dist() erhöhen doppelte nullen die distanz um einen
+        ## faktor -> abgekupfert für konsistenz. 
+        z[,k] <- colSums(q) * ncol(x) / colSums(s>.Machine$double.eps)
+    }
+    z
+}
+
+distMinkowski <- function(x, centers, p=2)
+{
+    if(ncol(x)!=ncol(centers))
+        stop(sQuote("x")," and ",sQuote("centers"),
+             " must have the same number of columns")
+    z <- matrix(0, nrow=nrow(x), ncol=nrow(centers))
+    for(k in 1:nrow(centers)){
+        z[,k] <- colSums(abs(t(x) - centers[k,])^p)^(1/p)
+    }
+    z
+}
+
+dist2 <- function(x, y, method = "euclidean", p=2){
+
+    if(any(is.na(x)) || any(is.na(y)))
+        stop("Cannot handle missing values!")
+    
+    x <- as(x, "matrix")
+
+    if(is.vector(y) && (length(y)<=ncol(x)))
+        y <- matrix(y, nrow=1, ncol=ncol(x))
+    else
+        y <- as(y, "matrix")
+    
+    METHODS <- c("euclidean", "maximum", "manhattan", "canberra", 
+                 "binary", "minkowski")
+    method <- match.arg(method, METHODS)
+
+    z <- switch(method,
+                euclidean = distEuclidean(x, y),
+                maximum = distMax(x, y),
+                manhattan = distManhattan(x, y),
+                canberra = distCanberra(x, y),
+                binary = distJaccard(x!=0, y!=0),
+                minkowski = distMinkowski(x, y, p=p))
+    rownames(z) <- rownames(x)
+    colnames(z) <- rownames(y)
+    z
+}
+           
+
+
+
+###**********************************************************
+
 centOptim <- function(x, dist)
 {
     foo <- function(p)
@@ -94,7 +163,7 @@ distCor <- function(x, centers)
 {
    z <- matrix(0,nrow(x), ncol=nrow(centers))
    for(k in 1:nrow(centers)){
-      z[,k] <- 1 - cor(t(x),centers[k,])
+      z[,k] <- 1 - .Internal(cor(t(x),centers[k,], 1, 0))
    }
    z
 }   

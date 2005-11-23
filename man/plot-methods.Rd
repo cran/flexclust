@@ -1,3 +1,7 @@
+%
+%  Copyright (C) 2005 Friedrich Leisch
+%  $Id: plot-methods.Rd 1839 2005-09-29 19:23:15Z leisch $
+%
 \name{plot-methods}
 \docType{methods}
 \alias{plot,kcca,missing-method}
@@ -8,7 +12,8 @@
 }
 \usage{
   \S4method{plot}{kcca,missing}(x, y, which=1:2, project=NULL,
-         data=NULL, points=!is.null(data), hull=!is.null(data),
+         data=NULL, points=!is.null(data),
+         hull=!is.null(data), hull.args=NULL, 
          number = TRUE, simlines=TRUE,
          lwd=1, maxlwd=8*lwd, cex=1.5, numcol="black", nodes=16,
          add=FALSE, xlab="", ylab="", xlim = NULL,
@@ -17,15 +22,16 @@
 \arguments{
   \item{x}{an object of class \code{"kcca"}}
   \item{y}{not used}
-  \item{which}{Index number of dimensions of (projected) input space
+  \item{which}{Index numbers of dimensions of (projected) input space
     to plot.}
-  \item{project}{Projection object, for which a \code{predict} method
+  \item{project}{Projection object for which a \code{predict} method
     exists, e.g., the result of \code{\link{prcomp}}.}
   \item{data}{Data to include in plot.}
   \item{points}{Logical, shall data points be plotted?}
   \item{hull}{If \code{TRUE}, then hulls of confidence regions of
     the data are plotted. If a function, it is used for plotting the
     hulls.}
+  \item{hull.args}{A list of arguments for the hull function.}
   \item{number}{Logical, plot number labels in nodes of graph?}
   \item{numcol, cex}{Color and size of number labels in nodes of graph.}
   \item{nodes}{Plotting symbol to use for nodes if no numbers are drawn.}

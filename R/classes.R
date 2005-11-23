@@ -1,12 +1,17 @@
+#
+#  Copyright (C) 2005 Friedrich Leisch
+#  $Id: classes.R 1779 2005-08-18 09:23:15Z leisch $
+#
+
 setClass("flexclustControl",
          representation(iter.max="numeric",
                         tolerance="numeric",
                         verbose="numeric",
                         classify="character",
-                        gamma="numeric",      # for kcca
-                        simann="numeric",     # for kcca
-                        ntry="numeric",       # for qtclust
-                        min.size="numeric"    # for qtclust
+                        gamma="numeric",          # for kcca
+                        simann="numeric",         # for kcca
+                        ntry="numeric",           # for qtclust
+                        min.size="numeric"        # for qtclust
                         ),
          prototype(iter.max=200,
                    minprior=0.05,
@@ -72,7 +77,8 @@ setClass("kccaFamily",
                         wcent="function",
                         weighted="logical",
                         cluster="function",
-                        preproc="function"),
+                        preproc="function",
+                        groupFun="function"),
          prototype(weighted=FALSE,
                    preproc=function(x) x))
                         
@@ -85,7 +91,7 @@ setClass("flexclust",
                         cluster="integer",
                         iter="integer",
                         converged="logical",
-                        size="table",
+                        clusinfo="data.frame",
                         xrange="ANY",
                         call="call",
                         control="flexclustControl"))
@@ -95,8 +101,8 @@ setClass("kcca",
          representation(centers="ANY",
                         second="integer",
                         family="kccaFamily",
-                        xcent="ANY",
-                        withindist="numeric",
+                        xcent="ANY",            # centroid of all data
+                        totaldist="numeric",    # total dist data<->xcent
                         clsim="matrix",
                         cldist="matrix"))
                         

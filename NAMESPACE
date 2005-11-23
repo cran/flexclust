@@ -7,9 +7,12 @@ import(stats)
 exportPattern("^dist.*", "^cent.*")
 
 export(
+       as.kcca,
        cclust,
+       infoCheck,
        kcca,
        kccaFamily,
+       projAxes,
        qtclust,
        stepFlexclust
        )
@@ -21,16 +24,28 @@ exportClasses(
               flexclustControl,
               kcca,
               kccaFamily,
+              projAxes,
               stepFlexclust
               ) 
 
 exportMethods(
               barplot,
+              cluster,
               coerce,
               getModel,
               image,
+              info,
+              pairs,
+              parameters,
+              placeLabels,
               plot,
               predict,
-              show
+              show,
+              summary
               )
+
+
+S3method(as.kcca, kmeans)
+S3method(as.kcca, partition)
+
 

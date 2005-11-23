@@ -1,3 +1,7 @@
+%
+%  Copyright (C) 2005 Friedrich Leisch
+%  $Id: stepFlexclust.Rd 1779 2005-08-18 09:23:15Z leisch $
+%
 \name{stepFlexclust}
 \alias{stepFlexclust}
 \alias{stepFlexclust-class}
@@ -15,7 +19,8 @@
 stepFlexclust(..., K=NULL, nrep=3, verbose=TRUE, FUN = kcca, drop=TRUE)
 
 \S4method{plot}{stepFlexclust,missing}(x, y,
-  xlab=NULL, ylab=NULL, type=c("barplot", "lines"), \dots)
+  type=c("barplot", "lines"), totaldist=NULL,
+  xlab=NULL, ylab=NULL, \dots)
 
 \S4method{getModel}{stepFlexclust}(object, which=1)
 }
@@ -43,6 +48,9 @@ stepFlexclust(..., K=NULL, nrep=3, verbose=TRUE, FUN = kcca, drop=TRUE)
 
   \item{type}{Create a barplot or lines plot.}
 
+  \item{totaldist}{Include value for 1-cluster solution in plot? Default
+    is \code{TRUE} if \code{K} contains \code{2}, else \code{FALSE}.}
+
   \item{xlab, ylab}{Graphical parameters.}
   
   \item{object}{Object of class \code{"stepFlexclust"}.}
@@ -52,7 +60,7 @@ stepFlexclust(..., K=NULL, nrep=3, verbose=TRUE, FUN = kcca, drop=TRUE)
 }
 \author{Friedrich Leisch}
 \examples{
-data("Nclus", package="flexmix")
+data("Nclus")
 plot(Nclus)
 
 cl1 = stepFlexclust(Nclus, K=2:7, FUN=cclust)

@@ -1,0 +1,105 @@
+setClass("projAxes", representation(arrows="list", text="list"))
+
+projAxes <- function(object, which=1:2, center=NULL,
+                     col="red", radius=NULL,
+                     minradius=0.1, textargs=list(col=col),
+                     col.names=getColnames(object),
+                     which.names="", ...)
+{
+    pu = par("usr")
+    if(is.null(center)){
+        center=c((pu[1]+pu[2])/2, (pu[3]+pu[4])/2)
+    }
+    else
+        center = rep(center, length=2)
+
+    D <- rbind(0, diag(length(col.names)))
+    colnames(D) <- col.names
+    z <- predict(object, D)[,which]
+    z0 <- z[1,]
+    z <- z[-1,]
+    z[,1] <- z[,1]-z0[1]
+    z[,2] <- z[,2]-z0[2]
+    
+    if(is.null(radius)){
+        radius <- c(abs(center[1]-pu[1:2]), abs(center[2]-pu[3:4]))
+        radius <- 0.75*min(radius/apply(z,2,function(x) max(abs(x))))
+    }
+    
+    x0 = center[1]
+    y0 = center[2]
+    x1 = z[,1]*radius
+    y1 = z[,2]*radius
+
+    r <-  sqrt(x1^2+y1^2)
+    ok <- ( r >= (minradius * max(r)) ) &
+          ( regexpr(which.names, col.names) > 0)
+
+    x1=x1[ok]
+    y1=y1[ok]
+
+    alpha <- atan2(y1, x1)
+    pos <- rep(4, length(alpha))
+    pos[(alpha >= pi/4) & (alpha <= 3*pi/4)] <- 3
+    pos[abs(alpha)>3*pi/4] <- 2
+    pos[(alpha <= -pi/4) & (alpha>= -3*pi/4)] <- 1
+    
+    new("projAxes",
+        arrows=c(list(x0=x0, y0=y0, x1=x1+x0, y1=y1+y0, col=col), ...),
+        text=c(list(x=x1+x0, y=y1+y0, labels=col.names[ok],
+                    pos=pos, offset=rep(0.5, length(pos))),
+               textargs))
+}
+
+setMethod("plot", signature(x="projAxes", y="missing"),
+function(x, y, ...)
+{          
+    do.call("arrows", x@arrows)
+    do.call("text", x@text)
+})
+
+setMethod("show", signature(object="projAxes"),
+function(object)
+{          
+    plot(object)
+})
+
+
+setGeneric("placeLabels",
+function(object) standardGeneric("placeLabels")) 
+
+setMethod("placeLabels", signature(object="projAxes"),
+function(object)
+{
+    plot(object)
+    for(n in 1:length(object@text$labels)){
+        points(object@arrows$x1[n], object@arrows$y1[n], col="blue",
+               cex=3, lwd=3)
+        x <- locator(type="p", col="blue", pch=3, cex=2, lwd=2)
+        points(object@arrows$x1[n], object@arrows$y1[n], col="white",
+               cex=3, lwd=3)
+        if(length(x$x)){
+            points(x$x, x$y, type="p", col="white", pch=3, cex=2,
+                   lwd=2)
+            object@text$x[n] <- tail(x$x, n=1)
+            object@text$y[n] <- tail(x$y, n=1)
+            object@text$offset[n] <- 0
+            object@text$pos[n] <-
+                ifelse(object@text$x[n] > object@arrows$x1[n], 4, 2)
+        }
+        text(x=object@text$x[n], y=object@text$y[n],
+             labels=object@text$labels[n], pos=object@text$pos[n],
+             col="blue", offset=0)
+    }
+    object
+})
+        
+
+
+    
+
+getColnames <- function(object) UseMethod("getColnames")
+
+getColnames.prcomp <- function(object) rownames(object$rotation)
+
+
