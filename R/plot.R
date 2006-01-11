@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: plot.R 1911 2005-11-17 11:29:23Z leisch $
+#  $Id: plot.R 1922 2005-11-23 14:54:27Z leisch $
 #
 
 setMethod("plot", signature(x="kcca",y="missing"),

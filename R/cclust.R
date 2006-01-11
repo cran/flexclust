@@ -1,26 +1,27 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: cclust.R 1661 2005-06-10 08:08:02Z leisch $
+#  $Id: cclust.R 1958 2006-01-07 15:57:36Z leisch $
 #
 
+
 cclust <- function (x, k, dist = "euclidean", method = "kmeans",
-                    weights=NULL, control=NULL)
+                       weights=NULL, control=NULL)
 {
     MYCALL <- match.call()
     control <- as(control, "cclustControl")
     x <- as(x, "matrix")
     N <- nrow(x)
-
+    
     dist <- match.arg(dist, c("euclidean", "manhattan"))
     idist <- pmatch(dist, c("euclidean", "manhattan"))
-
+    
     if(dist=="euclidean"){
         family <- kccaFamily("kmeans")
     }
     else{
         family <- kccaFamily("kmedians")
     }
-
+    
     method <- match.arg(method, c("kmeans", "hardcl", "neuralgas"))
 
     if(!is.null(weights) & (method!="hardcl")){

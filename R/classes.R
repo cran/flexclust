@@ -14,7 +14,6 @@ setClass("flexclustControl",
                         min.size="numeric"        # for qtclust
                         ),
          prototype(iter.max=200,
-                   minprior=0.05,
                    tolerance=10e-7,
                    verbose=0,
                    classify="auto",
