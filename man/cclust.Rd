@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: cclust.Rd 1661 2005-06-10 08:08:02Z leisch $
+%  $Id: cclust.Rd 2489 2006-03-03 15:06:07Z leisch $
 %
 \name{cclust}
 \title{Convex Clustering}
@@ -11,7 +11,7 @@
 }
 \usage{
 cclust(x, k, dist = "euclidean", method = "kmeans",
-       weights=NULL, control=NULL)
+       weights=NULL, control=NULL, group=NULL, simple=FALSE)
 }
 \arguments{
   \item{x}{A numeric matrix of data, or an object that can be coerced to
@@ -25,8 +25,10 @@ cclust(x, k, dist = "euclidean", method = "kmeans",
   \item{method}{Clustering algorithm: one of \code{"kmeans"},
     \code{"hardcl"} or \code{"neuralgas"}, see details below.}
   \item{weights}{An optional vector of weights to be used in the fitting
-          process. Works only in combination with hard competitive learning.}
+    process. Works only in combination with hard competitive learning.}
   \item{control}{An object of class \code{cclustControl}.}
+  \item{group}{Currently ignored.}
+  \item{simple}{Return an object of class \code{kccasimple}?}
 }
 \details{
   This function uses the same computational engine as the earlier

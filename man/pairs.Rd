@@ -1,10 +1,11 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: pairs.Rd 1849 2005-10-10 06:15:57Z leisch $
+%  $Id: pairs.Rd 2479 2006-03-01 15:04:04Z leisch $
 %
 \name{pairs-methods}
 \docType{methods}
 \alias{pairs,kcca-method}
+\alias{pairs,kccasimple-method}
 \title{Methods for Function pairs in Package `flexclust'}
 \description{
   Plot a matrix of neighbourhood graphs.
@@ -21,6 +22,10 @@
   \item{oma}{Outer margin.}
   \item{\dots}{Passed to the \code{plot} method.}
 }
+\details{
+  This works only for \code{"kcca"} objects, no method is available for
+  "kccasimple" objects.
+  }
 \author{Friedrich Leisch}
 \keyword{methods}
 \keyword{hplot}

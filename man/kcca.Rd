@@ -1,25 +1,27 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: kcca.Rd 1779 2005-08-18 09:23:15Z leisch $
+%  $Id: kcca.Rd 2925 2006-09-07 12:56:48Z leisch $
 %
 \name{kcca}
 \alias{kcca}
 \alias{kccaFamily}
 \alias{flexclust-class}
 \alias{kcca-class}
+\alias{kccasimple-class}
 \alias{kccaFamily-class}
-\alias{show,kcca-method}
-\alias{summary,kcca-method}
+\alias{show,kccasimple-method}
+\alias{summary,kccasimple-method}
 \title{K-Centroids Cluster Analysis}
 \description{
   Perform k-centroids clustering on a data matrix.
 }
 \usage{
-kcca(x, k, family=kccaFamily("kmeans"), weights=NULL, group=NULL, control=NULL)
+kcca(x, k, family=kccaFamily("kmeans"), weights=NULL, group=NULL,
+     control=NULL, simple=FALSE)
 kccaFamily(which=NULL, dist=NULL, cent=NULL, name=which, similarity=FALSE,
-           preproc = NULL, trim=0, groupFun = "majorityClusters")
+           preproc = NULL, trim=0, groupFun = "minSumClusters")
 
-\S4method{summary}{kcca}(object)
+\S4method{summary}{kccasimple}(object)
 }
 \arguments{
   \item{x}{A numeric matrix of data, or an object that can be coerced to
@@ -39,6 +41,8 @@ kccaFamily(which=NULL, dist=NULL, cent=NULL, name=which, similarity=FALSE,
     below.}
 
   \item{control}{An object of class \code{flexclustControl}.}
+
+  \item{simple}{Return an object of class \code{kccasimple}?}
 
   \item{which}{One of \code{"kmeans"}, \code{"kmedians"},
     \code{"angle"}, \code{"jaccard"}, or \code{"ejaccard"}.}
@@ -74,7 +78,17 @@ kccaFamily(which=NULL, dist=NULL, cent=NULL, name=which, similarity=FALSE,
   broken at random. Note that at the moment not all methods for fitted
   \code{"kcca"} objects respect the grouping information, most
   importantly the plot method when a data argument is specified. 
-} 
+}
+\value{
+  Function \code{kcca} returns objects of class \code{"kcca"} or
+  \code{"kccasimple"} depending on the value of argument
+  \code{simple}. The simpler objects contain fewer slots and hence are
+  faster to compute, but contain no auxiliary information used by the
+  plotting methods. All plot methods for \code{"kccasimple"} objects do
+  nothing and return a warning. If only centroids, cluster membership or
+  prediction for new data are of interest, then the simple objects are
+  sufficient.
+}
 \author{Friedrich Leisch}
 \seealso{\code{\link{stepFlexclust}}, \code{\link{cclust}}}
 \examples{

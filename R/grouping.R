@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2006 Friedrich Leisch
-#  $Id: grouping.R 1958 2006-01-07 15:57:36Z leisch $
+#  $Id: grouping.R 2925 2006-09-07 12:56:48Z leisch $
 #
 
 
@@ -97,35 +97,36 @@ getDifferentCluster <- function(cluster, group, distmat)
     x <- table(group, cluster)
     ok <- (apply(x, 1, max)==1)
     nok.names <- unique(row.names(x[!ok,,drop=FALSE]))
-    
+    require("clue")
+
     for(n in nok.names){
         ok <- group==n
         if(sum(ok)>1)
-            cluster[ok] <- solve_LSAP1(distmat[ok,])
+            cluster[ok] <- solve_LSAP(distmat[ok,])
     }
     cluster
 }
 
-solve_LSAP1 <- function (x, maximum = FALSE) 
-{
-    require("clue")
-    if (!is.matrix(x) || any(x < 0)) 
-        stop("x must be a matrix with nonnegative entries.")
+## solve_LSAP1 <- function (x, maximum = FALSE) 
+## {
+##     require("clue")
+##     if (!is.matrix(x) || any(x < 0)) 
+##         stop("x must be a matrix with nonnegative entries.")
 
-    if(nrow(x)>ncol(x))
-        stop("x must have less or equal rows than columns")
+##     if(nrow(x)>ncol(x))
+##         stop("x must have less or equal rows than columns")
 
-    nr <- nrow(x)
-    nc <- ncol(x)
-    if(ncol(x) > nrow(x))
-        x <- rbind(x, matrix(2*sum(x), nrow=(ncol(x)-nrow(x)), ncol=ncol(x)))
+##     nr <- nrow(x)
+##     nc <- ncol(x)
+##     if(ncol(x) > nrow(x))
+##         x <- rbind(x, matrix(2*sum(x), nrow=(ncol(x)-nrow(x)), ncol=ncol(x)))
 
-    if (maximum)
-        x <- max(x) - x
+##     if (maximum)
+##         x <- max(x) - x
     
-    storage.mode(x) <- "double"
-    out <- .C("solve_LSAP", x, nc, p = integer(nc), PACKAGE = "clue")$p + 1
-    out <- out[1:nr]
-    class(out) <- "solve_LSAP"
-    out
-}    
+##     storage.mode(x) <- "double"
+##     out <- .C("solve_LSAP", x, nc, p = integer(nc), PACKAGE = "clue")$p + 1
+##     out <- out[1:nr]
+##     class(out) <- "solve_LSAP"
+##     out
+## }    

@@ -1,17 +1,8 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: info.R 1849 2005-10-10 06:15:57Z leisch $
+#  $Id: info.R 3122 2006-11-05 15:10:25Z leisch $
 #
 
-setGeneric("info",
-function(object, which, ...) standardGeneric("info"))
-
-setMethod("info", signature(object="ANY", which="missing"),
-function(object, which, ...)
-{
-    info(object, which="help")
-})
-    
 setMethod("info", signature(object="flexclust", which="character"),
 function(object, which, drop=TRUE, ...)
 {
@@ -29,7 +20,11 @@ function(object, which, drop=TRUE, ...)
     }
 
     if(any(which=="distsum")){
-        return(sum(object@cldist[,1]))
+        if(all(c("size","av_dist") %in% INFOS))
+            return(sum(object@clusinfo$size *
+                       object@clusinfo$av_dist))
+        else
+            return(sum(object@cldist[,1]))
     }
     else{
         z <- object@clusinfo[,which,drop=drop]
@@ -41,17 +36,7 @@ function(object, which, drop=TRUE, ...)
 
 ###**********************************************************
 
-infoCheck <- function(object, which, ...)
-{
-    which %in% info(object, "help")
-}
-
-###**********************************************************
-
-setGeneric("parameters",
-           function(object, ...) standardGeneric("parameters"))
-
-setMethod("parameters", signature(object="kcca"),
+setMethod("parameters", signature(object="kccasimple"),
 function(object, ...)
 {
     object@centers

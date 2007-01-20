@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: kcca.R 1958 2006-01-07 15:57:36Z leisch $
+#  $Id: kcca.R 3219 2007-01-20 12:45:11Z leisch $
 #
 
 normWeights <- function(x) x/mean(x)
@@ -16,7 +16,7 @@ mlogit <- function(x){
 kccaFamily <- function(which=NULL, dist=NULL,
                        cent=NULL, name=which,
                        similarity=FALSE, preproc=NULL,
-                       trim=0, groupFun="majorityClusters")
+                       trim=0, groupFun="minSumClusters")
 {
     if(is.null(which) && is.null(dist))
         stop("either ", sQuote("which")," or ", sQuote("dist"),
@@ -89,10 +89,10 @@ kccaFamily <- function(which=NULL, dist=NULL,
                 distmat <- z@dist(x, centers)
             
             if(n==1){
-                return(apply(distmat, 1, which.max))
+                return(max.col(distmat))
             }
             else{
-                ## <FIXME> kann ma t() einsparen?
+                ## <FIXME> kann man t() einsparen?
                 r <- t(matrix(apply(- distmat, 1,
                                     rank, ties.method="random"),
                               nrow=ncol(distmat)))
@@ -111,7 +111,7 @@ kccaFamily <- function(which=NULL, dist=NULL,
                 distmat <- z@dist(x, centers)
             
             if(n==1){
-                return(apply(distmat, 1, which.min))
+                return(max.col(-distmat))
             }
             else{
               r <- t(matrix(apply(distmat, 1,
@@ -147,7 +147,7 @@ kccaFamily <- function(which=NULL, dist=NULL,
 ###**********************************************************
 
 kcca <- function(x, k, family=kccaFamily("kmeans"), weights=NULL,
-                 group=NULL, control=NULL)
+                 group=NULL, control=NULL, simple=FALSE)
 {
     MYCALL <- match.call()
     control <- as(control, "flexclustControl")
@@ -204,6 +204,10 @@ kcca <- function(x, k, family=kccaFamily("kmeans"), weights=NULL,
                 cluster <- family@groupFun(cluster, group, distmat)
             
             centers <- family@allcent(x, cluster=cluster, k=k)
+
+            ## NAs in centers are empty clusters
+            centers <- centers[complete.cases(centers),,drop=FALSE]
+            k <- nrow(centers)
             
             changes <- sum(cluster!=clustold)
             if(control@verbose && (iter%%control@verbose==0))
@@ -253,9 +257,11 @@ kcca <- function(x, k, family=kccaFamily("kmeans"), weights=NULL,
                   iter=iter,
                   converged=(iter<control@iter.max),
                   call=MYCALL,
-                  control=control)
+                  control=control,
+                  simple=simple)
 }
 
+###**********************************************************
 
 initCenters <- function(x, k, family)
 {
@@ -286,17 +292,59 @@ initCenters <- function(x, k, family)
     list(centers=centers, cluster=cluster, k=k)
 }
 
+###**********************************************************
 
-newKccaObject <- function(x, family, centers, group=NULL, ...)
+
+newKccaObject <- function(x, family, centers, group=NULL, simple=FALSE,
+                          ...)
 {
-    colnames(centers) <- colnames(x)
-
     distmat <- family@dist(x, centers)
-    cluster <- family@cluster(n=2, distmat=distmat)
 
+    z <- newKccasimpleObject(x=x, family=family, centers=centers, 
+                             group=group, distmat=distmat, ...)
+    
+    if(!simple){
+        z <- simple2kcca(x=x, from=z, group=group, distmat=distmat)
+    }
+    
+    z
+}
+
+newKccasimpleObject <- function(x, family, centers, group=NULL,
+                                distmat=NULL, ...)
+{
+    if(is.null(distmat))
+        distmat <- family@dist(x, centers)
+
+    cluster <- family@cluster(distmat=distmat)
     if(!is.null(group))
         cluster <- family@groupFun(cluster, group, distmat)
+    names(cluster) <- rownames(x)
+    colnames(centers) <- colnames(x)
+    
+    size <- as.vector(table(cluster))
+    cldist <- as(distmat[cbind(1:nrow(x), cluster)], "matrix")
+    cluster <- as(cluster, "integer")
+    
+    new("kccasimple",
+        k=as(nrow(centers),"integer"),
+        centers=centers,
+        cluster=cluster,
+        family=family,
+        clusinfo=clusinfo(cluster, cldist, simple=TRUE),
+        cldist=cldist,
+        ...)
+}
 
+simple2kcca <- function(x, from, group=NULL, distmat=NULL)
+{
+    if(is.null(distmat))
+        distmat <- from@family@dist(x, from@centers)
+
+    cluster <- from@family@cluster(n=2, distmat=distmat)
+    if(!is.null(group))
+        cluster <- from@family@groupFun(cluster, group, distmat)
+        
     if(ncol(distmat)>1){
         ## at least 2 clusters
         cldist <- cbind(distmat[cbind(1:nrow(x), cluster[[1]])],
@@ -308,35 +356,44 @@ newKccaObject <- function(x, family, centers, group=NULL, ...)
         cldist <- distmat
         clsim <- as.matrix(1)
     }
-        
-    size <- as.vector(table(cluster[[1]]))
+            
+    xcent <- from@family@cent(x)
+    totaldist <- sum(from@family@dist(x, matrix(xcent,nrow=1)))
+
+    z <- as(from, "kcca")
+    z@second <- as(cluster[[2]], "integer")
+    z@xcent <- xcent
+    z@xrange <- apply(x,2,range)
+    z@totaldist <- totaldist
+    z@clsim <- clsim
+    z@clusinfo <- clusinfo(cluster[[1]], cldist, simple=FALSE)
+    z@cldist <- cldist
+
+    z
+}
+
+###**********************************************************
+
+
+clusinfo <- function(cluster, cldist, simple=FALSE)
+### cluster: vector of cluster memberships
+### cldist: matrix with 1 or 2 columns
+{
+    size <- as.vector(table(cluster))
     
     clusinfo <-
         data.frame(size=size,
-                   av_dist = as.vector(tapply(cldist[,1],
-                                        cluster[[1]], sum))/size,
-                   max_dist = as.vector(tapply(cldist[,1],
-                                        cluster[[1]], max)),
-                   separation = as.vector(tapply(cldist[,2],
-                                        cluster[[1]], min)))
+                   av_dist = as.vector(tapply(cldist[,1], cluster, sum))/size)
 
-    xcent <- family@cent(x)
-    totaldist <- sum(family@dist(x, matrix(xcent,nrow=1)))
-    
-    z <- new("kcca", k=as(nrow(centers),"integer"),
-             centers=centers,
-             cluster=as.integer(cluster[[1]]),
-             second=as.integer(cluster[[2]]),
-             family=family, 
-             xrange=apply(x,2,range),
-             xcent=xcent,
-             totaldist=totaldist,
-             clusinfo=clusinfo,
-             clsim=clsim,
-             cldist=cldist, ...)
-    z
+    if(!simple){
+        clusinfo <- cbind(clusinfo,
+                          max_dist = as.vector(tapply(cldist[,1], cluster, max)),
+                          separation = as.vector(tapply(cldist[,2], cluster, min)))
+    }
+    clusinfo
 }
-       
+
+###**********************************************************
 
 clusterSim <- function(distmat, cluster)
 {
@@ -376,10 +433,10 @@ perturbClusters <- function(cluster, prob)
 
 ###**********************************************************
 
-setMethod("show", "kcca",
+setMethod("show", "kccasimple",
 function(object)
 {
-    cat("kcca object of family", sQuote(object@family@name),"\n\n")
+    cat(class(object), "object of family", sQuote(object@family@name),"\n\n")
     cat("call:", deparse(object@call,0.75*getOption("width")),
         sep="\n")
     cat("\ncluster sizes:\n")
@@ -387,10 +444,10 @@ function(object)
     cat("\n")
 })
         
-setMethod("summary", "kcca",
+setMethod("summary", "kccasimple",
 function(object)
 {
-    cat("kcca object of family", sQuote(object@family@name),"\n\n")
+    cat(class(object), "object of family", sQuote(object@family@name),"\n\n")
     cat("call:", deparse(object@call,0.75*getOption("width")),
         sep="\n")
     cat("\ncluster info:\n")
@@ -454,35 +511,29 @@ function(object, freq=TRUE, distance=FALSE, ...)
     
 ###**********************************************************        
 
-stepFlexclust <- function(..., K=NULL, nrep=3, verbose=TRUE,
-                          FUN=kcca, drop=TRUE)
+stepFlexclust <- function(x, k, nrep=3, verbose=TRUE,
+                          FUN=kcca, drop=TRUE, group=NULL,
+                          simple=FALSE, ...)
 {
     MYCALL <- match.call()
     
-    bestKcca <- function(...)
+    bestKcca <- function(x, k, ...)
     {
         distsum <- Inf
         for(m in 1:nrep){
             if(verbose) cat(" *")
-            x = FUN(...)
-            newdistsum <- info(x, "distsum")
+            y = FUN(x=x, k=k, group=group, simple=TRUE, ...)
+            newdistsum <- info(y, "distsum")
             if(newdistsum < distsum){
-              z <- x
+              z <- y
               distsum <- newdistsum
             }
         }
         z
     }
-
-    if(is.null(K)){
-        z = bestKcca(...)
-        z@call <- MYCALL
-        if(verbose) cat("\n")
-        return(z)
-    }
     
-    K = as.integer(K)
-    if(length(K)==0)
+    k = as.integer(k)
+    if(length(k)==0)
         return(list())
     
     z = list()
@@ -490,20 +541,38 @@ stepFlexclust <- function(..., K=NULL, nrep=3, verbose=TRUE,
     if("drop" %in% names(MYCALL))
         MYCALL1[["drop"]] <- NULL
     
-    for(n in 1:length(K)){
-        if(verbose) cat(K[n], ":")
-        z[[as.character(K[n])]] = bestKcca(..., k=K[n])
-        MYCALL1[["K"]] <- K[n]
-        
-        z[[as.character(K[n])]]@call <- MYCALL1
+    for(n in 1:length(k)){
+        if(verbose) cat(k[n], ":")
+        kn <- as.character(k[n])
+        z[[kn]] = bestKcca(x=x, k=k[n], ...)
+        MYCALL1[["k"]] <- k[n]
+        z[[kn]]@call <- MYCALL1
+
+        if(!simple){
+            z[[kn]] <- simple2kcca(x=x, from=z[[kn]], group=group)
+        }
+        else{
+        }
         if(verbose) cat("\n")
     }
-    if(drop && length(K)==1){
+    
+    if(drop && length(k)==1){
         return(z[[1]])
     }
     else{
-        return(new("stepFlexclust", models=z, K=as(K, "integer"),
-                   nrep=as(nrep, "integer"), call=MYCALL))
+        z <- new("stepFlexclust", models=z, k=as(k, "integer"),
+                 nrep=as(nrep, "integer"), call=MYCALL)
+        if(simple){
+            z@xcent <- z@models[[1]]@family@cent(x)
+            z@totaldist <-
+                sum(z@models[[1]]@family@dist(x,
+                                              matrix(z@xcent,nrow=1)))
+        }
+        else{
+            z@xcent <- z@models[[1]]@xcent
+            z@totaldist <- z@models[[1]]@totaldist
+        }
+        return(z)
     }
 }
 
@@ -521,17 +590,16 @@ function(object)
                     converged = sapply(object@models, function(x) x@converged),
                     distsum = sapply(object@models,
                                      function(x) info(x, "distsum")))
+
     z1 <- data.frame(iter = NA,
                      converged = NA,
-                     distsum = object@models[[1]]@totaldist)
+                     distsum = object@totaldist)
+    
     z <- rbind(z1, z)
     
     print(z, na.string="")
 })
     
-setGeneric("getModel",
-function(object, ...) standardGeneric("getModel"))
-
 setMethod("getModel", "stepFlexclust",
 function(object, which=1)
 {

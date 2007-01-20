@@ -1,10 +1,12 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: plot-methods.Rd 1839 2005-09-29 19:23:15Z leisch $
+%  $Id: plot-methods.Rd 3017 2006-10-02 12:45:13Z leisch $
 %
 \name{plot-methods}
 \docType{methods}
 \alias{plot,kcca,missing-method}
+\alias{plot,kccasimple,missing-method}
+\alias{flxColors}
 \title{Methods for Function plot in Package `flexclust'}
 \description{
   Plot the neighbourhood graph of a cluster solution together with
@@ -18,6 +20,8 @@
          lwd=1, maxlwd=8*lwd, cex=1.5, numcol="black", nodes=16,
          add=FALSE, xlab="", ylab="", xlim = NULL,
          ylim = NULL, pch=NULL, col=NULL, \dots)
+
+  flxColors(n=1:8, saturation=c("full","light"))
 }
 \arguments{
   \item{x}{an object of class \code{"kcca"}}
@@ -41,7 +45,12 @@
   \item{xlab, ylab}{Axis labels.}
   \item{xlim, ylim}{Axis range.}
   \item{pch, col, \dots}{Plotting symbols and colors for data points.}
+  \item{n, saturation}{Index numbers and saturation of colors.}
 }
+\details{
+  This works only for \code{"kcca"} objects, no method is available for
+  "kccasimple" objects.
+  }
 \author{Friedrich Leisch}
 \keyword{methods}
 \keyword{hplot}

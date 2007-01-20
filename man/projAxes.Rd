@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: projAxes.Rd 1907 2005-11-15 12:08:59Z leisch $
+%  $Id: projAxes.Rd 2941 2006-09-08 15:10:01Z leisch $
 %
 \name{projAxes}
 \alias{projAxes}
@@ -21,7 +21,8 @@ projAxes(object, which=1:2, center=NULL,
                      col="red", radius=NULL,
                      minradius=0.1, textargs=list(col=col),
                      col.names=getColnames(object),
-                     which.names="", ...)
+                     which.names="", group = NULL, groupFun = colMeans,
+                     ...)
 
 placeLabels(object)
 \S4method{placeLabels}{projAxes}(object)
@@ -41,6 +42,10 @@ placeLabels(object)
   \item{col.names}{Variable names of the original data.}
   \item{which.names}{A regular expression which variable names to
     include in the plot.}
+  \item{group}{An optional grouping variable for the original
+    coordinates.}
+  \item{groupFun}{Function used to aggregate the projected coordinates
+    if \code{group} is specified.}
   \item{\dots}{Passed to  \code{\link[graphics]{arrows}}.}
 }
 \value{

@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: stepFlexclust.Rd 1779 2005-08-18 09:23:15Z leisch $
+%  $Id: stepFlexclust.Rd 2489 2006-03-03 15:06:07Z leisch $
 %
 \name{stepFlexclust}
 \alias{stepFlexclust}
@@ -16,7 +16,8 @@
   each.
 }
 \usage{
-stepFlexclust(..., K=NULL, nrep=3, verbose=TRUE, FUN = kcca, drop=TRUE)
+stepFlexclust(x, k, nrep=3, verbose=TRUE, FUN = kcca, drop=TRUE,
+              group=NULL, simple=FALSE, ...)
 
 \S4method{plot}{stepFlexclust,missing}(x, y,
   type=c("barplot", "lines"), totaldist=NULL,
@@ -27,7 +28,7 @@ stepFlexclust(..., K=NULL, nrep=3, verbose=TRUE, FUN = kcca, drop=TRUE)
 \arguments{
   \item{\dots}{passed to \code{\link{kcca}} or \code{\link{cclust}}.}
 
-  \item{K}{A vector of integers passed in turn to the \code{k} argument
+  \item{k}{A vector of integers passed in turn to the \code{k} argument
     of \code{\link{kcca}}}
   
   \item{nrep}{For each value of \code{k} run \code{\link{kcca}}
@@ -40,7 +41,13 @@ stepFlexclust(..., K=NULL, nrep=3, verbose=TRUE, FUN = kcca, drop=TRUE)
     computations.}
   
   \item{drop}{If \code{TRUE} and \code{K} is of length 1, then a single
-    cluster object is returned instead of a \code{"stepFlexclust"} object.}
+    cluster object is returned instead of a \code{"stepFlexclust"}
+    object.}
+  
+  \item{group}{An optional grouping vector for the data, see
+    \code{\link{kcca}} for details.}
+
+  \item{simple}{Return an object of class \code{kccasimple}?}
 
   \item{x}{Object of class \code{"stepFlexclust"}.}
 
@@ -63,7 +70,7 @@ stepFlexclust(..., K=NULL, nrep=3, verbose=TRUE, FUN = kcca, drop=TRUE)
 data("Nclus")
 plot(Nclus)
 
-cl1 = stepFlexclust(Nclus, K=2:7, FUN=cclust)
+cl1 = stepFlexclust(Nclus, k=2:7, FUN=cclust)
 cl1
 
 plot(cl1)

@@ -1,10 +1,11 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: image-methods.Rd 1839 2005-09-29 19:23:15Z leisch $
+%  $Id: image-methods.Rd 2479 2006-03-01 15:04:04Z leisch $
 %
 \name{image-methods}
 \docType{methods}
 \alias{image,kcca-method}
+\alias{image,kccasimple-method}
 \title{Methods for Function image in Package `flexclust'}
 \description{
   Image plot of cluster segments overlaid by neighbourhood graph.
@@ -30,6 +31,10 @@
   \item{graph}{Logical, add a neighborhood graph to the plot?}
   \item{xlab, ylab, \ldots}{Graphical parameters.}
 }
+\details{
+  This works only for \code{"kcca"} objects, no method is available for
+  "kccasimple" objects.
+  }
 \seealso{
   \code{\link{kcca}}
 }

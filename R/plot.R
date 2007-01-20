@@ -1,7 +1,9 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: plot.R 1922 2005-11-23 14:54:27Z leisch $
+#  $Id: plot.R 3219 2007-01-20 12:45:11Z leisch $
 #
+
+setGeneric("plot")
 
 setMethod("plot", signature(x="kcca",y="missing"),
 function(x, y, which=1:2, project=NULL,
@@ -45,6 +47,7 @@ function(x, y, which=1:2, project=NULL,
     if(is.null(col)) col <- rep(FullColors, length=x@k)
 
     if(!is.null(data)){
+        data <- x@family@preproc(data)
         distmat <- x@family@dist(data, x@centers)
         cluster <- x@family@cluster(distmat=distmat)
         cldist <- distmat[cbind(1:nrow(data), cluster)]
@@ -76,7 +79,7 @@ function(x, y, which=1:2, project=NULL,
     }
     else{
         if(points)
-            points(data, pch=pch, ...)
+            points(data, pch=pch, col=col[cluster], ...)
     }
 
     if(hull && !is.null(data))
@@ -108,14 +111,22 @@ function(x, y, which=1:2, project=NULL,
     invisible()
 })
 
-clusterEllipses <- function(data, cluster, dist, col)
+clusterEllipses <- function(data, cluster, dist, col,
+                            level=c(0.5, 0.95))
 {
+    level <- sort(rep(level, length=2))
     col <- rep(col, length=max(cluster))
     for(k in 1:max(cluster)){
         ok <- cluster==k
         if(length(ok)>3){
-            lines(ellipse::ellipse(cov(data[ok,]), centre=colMeans(data[ok,])),
-                  col=col[k])
+            lines(ellipse::ellipse(cov(data[ok,]),
+                                   centre=colMeans(data[ok,]),
+                                   level=level[1]),
+                  col=col[k], lwd=2*par("lwd"))
+            lines(ellipse::ellipse(cov(data[ok,]),
+                                   centre=colMeans(data[ok,]),
+                                   level=level[2]),
+                  col=col[k], lty=2)
         }
     }
 }
@@ -123,11 +134,14 @@ clusterEllipses <- function(data, cluster, dist, col)
 
 ###**********************************************************
 
+setGeneric("image")
+
 setMethod("image", signature(x="kcca"),
 function(x, which = 1:2, npoints = 100,
          xlab = "", ylab = "", fastcol = TRUE, col=NULL,
          clwd=0, graph=TRUE, ...) 
 {
+  browser()
     if(length(which)!=2)
         stop(sQuote(which), "must be a vector of length 2")
     
@@ -203,99 +217,12 @@ neighbourColors <- function(object, col=NULL)
 
 ###**********************************************************
 
-setMethod("barplot", "kcca",
-function (height, bycluster = TRUE, oneplot = TRUE,
-          data = NULL, FUN=colMeans, 
-          main = deparse(substitute(height)), 
-          which = 1:height@k,
-          names.arg = NULL, oma=par("oma"),
-          col=NULL, mcol="darkred", srt=45, ...)
-{
-    object <- height
-    opar <- par(c("mfrow", "oma", "mgp", "xpd", "oma"))
-    on.exit(par(opar))
-    n <- length(which)
-
-    if(is.null(col))
-        col <- LightColors
-    
-    col <- rep(col, length=object@k)
-
-    if(is.null(data)){
-        cluster <- object@cluster
-        centers <- object@centers
-        size <- info(object, "size")
-        datacent <- object@xcent
-    }
-    else{
-        cluster <- predict(object, data)
-        centers <- matrix(NA, nrow=object@k, ncol=ncol(data))
-        colnames(centers) <- colnames(data)
-        for(k in 1:object@k){
-            ok <- cluster==k
-            if(any(ok))
-                centers[k,] <- FUN(data[ok,])
-        }
-        size <- tabulate(cluster, nbins=object@k)
-        datacent <- FUN(data)
-    }
-    
-    ylim <- range(centers)
-    
-    if (is.null(names.arg))
-        names.arg <- colnames(centers)
-    if (bycluster) {
-        par(xpd=NA)
-        if (oneplot) {
-            if (n <= 3) {
-                par(mfrow = c(n, 1), oma=oma)
-            }
-            else {
-                par(mfrow = c(ceiling(n/2), 2), oma=oma)
-            }
-        }
-        for (k in which) {
-            mid <- barplot(centers[k, ], col = col[k], 
-                           names.arg = "", ylim = ylim, ...)
-            if (!is.null(names.arg)){
-                text(mid + 0.005 * min(srt, 90-srt) * (mid[2] - mid[1]),
-                     ylim[1] - par("cxy")[2], adj = ifelse(srt==0, 0.5, 1),
-                     srt = srt, paste(names.arg, "  "))
-            }
-            if (!is.null(mcol) && !is.null(datacent)) {
-                points(mid, datacent, pch = 16, col = mcol)
-                points(mid, datacent, type = "h", col = mcol)
-            }
-            title(main = paste("Cluster ", k, ": ", size[k], 
-                " points (", round(100 * size[k]/sum(size), 
-                  2), "%)", sep = ""))
-        }
-    }
-    else {
-        a <- ceiling(sqrt(ncol(centers)))
-        if (oneplot) {
-            par(mfrow = c(a, ceiling(ncol(centers)/a)))
-        }
-        for (k in 1:ncol(centers)) {
-            barplot(centers[which, k], col = col[which], 
-                    ylim = ylim, xlab="", ...)
-            title(main = names.arg[k])
-            if (!is.null(mcol) && !is.null(datacent)) {
-                abline(h = datacent[k], col = mcol)
-            }
-        }
-    }
-})
-
-
-###**********************************************************
-
 setMethod("plot", signature(x="stepFlexclust", y="missing"),
 function(x, y, type=c("barplot", "lines"), totaldist=NULL,
           xlab=NULL, ylab=NULL, ...)
 {
     type <- match.arg(type)
-    X <- x@K
+    X <- x@k
     Y <- sapply(x@models, function(z) info(z, "distsum"))
 
     if(is.null(totaldist))
@@ -303,7 +230,7 @@ function(x, y, type=c("barplot", "lines"), totaldist=NULL,
 
     if(totaldist){
         X <- c(1, X)
-        Y <- c(x@models[[1]]@totaldist, Y)
+        Y <- c(x@totaldist, Y)
     }
         
     if(is.null(xlab))
@@ -325,6 +252,8 @@ function(x, y, type=c("barplot", "lines"), totaldist=NULL,
 })
 
 ###**********************************************************
+
+setGeneric("pairs")
 
 setMethod("pairs", signature(x="kcca"),
 function(x, which=NULL, project=NULL, oma=NULL, ...)
@@ -370,3 +299,32 @@ function(x, which=NULL, project=NULL, oma=NULL, ...)
     }
     
 })
+
+###**********************************************************
+
+setMethod("plot", signature(x="kccasimple",y="missing"),
+function(x, y)
+{
+    warning("No plot method for kccasimple objects available\n")
+})
+
+setMethod("image", signature(x="kccasimple"),
+function(x)
+{
+    warning("No image method for kccasimple objects available\n")
+})
+
+## setMethod("barplot", signature(height="kccasimple"),
+## function(height)
+## {
+##     warning("No barplot method for kccasimple objects available\n")
+## })
+
+setMethod("pairs", signature(x="kccasimple"),
+function(x)
+{
+    warning("No pairs method for kccasimple objects available\n")
+})
+
+###**********************************************************
+

@@ -1,3 +1,23 @@
+Changes in flexclust version 0.9-0
+
+  o kcca() and cclust() can now optionally return objects of class
+    "kccasimple" which contains only a subset of the slots of regular
+    "kcca" objects (basically only centers and cluster
+    membership). Computation is faster, but no plotting methods are
+    available.
+
+  o Cluster membership vectors now preserve the rownames of the
+    original data.
+
+  o Fixed a bug in Jaccard distance computation and random break of
+    ties for cluster assignment, both reported by Christian Buchta.
+
+  o New barchart() method for visualization of centroids.
+
+  o Utility function flxColors() can be used to access the flexclust color 
+    palette. 
+
+
 Changes in flexclust version 0.8-1
 
   o Fixed a bug in the definition of class "flexclustControl".

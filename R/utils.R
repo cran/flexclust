@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: utils.R 1769 2005-08-08 16:02:38Z leisch $
+#  $Id: utils.R 3017 2006-10-02 12:45:13Z leisch $
 #
 
 list2object = function(from, to){
@@ -32,3 +32,13 @@ LightColors <- c("#F9C3CD", "#D0D4A8", "#9DDDD5", "#D1CCF5",
 FullColors <- c("#FF648A", "#96A100", "#00BCA3", "#9885FF",
                 "#DC8400", "#00B430", "#00AEEF", "#F45BE1")
 
+
+flxColors <- function(n=1:8, saturation=c("full","light"))
+{
+    saturation <- match.arg(saturation)
+    
+    if(saturation=="full")
+        FullColors[n]
+    else
+        LightColors[n]
+}

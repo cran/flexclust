@@ -34,7 +34,7 @@ stopifnot(all(tab3 %in% 0:1))
 
 ###**********************************************************
 
-cl4 <- stepFlexclust(as.matrix(iris[,-5]), K=10, group = iris[, 5])
+cl4 <- stepFlexclust(as.matrix(iris[,-5]), k=10, group = iris[, 5])
 tab4 <- table(predict(cl4),iris$Species)
 tab4
 stopifnot(all(tab4 %in% c(0, 50)))

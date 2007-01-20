@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: distances.R 1860 2005-10-18 15:35:43Z leisch $
+#  $Id: distances.R 2528 2006-03-23 14:13:46Z leisch $
 #
 
 distEuclidean <- function(x, centers)
@@ -50,7 +50,9 @@ distJaccard <- function(x, centers)
             matrix(rowSums(centers), nrow=nrow(x), ncol=nrow(centers),
                    byrow=TRUE) - xc
 
-    1 - xc/nenner
+    z <- 1 - xc/nenner
+    z[nenner<sqrt(.Machine$double.eps)] <- 0
+    z
 }
 
 distCanberra <- function(x, centers)

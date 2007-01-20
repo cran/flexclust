@@ -1,11 +1,8 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: info.Rd 1849 2005-10-10 06:15:57Z leisch $
+%  $Id: info.Rd 3122 2006-11-05 15:10:25Z leisch $
 %
 \name{info}
-\alias{info}
-\alias{infoCheck}
-\alias{info,ANY,missing-method}
 \alias{info,flexclust,character-method}
 \title{Get Information on Fitted Flexclust Objects}
 \description{
@@ -13,13 +10,7 @@
   cluster sizes or sum of within-cluster distances.}
 }
 \usage{
-info(object, which, ...)
-
-\S4method{info}{ANY,missing}(object, which, ...)
-
 \S4method{info}{flexclust,character}(object, which, drop=TRUE, ...)
-
-infoCheck(object, which, ...)
 }
 \arguments{
   \item{object}{fitted object.}
@@ -39,7 +30,8 @@ infoCheck(object, which, ...)
 
   Function \code{infoCheck} returns a logical value that is \code{TRUE}
   if the requested information can be computed from the \code{object}.
-} 
+}
+\seealso{\code{\link[modeltools]{info}}}
 \author{Friedrich Leisch}
 \examples{
 data("Nclus")

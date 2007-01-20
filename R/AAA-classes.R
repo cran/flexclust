@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: classes.R 1779 2005-08-18 09:23:15Z leisch $
+#  $Id: AAA-classes.R 3017 2006-10-02 12:45:13Z leisch $
 #
 
 setClass("flexclustControl",
@@ -80,7 +80,7 @@ setClass("kccaFamily",
                         groupFun="function"),
          prototype(weighted=FALSE,
                    preproc=function(x) x))
-                        
+
 
 
 ###**********************************************************
@@ -91,28 +91,36 @@ setClass("flexclust",
                         iter="integer",
                         converged="logical",
                         clusinfo="data.frame",
-                        xrange="ANY",
                         call="call",
-                        control="flexclustControl"))
+                        control="flexclustControl",
+                        data="ModelEnv"))
 
-setClass("kcca",
+setClass("kccasimple",
          contains="flexclust",
          representation(centers="ANY",
-                        second="integer",
                         family="kccaFamily",
+                        cldist="matrix"))       
+
+setClass("kcca",
+         contains="kccasimple",
+         representation(second="integer",
+                        xrange="ANY",           # range of all data
                         xcent="ANY",            # centroid of all data
                         totaldist="numeric",    # total dist data<->xcent
-                        clsim="matrix",
-                        cldist="matrix"))
+                        clsim="matrix"))
+
                         
                         
 ###**********************************************************
 
 setClass("stepFlexclust",
          representation(models="list",
-                       K="integer",
-                       nrep="integer",
-                       call="call"))
+                        k="integer",
+                        nrep="integer",
+                        call="call",
+                        xcent="ANY",            # centroid of all data
+                        totaldist="numeric"     # total dist data<->xcent
+                        ))
 
 
          

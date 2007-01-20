@@ -2,6 +2,9 @@ useDynLib(flexclust)
 
 import(graphics)
 import(grid)
+import(lattice)
+import(methods)
+import(modeltools)
 import(stats)
 
 exportPattern("^dist.*", "^cent.*")
@@ -9,7 +12,7 @@ exportPattern("^dist.*", "^cent.*")
 export(
        as.kcca,
        cclust,
-       infoCheck,
+       flxColors,
        kcca,
        kccaFamily,
        projAxes,
@@ -23,12 +26,14 @@ exportClasses(
               flexclust,
               flexclustControl,
               kcca,
+              kccasimple,
               kccaFamily,
               projAxes,
               stepFlexclust
               ) 
 
 exportMethods(
+              barchart,
               barplot,
               cluster,
               coerce,

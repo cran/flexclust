@@ -1,10 +1,7 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: predict.R 1849 2005-10-10 06:15:57Z leisch $
+#  $Id: predict.R 3122 2006-11-05 15:10:25Z leisch $
 #
-
-setGeneric("cluster",
-           function(object, ...) standardGeneric("cluster"))
 
 setMethod("cluster", signature(object="flexclust"),
 function(object)
@@ -13,15 +10,18 @@ function(object)
 })
 
 
-setMethod("predict", signature(object="kcca"),
+setMethod("predict", signature(object="kccasimple"),
 function(object, newdata=NULL, ...)
 {
-    if(is.null(newdata))
-        return(object@cluster)
+    if(is.null(newdata)){
+        z <- object@cluster
+    }
     else{
         newdata <- as(newdata, "matrix")
         newdata <- object@family@preproc(newdata)
-        return(object@family@cluster(newdata, object@centers))
+        z <- object@family@cluster(newdata, object@centers)
+        names(z) <- rownames(newdata)
     }
+    z
 })
 

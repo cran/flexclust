@@ -1,11 +1,10 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: predict-methods.Rd 1779 2005-08-18 09:23:15Z leisch $
+%  $Id: predict-methods.Rd 3122 2006-11-05 15:10:25Z leisch $
 %
 \name{predict-methods}
 \docType{methods}
-\alias{predict,kcca-method}
-\alias{cluster}
+\alias{predict,kccasimple-method}
 \alias{cluster,flexclust-method}
 \title{Predict Cluster Membership}
 \description{
@@ -13,7 +12,7 @@
   new data.
 }
 \usage{
-\S4method{predict}{kcca}(object, newdata, \dots)
+\S4method{predict}{kccasimple}(object, newdata, \dots)
 \S4method{cluster}{flexclust}(object)
 }
 \arguments{
@@ -34,4 +33,3 @@
 }
 \author{Friedrich Leisch}
 \keyword{methods}
-

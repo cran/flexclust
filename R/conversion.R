@@ -1,7 +1,10 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: conversion.R 1849 2005-10-10 06:15:57Z leisch $
+#  $Id: conversion.R 2476 2006-02-24 14:25:27Z leisch $
 #
+
+setOldClass("kmeans")
+setOldClass("partition")
 
 as.kcca <- function(object, ...) UseMethod("as.kcca")
 
@@ -46,4 +49,5 @@ as.kcca.partition <- function(object, data=NULL, ...)
     z@call <- call
     z
 }
+
 

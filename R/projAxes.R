@@ -4,7 +4,7 @@ projAxes <- function(object, which=1:2, center=NULL,
                      col="red", radius=NULL,
                      minradius=0.1, textargs=list(col=col),
                      col.names=getColnames(object),
-                     which.names="", ...)
+                     which.names="", group=NULL, groupFun=colMeans, ...)
 {
     pu = par("usr")
     if(is.null(center)){
@@ -20,6 +20,17 @@ projAxes <- function(object, which=1:2, center=NULL,
     z <- z[-1,]
     z[,1] <- z[,1]-z0[1]
     z[,2] <- z[,2]-z0[2]
+
+    if(!is.null(group)){
+        group <- rep(group, length=nrow(z))
+        gu <- unique(group)
+        z1 <- matrix(0, nrow=length(gu), ncol=2)
+        for(g in 1:length(gu)){
+            z1[g,] <- groupFun(z[group==gu[g],,drop=FALSE])
+        }
+        z <- z1
+        col.names <- as.character(gu)
+    }
     
     if(is.null(radius)){
         radius <- c(abs(center[1]-pu[1:2]), abs(center[2]-pu[3:4]))

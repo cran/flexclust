@@ -1,11 +1,10 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: cclust.R 1958 2006-01-07 15:57:36Z leisch $
+#  $Id: cclust.R 2489 2006-03-03 15:06:07Z leisch $
 #
 
-
 cclust <- function (x, k, dist = "euclidean", method = "kmeans",
-                       weights=NULL, control=NULL)
+                       weights=NULL, control=NULL, group=NULL, simple=FALSE)
 {
     MYCALL <- match.call()
     control <- as(control, "cclustControl")
@@ -117,5 +116,6 @@ cclust <- function (x, k, dist = "euclidean", method = "kmeans",
                   iter=z$iter,
                   converged=(z$iter<control@iter.max),
                   call=MYCALL,
-                  control=control)
+                  control=control,
+                  simple=simple)
 }
