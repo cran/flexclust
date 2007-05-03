@@ -1,3 +1,8 @@
+Changes in flexclust version 0.9-1
+
+  o new argument newdata for cluster()
+
+
 Changes in flexclust version 0.9-0
 
   o kcca() and cclust() can now optionally return objects of class

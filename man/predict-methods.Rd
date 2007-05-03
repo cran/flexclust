@@ -1,11 +1,12 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: predict-methods.Rd 3122 2006-11-05 15:10:25Z leisch $
+%  $Id: predict-methods.Rd 3357 2007-03-07 06:58:42Z leisch $
 %
 \name{predict-methods}
 \docType{methods}
 \alias{predict,kccasimple-method}
-\alias{cluster,flexclust-method}
+\alias{cluster,flexclust,missing-method}
+\alias{cluster,flexclust,ANY-method}
 \title{Predict Cluster Membership}
 \description{
   Return either the cluster membership of training data or predict for
@@ -13,7 +14,8 @@
 }
 \usage{
 \S4method{predict}{kccasimple}(object, newdata, \dots)
-\S4method{cluster}{flexclust}(object)
+\S4method{cluster}{flexclust,missing}(object)
+\S4method{cluster}{flexclust,ANY}(object, newdata, \dots)
 }
 \arguments{
   \item{object}{Object of class inheriting from \code{"flexclust"}.}
@@ -23,13 +25,14 @@
 }
 \details{
   \code{cluster} can be used on any object of class \code{"flexclust"}
-  and returns the cluster meberships of the training data.
+  and returns the cluster memberships of the training data.
 
   \code{predict} can be used only on objects of class \code{"kcca"}
   (which inherit from \code{"flexclust"}). If no \code{newdata} argument
   is specified, the function is identical to \code{cluster}, if
   \code{newdata} is specified, then cluster memberships for the new data
-  are predicted.
+  are predicted. \code{cluster(object, newdata, ...)} is an alias for
+  \code{predict(object, newdata, ...)}.
 }
 \author{Friedrich Leisch}
 \keyword{methods}

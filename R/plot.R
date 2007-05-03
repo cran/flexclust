@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: plot.R 3219 2007-01-20 12:45:11Z leisch $
+#  $Id: plot.R 3330 2007-03-01 13:28:38Z gruen $
 #
 
 setGeneric("plot")
@@ -141,7 +141,6 @@ function(x, which = 1:2, npoints = 100,
          xlab = "", ylab = "", fastcol = TRUE, col=NULL,
          clwd=0, graph=TRUE, ...) 
 {
-  browser()
     if(length(which)!=2)
         stop(sQuote(which), "must be a vector of length 2")
     

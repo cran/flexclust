@@ -1,12 +1,18 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: predict.R 3122 2006-11-05 15:10:25Z leisch $
+#  $Id: predict.R 3357 2007-03-07 06:58:42Z leisch $
 #
 
-setMethod("cluster", signature(object="flexclust"),
-function(object)
+setMethod("cluster", signature(object="flexclust", newdata="missing"),
+function(object, newdata)
 {
     object@cluster
+})
+
+setMethod("cluster", signature(object="flexclust", newdata="ANY"),
+function(object, newdata, ...)
+{
+    predict(object, newdata, ...)
 })
 
 
