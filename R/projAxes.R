@@ -15,7 +15,7 @@ projAxes <- function(object, which=1:2, center=NULL,
 
     D <- rbind(0, diag(length(col.names)))
     colnames(D) <- col.names
-    z <- predict(object, D)[,which]
+    z <- Predict(object, D)[,which]
     z0 <- z[1,]
     z <- z[-1,]
     z[,1] <- z[,1]-z0[1]
@@ -24,9 +24,12 @@ projAxes <- function(object, which=1:2, center=NULL,
     if(!is.null(group)){
         group <- rep(group, length=nrow(z))
         gu <- unique(group)
+        gu <- gu[!is.na(gu)]
         z1 <- matrix(0, nrow=length(gu), ncol=2)
         for(g in 1:length(gu)){
-            z1[g,] <- groupFun(z[group==gu[g],,drop=FALSE])
+            ok <- group==gu[g]
+            ok[is.na(ok)] <- FALSE
+            z1[g,] <- groupFun(z[ok,,drop=FALSE])
         }
         z <- z1
         col.names <- as.character(gu)
@@ -101,16 +104,15 @@ function(object)
         text(x=object@text$x[n], y=object@text$y[n],
              labels=object@text$labels[n], pos=object@text$pos[n],
              col="blue", offset=0)
-    }
+2    }
     object
 })
         
 
-
-    
-
 getColnames <- function(object) UseMethod("getColnames")
 
 getColnames.prcomp <- function(object) rownames(object$rotation)
+
+getColnames.lda <- function(object) colnames(object$means)
 
 

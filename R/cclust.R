@@ -1,10 +1,11 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: cclust.R 2489 2006-03-03 15:06:07Z leisch $
+#  $Id: cclust.R 3919 2008-03-18 12:35:45Z leisch $
 #
 
 cclust <- function (x, k, dist = "euclidean", method = "kmeans",
-                       weights=NULL, control=NULL, group=NULL, simple=FALSE)
+                    weights=NULL, control=NULL, group=NULL, simple=FALSE,
+                    save.data=FALSE)
 {
     MYCALL <- match.call()
     control <- as(control, "cclustControl")
@@ -112,10 +113,15 @@ cclust <- function (x, k, dist = "euclidean", method = "kmeans",
     centers <- matrix(z$centers, nrow=k)
     colnames(centers) <- colnames(x)
     
-    newKccaObject(x=xold, family=family, centers=centers,
-                  iter=z$iter,
-                  converged=(z$iter<control@iter.max),
-                  call=MYCALL,
-                  control=control,
-                  simple=simple)
+    z <- newKccaObject(x=xold, family=family, centers=centers,
+                       iter=z$iter,
+                       converged=(z$iter<control@iter.max),
+                       call=MYCALL,
+                       control=control,
+                       simple=simple)
+
+    if(save.data)
+        z@data <- ModelEnvMatrix(designMatrix=xold)
+    
+    z
 }

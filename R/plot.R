@@ -1,28 +1,36 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: plot.R 3330 2007-03-01 13:28:38Z gruen $
+#  $Id: plot.R 3775 2007-10-26 12:06:46Z leisch $
 #
 
 setGeneric("plot")
 
 setMethod("plot", signature(x="kcca",y="missing"),
 function(x, y, which=1:2, project=NULL,
-         data=NULL, points=!is.null(data),
-         hull=!is.null(data), hull.args=NULL, 
+         data=NULL, points=TRUE,
+         hull=TRUE, hull.args=NULL, 
          number = TRUE, simlines=TRUE,
-         lwd=1, maxlwd=8*lwd, cex=1.5, numcol="black", nodes=16,
+         lwd=1, maxlwd=8*lwd, cex=1.5, numcol=FALSE, nodes=16,
          add=FALSE, xlab="", ylab="", xlim = NULL,
          ylim = NULL, pch=NULL, col=NULL, ...)
 {
     if(length(which)!=2)
         stop(sQuote("which"), " must have length 2")
 
+    ## try to get data from cluuster object
+    if(is.null(data)) data <- getData(x)
+
+    ## if still NULL we cannot draw points and hulls even if user wants to
+    if(is.null(data)){
+        points <- hull <- FALSE
+    }
+
     if(is.null(project))
         project <- function(x) x
     else{
         if(!is(project, "function")){
             probject <- project
-            project <- function(x) predict(probject, x)
+            project <- function(x) Predict(probject, x)
         }
     }    
     centers <- project(x@centers)[,which]
@@ -33,18 +41,26 @@ function(x, y, which=1:2, project=NULL,
         hull <- !is.null(data)
     }
     else if(is(hull, "character")){
-        HULLFUN <- get(hull, mode="function")
+        hull <- match.arg(hull, c("convex", "ellipse"))
+        HULLFUN <- switch(hull,
+                          convex=clusterHulls,
+                          ellipse=clusterEllipses)
         hull <- !is.null(data)
     }        
     else if(hull){
-        ## change to clusterHulls when published
-        if(require("ellipse"))
-            HULLFUN <- clusterEllipses
-        else
-            hull <- FALSE
+        HULLFUN <- clusterHulls
     }
 
-    if(is.null(col)) col <- rep(FullColors, length=x@k)
+    if(is.null(col)) col <- rep(flxColors(color="full"), length=x@k)
+
+    if(is.logical(numcol)){
+        if(numcol)
+            numcol <- col
+        else
+            numcol <- "black"
+    }
+    else
+        numcol <- rep(numcol, length=x@k)
 
     if(!is.null(data)){
         data <- x@family@preproc(data)
@@ -130,7 +146,34 @@ clusterEllipses <- function(data, cluster, dist, col,
         }
     }
 }
-    
+
+clusterHulls <- function(data, cluster, dist, col, density=0)
+{
+    K <- max(cluster)
+    col <- rep(col, length=K)
+    density <- rep(density, length=K)
+    ang <- (1:K)*180/K
+
+    for(k in 1:max(cluster)){
+        ok <- cluster==k
+        if(length(ok)>3){
+            ok1 <- ok & (dist < median(dist[ok]))
+            if(length(ok1)>3){
+                hpts <- chull(data[ok1,])
+                polygon(data[ok1,][c(hpts, hpts[1]),],
+                        border=col[k], lwd=2*par("lwd"),
+                        density=density[k], col=col[k], angle=ang[k])
+            }
+            ok1 <- ok & (dist < 2.5*median(dist[ok]))
+            if(length(ok1)>3){
+                hpts <- chull(data[ok1,])
+                polygon(data[ok1,][c(hpts, hpts[1]),], border=col[k], lty=2)
+            }
+        }
+    }
+}
+
+
 
 ###**********************************************************
 
@@ -267,7 +310,7 @@ function(x, which=NULL, project=NULL, oma=NULL, ...)
         NAMES <- colnames(x@centers)[which]
     }
     else{
-        pc <- predict(project, x@centers)
+        pc <- Predict(project, x@centers)
         NAMES <- colnames(pc)[which]
     }
 
@@ -327,3 +370,11 @@ function(x)
 
 ###**********************************************************
 
+### A wrapper for predict to allow special cases like lda
+Predict <- function(object, newdata)
+{
+    if(inherits(object, "lda"))
+        return(predict(object, newdata)$x)
+    else
+        return(predict(object, newdata))
+}

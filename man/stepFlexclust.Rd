@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: stepFlexclust.Rd 2489 2006-03-03 15:06:07Z leisch $
+%  $Id: stepFlexclust.Rd 3887 2008-02-18 10:19:40Z leisch $
 %
 \name{stepFlexclust}
 \alias{stepFlexclust}
@@ -17,7 +17,7 @@
 }
 \usage{
 stepFlexclust(x, k, nrep=3, verbose=TRUE, FUN = kcca, drop=TRUE,
-              group=NULL, simple=FALSE, ...)
+              group=NULL, simple=FALSE, save.data=FALSE, ...)
 
 \S4method{plot}{stepFlexclust,missing}(x, y,
   type=c("barplot", "lines"), totaldist=NULL,
@@ -48,6 +48,8 @@ stepFlexclust(x, k, nrep=3, verbose=TRUE, FUN = kcca, drop=TRUE,
     \code{\link{kcca}} for details.}
 
   \item{simple}{Return an object of class \code{kccasimple}?}
+
+  \item{save.data}{Save a copy of \code{x} in the return object?}
 
   \item{x}{Object of class \code{"stepFlexclust"}.}
 

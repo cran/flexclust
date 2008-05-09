@@ -1,11 +1,13 @@
 useDynLib(flexclust)
 
+import(methods)
 import(graphics)
 import(grid)
 import(lattice)
-import(methods)
 import(modeltools)
-import(stats)
+
+importFrom(stats, fitted, predict)
+importFrom(stats4, summary)
 
 exportPattern("^dist.*", "^cent.*")
 
@@ -17,6 +19,8 @@ export(
        kccaFamily,
        projAxes,
        qtclust,
+       randomTour,
+       randomTourMatrix,       
        stepFlexclust
        )
 
@@ -35,7 +39,7 @@ exportClasses(
 exportMethods(
               barchart,
               barplot,
-              cluster,
+              clusters,
               coerce,
               getModel,
               image,
@@ -45,6 +49,7 @@ exportMethods(
               placeLabels,
               plot,
               predict,
+              randomTour,
               show,
               summary
               )

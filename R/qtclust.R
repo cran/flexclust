@@ -1,10 +1,10 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: qtclust.R 1860 2005-10-18 15:35:43Z leisch $
+#  $Id: qtclust.R 3887 2008-02-18 10:19:40Z leisch $
 #
 
 qtclust <- function(x, radius, family=kccaFamily("kmeans"),
-                    control=NULL)
+                    control=NULL, simple=TRUE, save.data=FALSE)
 {
     MYCALL <- match.call()
     control <- as(control, "flexclustControl")
@@ -18,6 +18,8 @@ qtclust <- function(x, radius, family=kccaFamily("kmeans"),
 
     k <- 1
     iter <- 0
+    iter.width <- log10(nrow(x))+2
+    
     while(any( ok <- is.na(cluster) )){
         iter <- iter+1
 
@@ -83,13 +85,18 @@ qtclust <- function(x, radius, family=kccaFamily("kmeans"),
             }
         }
 
-        if(sum(dok)>control@min.size){
+        if(sum(dok)>=control@min.size){
             cluster[ok][dok] <- k
             k <- k+1
         }
         else{
-           cluster[ok][dok] <- 0
-       }
+            cluster[ok][dok] <- 0
+        }
+
+        if(control@verbose && (iter%%control@verbose==0))
+            printIter(iter, sum(is.na(cluster)), "-- points remaining",
+                      format="d", width=iter.width)
+
     }
 
     ok <- cluster>0
@@ -104,15 +111,34 @@ qtclust <- function(x, radius, family=kccaFamily("kmeans"),
     cluster <- order(table(cluster), decreasing=TRUE)[cluster]
     centers <- family@allcent(x[ok,,drop=FALSE], cluster[ok])
 
-    z <- newKccaObject(x, family, centers, converged=TRUE, call=MYCALL,
-                       iter=as.integer(iter))
+    if(simple)
+    {
+        z <- new("kccasimple",
+                 k=nrow(centers),
+                 cluster=cluster,
+                 iter=as(iter, "integer"),
+                 converged=TRUE,
+                 call=MYCALL,
+                 control=control,
+                 centers=centers,
+                 family=family,
+                 clusinfo=data.frame(size=as.integer(table(cluster[ok]))))
+    }
+    else{
+        z <- newKccaObject(x, family, centers, converged=TRUE, call=MYCALL,
+                           iter=as.integer(iter))
 
-    ## newKccaObject assigns to closest centroid, we do not want this
-    ## here -> reassign to original clusters.
-    ## <FIXME>
-    ##   the plot method will still use the KCCA assignment, not
-    ##   sure if this is bug or feature
-    ## </FIXME>
-    z@cluster <- cluster
-    z
+        ## newKccaObject assigns to closest centroid, we do not want this
+        ## here -> reassign to original clusters.
+        ## <FIXME>
+        ##   the plot method will still use the KCCA assignment, not
+        ##   sure if this is bug or feature
+        ## </FIXME>
+        z@cluster <- cluster
+    }
+
+    if(save.data)
+        z@data <- ModelEnvMatrix(designMatrix=x)
+    
+    return(z)
 }

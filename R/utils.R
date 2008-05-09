@@ -1,6 +1,6 @@
 #
-#  Copyright (C) 2005 Friedrich Leisch
-#  $Id: utils.R 3017 2006-10-02 12:45:13Z leisch $
+#  Copyright (C) 2005-2008 Friedrich Leisch
+#  $Id: utils.R 3919 2008-03-18 12:35:45Z leisch $
 #
 
 list2object = function(from, to){
@@ -14,31 +14,77 @@ list2object = function(from, to){
     do.call("new", c(from, Class=to))
 }
 
-printIter = function(iter, logLik, label="Log-likelihood")
-    cat(formatC(iter, width=4),
-        label, ":", formatC(logLik, width=12, format="f"),"\n")
+printIter <- function(iter, logLik, label="Log-likelihood",
+                      format="f", width=12)
+    cat(formatC(iter, width=6),
+        label, ":", formatC(logLik, width=width, format=format),"\n")
     
 
 
 
 ## library(colorspace)
-## dput(x[c(1,3,5,7,2,4,6,8)])
+## ORDER=c(1,3,5,7,2,4,6,8)
+## dput(x[ORDER])
 
-## x = hcl(seq(0, 360*7/8, length = 8), c=30)
-LightColors <- c("#F9C3CD", "#D0D4A8", "#9DDDD5", "#D1CCF5",
-                 "#EDCAB2", "#AFDCB8", "#ACD7ED", "#EFC4E8")
-    
+## x = hcl(seq(0, 360*7/8, length = 8), c=30, l=85)
+LightColors <- c("#FAC8D1", "#D4D8AE", "#A3E0D8", "#D5D0F6",
+                 "#EECEB7", "#B5DFBD", "#B2DAEF", "#F1C8EA")
+
+## dput(hcl(seq(0, 360*7/8, length = 8), c=65, l=85)[ORDER])
+MedColors <- c("#FFB8CC", "#D4DB76", "#2BEDDC", "#D5CBFF",
+               "#FFC88F", "#88E99F", "#72E2FF", "#FFB7FF")
+
+
 ## x = hcl(seq(0, 360*7/8, length = 8), c=100, l=65)
-FullColors <- c("#FF648A", "#96A100", "#00BCA3", "#9885FF",
-                "#DC8400", "#00B430", "#00AEEF", "#F45BE1")
+FullColors <- c("#FF6C91", "#9DA700", "#00C1A9", "#9F8CFF",
+                "#DE8C00", "#00BA38", "#00B4F0", "#F564E3")
+
+##  x=hcl(seq(0, 360*7/8, length = 8), c=40, l=65)
+DarkColors <- c("#CC8D99", "#9DA268", "#4EADA2", "#9E98CA",
+                "#BE9675", "#71AB7E", "#69A6C0", "#C28DBA")
 
 
-flxColors <- function(n=1:8, saturation=c("full","light"))
+
+
+flxColors <- function(n=1:8, color=c("full","medium", "light","dark"),
+                      grey=FALSE)
 {
-    saturation <- match.arg(saturation)
+    color <- match.arg(color)
     
-    if(saturation=="full")
-        FullColors[n]
-    else
-        LightColors[n]
+    if(color=="light"){
+        if(grey)
+            return("#D4D4D4")
+        else
+            return(LightColors[n])
+    }
+    if(color=="medium"){
+        if(grey)
+            return("#D4D4D4")
+        else
+            return(MedColors[n])
+    }
+    else{
+        if(grey) return("#9E9E9E")
+        
+        if(color=="full"){
+            return(FullColors[n])
+        }
+        else{
+            return(DarkColors[n])
+        }
+    }
+}
+
+###**********************************************************
+
+getData <- function(x, error=FALSE)
+{
+    if(empty(x@data)){
+        if(error) stop("Cluster object contains no data.")
+        z <- NULL
+    }
+    else{
+        z <- x@data@get("designMatrix")
+    }
+    z
 }

@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: kcca.R 3219 2007-01-20 12:45:11Z leisch $
+#  $Id: kcca.R 3937 2008-03-28 14:56:01Z leisch $
 #
 
 normWeights <- function(x) x/mean(x)
@@ -147,7 +147,7 @@ kccaFamily <- function(which=NULL, dist=NULL,
 ###**********************************************************
 
 kcca <- function(x, k, family=kccaFamily("kmeans"), weights=NULL,
-                 group=NULL, control=NULL, simple=FALSE)
+                 group=NULL, control=NULL, simple=FALSE, save.data=FALSE)
 {
     MYCALL <- match.call()
     control <- as(control, "flexclustControl")
@@ -253,12 +253,17 @@ kcca <- function(x, k, family=kccaFamily("kmeans"), weights=NULL,
 
     centers <- centers[complete.cases(centers),,drop=FALSE]
     
-    newKccaObject(x=x, family=family, centers=centers, group=group,
-                  iter=iter,
-                  converged=(iter<control@iter.max),
-                  call=MYCALL,
-                  control=control,
-                  simple=simple)
+    z <- newKccaObject(x=x, family=family, centers=centers, group=group,
+                       iter=iter,
+                       converged=(iter<control@iter.max),
+                       call=MYCALL,
+                       control=control,
+                       simple=simple)
+
+    if(save.data)
+        z@data <- ModelEnvMatrix(designMatrix=x)
+
+    z
 }
 
 ###**********************************************************
@@ -439,8 +444,19 @@ function(object)
     cat(class(object), "object of family", sQuote(object@family@name),"\n\n")
     cat("call:", deparse(object@call,0.75*getOption("width")),
         sep="\n")
-    cat("\ncluster sizes:\n")
-    print(table(cluster(object), exclude=NULL))
+    if(object@k<20){
+        cat("\ncluster sizes:\n")
+        print(table(clusters(object), exclude=NULL))
+    }
+    else{
+        cat("\n", sum(!is.na(object@cluster)), " points in ",
+            object@k, " clusters", sep="")
+        if(any(is.na(object@cluster))){
+            cat(",", sum(is.na(object@cluster)), "outliers")
+        }
+        cat("\nDistribution of cluster sizes:\n", sep="")
+        print(summary(as.integer(table(clusters(object)))))
+    }
     cat("\n")
 })
         
@@ -455,7 +471,8 @@ function(object)
     cat("\n")
     if(!object@converged) cat("no ")
     cat("convergence after", object@iter, "iterations\n")
-    cat("sum of within cluster distances:", info(object, "distsum"),"\n")
+    if("distsum" %in% info(object))
+        cat("sum of within cluster distances:", info(object, "distsum"),"\n")
 })
 
 ###**********************************************************
@@ -513,7 +530,7 @@ function(object, freq=TRUE, distance=FALSE, ...)
 
 stepFlexclust <- function(x, k, nrep=3, verbose=TRUE,
                           FUN=kcca, drop=TRUE, group=NULL,
-                          simple=FALSE, ...)
+                          simple=FALSE, save.data=FALSE, ...)
 {
     MYCALL <- match.call()
     
@@ -549,11 +566,20 @@ stepFlexclust <- function(x, k, nrep=3, verbose=TRUE,
         z[[kn]]@call <- MYCALL1
 
         if(!simple){
-            z[[kn]] <- simple2kcca(x=x, from=z[[kn]], group=group)
+            ## x is usually at the beginning of kcca() pre-porcessed,
+            ## here we have to do it manually!
+            z[[kn]] <- simple2kcca(x=z[[kn]]@family@preproc(x),
+                                   from=z[[kn]], group=group)
         }
         else{
         }
         if(verbose) cat("\n")
+    }
+
+    if(save.data){
+        me <- ModelEnvMatrix(designMatrix=x)
+        for(n in seq_along(z))
+            z[[n]]@data <- me
     }
     
     if(drop && length(k)==1){
@@ -563,6 +589,7 @@ stepFlexclust <- function(x, k, nrep=3, verbose=TRUE,
         z <- new("stepFlexclust", models=z, k=as(k, "integer"),
                  nrep=as(nrep, "integer"), call=MYCALL)
         if(simple){
+            x <- z@models[[1]]@family@preproc(x)
             z@xcent <- z@models[[1]]@family@cent(x)
             z@totaldist <-
                 sum(z@models[[1]]@family@dist(x,

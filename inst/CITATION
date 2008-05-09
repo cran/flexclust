@@ -1,4 +1,4 @@
-citHeader("To cite package flexclust in publications use:")
+## citHeader("To cite package flexclust in publications use:")
 
 ## desc <- packageDescription("flexclust")
 ## year <- sub(".*(20[[:digit:]]{2}).*", "\\1", desc$Date)
@@ -21,10 +21,70 @@ citEntry(entry="Article",
          title = "A Toolbox for K-Centroids Cluster Analysis",
          journal = "Computational Statistics and Data Analysis",
          year = 2006,
-         note = "Accepted for publication",
+         volume = 51,
+         number = 2,
+         pages = "526--544",
+
+         header = "The general idea behind the package is explained in:",
 
          textVersion = paste("Friedrich Leisch.",
          "A Toolbox for K-Centroids Cluster Analysis.",
-         "Computational Statistics and Data Analysis, 2006.",
-         "Accepted for publication."))
+         "Computational Statistics and Data Analysis, 51 (2), 526--544, 2006."))
 
+citEntry(entry="incollection",
+         author = "Friedrich Leisch",	
+         title = "Visualizing Cluster Analysis and Finite Mixture Models",
+         booktitle = "Handbook of Data Visualization",
+         publisher = "Springer Verlag",
+         year = 2008,
+         editor = "Chun-houh Chen and Wolfgang Haerdle and Antony Unwin",
+         series = "Springer Handbooks of Computational Statistics",
+         isbn = "978-3-540-33036-3",
+
+         header = "Visualization like convex hulls is explained in:",
+
+         textVersion = paste(
+         "Friedrich Leisch. Visualizing cluster analysis and finite mixture models.",
+         "In Chun houh Chen, Wolfgang Haerdle, and Antony Unwin, editors.",
+         "Handbook of Data Visualization,",
+         "Springer Handbooks of Computational Statistics. Springer Verlag, 2008.")
+)
+        
+citEntry(entry="Article",
+         author = "Friedrich Leisch and Bettina Gruen",
+         title	       = "Extending Standard Cluster Algorithms to Allow for Group Constraints",
+         booktitle    = "Compstat 2006---Proceedings in Computational
+                  Statistics",
+         pages	       = "885--892",
+         editor       = "Alfredo Rizzi and Maurizio Vichi",
+         publisher    = "Physica Verlag, Heidelberg, Germany",
+         isbn	       = "3-7908-1708-2",
+         year	       = 2006,
+
+         header = "Group constraints are explained in:",
+
+        textVersion = paste("Friedrich Leisch and Bettina Gruen.",
+        "Extending standard cluster algorithms to allow for group constraints.",
+        "In Alfredo Rizzi and Maurizio Vichi, editors,",
+        "Compstat 2006-Proceedings in Computational Statistics, pages 885-892.",
+        "Physica Verlag, Heidelberg, Germany, 2006."))
+         
+citEntry(entry="Article",
+         author = "Theresa Scharl and Friedrich Leisch",
+         title	= "The Stochastic QT--clust Algorithm: Evaluation of Stability and Variance on Time--course Microarray Data",
+         booktitle    = "Compstat 2006---Proceedings in Computational Statistics",
+         pages	       = "1015--1022",
+         editor       = "Alfredo Rizzi and Maurizio Vichi",
+         publisher    = "Physica Verlag, Heidelberg, Germany",
+         isbn	       = "3-7908-1708-2",
+         year	       = 2006,
+
+         header = "Function qtclust() is explained in:",
+
+        textVersion = paste("Theresa Scharl and Friedrich Leisch.",
+        "The Stochastic QT-clust Algorithm: Evaluation of Stability and Variance",
+        "on Time-course Microarray Data. In Alfredo Rizzi and Maurizio Vichi, editors,",
+        "Compstat 2006-Proceedings in Computational Statistics, pages 1015-1022.",
+        "Physica Verlag, Heidelberg, Germany, 2006."))
+         
+citFooter("Papers are available from http://www.stat.uni-muenchen.de/~leisch")

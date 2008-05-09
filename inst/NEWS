@@ -1,3 +1,46 @@
+Changes in flexclust version 0.99-0
+
+  o qtclust() searched only for clusters with size>min.size 
+    rather than the documented size>=min.size.
+
+  o qtclust() now by default returns objects of class
+    "kccasimple" which contains only a subset of the slots of regular
+    "kcca" objects (and hence are much faster to compute). The new
+    default was chosen because if the radius is chosen too small, the
+    number of clusters can easily be very large.
+
+  o show() now prints only summary statistics of cluster sizes if 
+    there are more than 20 clusters.
+
+  o The 'project' argument of the plot() method now also handles 'lda'
+    objects correctly.
+
+  o The barchart() method has several new arguments and is now much more 
+    flexible.
+ 
+  o Fixed two typos in data set dentitio ("ferret" was "ferrer", 
+    "pygmy bat" was "pigmy bat").
+
+  o Improved handling of color of cluster centroid labels in the plot method.
+
+  o New "medium" color palette.
+
+  o The was a bug in stepFlexclust() when using families with a 
+    data pre-processing function like kccaFamily("angle").
+
+  o The data matrix x can now be stored in the return object and is 
+    then used automatically by the plot() method. 
+
+  o New generic randomTour() with methods for data matrices and
+    flexclust objects.
+
+  o Renamed cluster() to clusters() to avoid conflict with cluster() 
+    from package survival
+
+  o The default hulls for clusters are now convex hulls rather than 
+    ellipses, which can be misleading for non-Gaussian data.
+
+
 Changes in flexclust version 0.9-1
 
   o new argument newdata for cluster()

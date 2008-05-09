@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: kcca.Rd 2925 2006-09-07 12:56:48Z leisch $
+%  $Id: kcca.Rd 3887 2008-02-18 10:19:40Z leisch $
 %
 \name{kcca}
 \alias{kcca}
@@ -17,7 +17,7 @@
 }
 \usage{
 kcca(x, k, family=kccaFamily("kmeans"), weights=NULL, group=NULL,
-     control=NULL, simple=FALSE)
+     control=NULL, simple=FALSE, save.data=FALSE)
 kccaFamily(which=NULL, dist=NULL, cent=NULL, name=which, similarity=FALSE,
            preproc = NULL, trim=0, groupFun = "minSumClusters")
 
@@ -44,6 +44,8 @@ kccaFamily(which=NULL, dist=NULL, cent=NULL, name=which, similarity=FALSE,
 
   \item{simple}{Return an object of class \code{kccasimple}?}
 
+  \item{save.data}{Save a copy of \code{x} in the return object?}
+
   \item{which}{One of \code{"kmeans"}, \code{"kmedians"},
     \code{"angle"}, \code{"jaccard"}, or \code{"ejaccard"}.}
 
@@ -66,25 +68,54 @@ kccaFamily(which=NULL, dist=NULL, cent=NULL, name=which, similarity=FALSE,
     families.}
 
   \item{groupFun}{Function or name of function to obtain clusters for
-    grouped data, currently an experimental feature.}
+    grouped data, see details below.}
 
   \item{object}{Object of class \code{"kcca"}.}
 }
 \details{
+  See the paper \emph{A Toolbox for K-Centroids Cluster Analysis}
+  referenced below for details.
+}
+\section{Group Constraints}{  
   If \code{group} is not \code{NULL}, then observations from the same
-  group are restricted to belong to the same cluster during the fitting
-  process. The cluster for each group is determined by taking the
-  cluster in which the majority of the group members belong to, ties are
-  broken at random. Note that at the moment not all methods for fitted
+  group are restricted to belong to the same cluster (must-link
+  constraint) or differnt clusters (cannot-link constraint) during the
+  fitting process. If \code{groupFun = "minSumClusters"}, then all group
+  members are 
+  assign to the cluster where the center has minimal average distance to
+  the group members. If \code{groupFun = "majorityClusters"}, then all
+  group members are assigned to the cluster the majority would belong to
+  without a constraint. 
+
+  \code{groupFun = "differentClusters"} implements a cannot-link
+  constraint, i.e., members of one group are not allowed to belong to
+  the same cluster. The optimal allocation for each group is found by
+  solving a linear sum assignment problem using
+  \code{\link[clue]{solve_LSAP}}. Obviously the group sizes must be smaller
+  than the number of clusters in this case.
+
+  Ties are broken at random in all cases.
+  Note that at the moment not all methods for fitted
   \code{"kcca"} objects respect the grouping information, most
   importantly the plot method when a data argument is specified. 
 }
+\references{
+  Friedrich Leisch. A Toolbox for K-Centroids Cluster Analysis.
+  Computational Statistics and Data Analysis, 51 (2), 526--544, 2006.
+
+  Friedrich Leisch and Bettina Gruen. Extending standard cluster
+  algorithms to allow for group constraints. In Alfredo Rizzi and
+  Maurizio Vichi, editors, Compstat 2006-Proceedings in Computational
+  Statistics, pages 885-892. Physica Verlag, Heidelberg, Germany, 2006.
+
+}
 \value{
+  %% A copy of this paragraph is in qtclust.Rd.
   Function \code{kcca} returns objects of class \code{"kcca"} or
   \code{"kccasimple"} depending on the value of argument
   \code{simple}. The simpler objects contain fewer slots and hence are
   faster to compute, but contain no auxiliary information used by the
-  plotting methods. All plot methods for \code{"kccasimple"} objects do
+  plotting methods. Most plot methods for \code{"kccasimple"} objects do
   nothing and return a warning. If only centroids, cluster membership or
   prediction for new data are of interest, then the simple objects are
   sufficient.

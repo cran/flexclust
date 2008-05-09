@@ -5,7 +5,7 @@ OPOSSUM                    5  4  1  1  3  3  4  4
 "STAR NOSE MOLE"           3  3  1  1  4  4  3  3
 "BROWN BAT"                2  3  1  1  3  3  3  3
 "SILVER HAIR BAT"          2  3  1  1  2  3  3  3
-"PIGMY BAT"                2  3  1  1  2  2  3  3
+"PYGMY BAT"                2  3  1  1  2  2  3  3
 "HOUSE BAT"                2  3  1  1  1  2  3  3
 "RED BAT"                  1  3  1  1  2  2  3  3
 "HOARY BAT"                1  3  1  1  2  2  3  3
@@ -40,7 +40,7 @@ MARTEN                     3  3  1  1  4  4  1  2
 FISHER                     3  3  1  1  4  4  1  2
 WEASEL                     3  3  1  1  3  3  1  2
 MINK                       3  3  1  1  3  3  1  2
-FERRER                     3  3  1  1  3  3  1  2
+FERRET                     3  3  1  1  3  3  1  2
 WOLVERINE                  3  3  1  1  4  4  1  2
 BADGER                     3  3  1  1  3  3  1  2
 SKUNK                      3  3  1  1  3  3  1  2

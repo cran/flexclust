@@ -7,7 +7,7 @@
 \title{Get Information on Fitted Flexclust Objects}
 \description{
   Returns descriptive information about fitted flexclust objects like
-  cluster sizes or sum of within-cluster distances.}
+  cluster sizes or sum of within-cluster distances.
 }
 \usage{
 \S4method{info}{flexclust,character}(object, which, drop=TRUE, ...)

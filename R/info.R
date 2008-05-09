@@ -1,12 +1,15 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: info.R 3122 2006-11-05 15:10:25Z leisch $
+#  $Id: info.R 3476 2007-05-06 08:55:17Z leisch $
 #
 
 setMethod("info", signature(object="flexclust", which="character"),
 function(object, which, drop=TRUE, ...)
 {
-    INFOS <- c("distsum",names(object@clusinfo))
+    INFOS <- c(names(object@clusinfo))
+    if(nrow(object@cldist))
+        INFOS <- c(INFOS, "distsum")
+    
     if("help" %in% which){
         return(INFOS)
     }

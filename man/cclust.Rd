@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: cclust.Rd 2489 2006-03-03 15:06:07Z leisch $
+%  $Id: cclust.Rd 3887 2008-02-18 10:19:40Z leisch $
 %
 \name{cclust}
 \title{Convex Clustering}
@@ -11,7 +11,8 @@
 }
 \usage{
 cclust(x, k, dist = "euclidean", method = "kmeans",
-       weights=NULL, control=NULL, group=NULL, simple=FALSE)
+       weights=NULL, control=NULL, group=NULL, simple=FALSE,
+       save.data=FALSE)
 }
 \arguments{
   \item{x}{A numeric matrix of data, or an object that can be coerced to
@@ -29,6 +30,7 @@ cclust(x, k, dist = "euclidean", method = "kmeans",
   \item{control}{An object of class \code{cclustControl}.}
   \item{group}{Currently ignored.}
   \item{simple}{Return an object of class \code{kccasimple}?}
+  \item{save.data}{Save a copy of \code{x} in the return object?}
 }
 \details{
   This function uses the same computational engine as the earlier
@@ -93,8 +95,8 @@ points(cl@centers, pch="x", cex=2, col=3)
 x<-rbind(matrix(rnorm(150,sd=0.3),ncol=3),
          matrix(rnorm(150,mean=2,sd=0.3),ncol=3),
          matrix(rnorm(150,mean=4,sd=0.3),ncol=3))
-cl<-cclust(x, 6, method="neuralgas")
+cl<-cclust(x, 6, method="neuralgas", save.data=TRUE)
 pairs(x, col=predict(cl))
-plot(cl, data=x)
+plot(cl)
 }
 \keyword{cluster}

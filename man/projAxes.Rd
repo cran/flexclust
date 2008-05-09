@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: projAxes.Rd 2941 2006-09-08 15:10:01Z leisch $
+%  $Id: projAxes.Rd 3694 2007-09-07 14:47:14Z leisch $
 %
 \name{projAxes}
 \alias{projAxes}
@@ -43,7 +43,7 @@ placeLabels(object)
   \item{which.names}{A regular expression which variable names to
     include in the plot.}
   \item{group}{An optional grouping variable for the original
-    coordinates.}
+    coordinates. Coordinates with group \code{NA} are omitted.}
   \item{groupFun}{Function used to aggregate the projected coordinates
     if \code{group} is specified.}
   \item{\dots}{Passed to  \code{\link[graphics]{arrows}}.}
