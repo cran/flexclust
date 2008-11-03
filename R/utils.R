@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005-2008 Friedrich Leisch
-#  $Id: utils.R 3919 2008-03-18 12:35:45Z leisch $
+#  $Id: utils.R 4027 2008-07-21 16:46:19Z leisch $
 #
 
 list2object = function(from, to){
@@ -87,4 +87,26 @@ getData <- function(x, error=FALSE)
         z <- x@data@get("designMatrix")
     }
     z
+}
+
+###**********************************************************
+
+## if length(col)<=k first recycle to k, then do col[cluster]
+## else simply recycle to number of observations
+expandColors <- function(col, object)
+{
+    k <- object@k
+    
+    if(is.null(col))
+        col <- flxColors(n=1:min(k, 8) , color="full")
+    
+    if(length(col) <= k){
+        col <- rep(col, length=k)
+        col <- col[object@cluster]
+    }
+    else{
+        col <- rep(col, length=nrow(object@cldist))
+    }
+    
+    col
 }

@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: cclust.R 3919 2008-03-18 12:35:45Z leisch $
+#  $Id: cclust.R 3992 2008-06-23 14:16:23Z leisch $
 #
 
 cclust <- function (x, k, dist = "euclidean", method = "kmeans",
@@ -111,6 +111,13 @@ cclust <- function (x, k, dist = "euclidean", method = "kmeans",
     }
 
     centers <- matrix(z$centers, nrow=k)
+    
+    ## The C code sets centers for empty clusters sometimes to
+    ## DOUBLE_XMAX as a placeholde for NA
+    centers[centers==.Machine$double.xmax] <- NA
+    centers <- centers[complete.cases(centers),,drop=FALSE]
+    k <- nrow(centers)
+
     colnames(centers) <- colnames(x)
     
     z <- newKccaObject(x=xold, family=family, centers=centers,

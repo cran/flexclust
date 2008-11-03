@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: qtclust.Rd 3887 2008-02-18 10:19:40Z leisch $
+%  $Id: qtclust.Rd 4123 2008-09-25 11:27:34Z leisch $
 %
 \name{qtclust}
 \alias{qtclust}
@@ -10,7 +10,7 @@
 }
 \usage{
 qtclust(x, radius, family = kccaFamily("kmeans"), control = NULL,
-        simple=TRUE, save.data=FALSE)
+        save.data=FALSE, kcca=FALSE)
 }
 \arguments{
   \item{x}{A numeric matrix of data, or an object that can be coerced to
@@ -23,9 +23,10 @@ qtclust(x, radius, family = kccaFamily("kmeans"), control = NULL,
 
   \item{control}{An object of class \code{flexclustControl}.}
 
-  \item{simple}{Return an object of class \code{kccasimple}?}
-
   \item{save.data}{Save a copy of \code{x} in the return object?}
+
+  \item{kcca}{Run \code{\link{kcca}} after the QT cluster algorithm has
+    converged?}
 }
 \details{
   This function implements a generalization of the QT clustering algorithm by
@@ -41,15 +42,14 @@ qtclust(x, radius, family = kccaFamily("kmeans"), control = NULL,
   Heyer et al. (1999) is obtained.
 }
 \value{
-  %% A copy of this paragraph is in kcca.Rd.
-  Function \code{qtclust} returns objects of class \code{"kcca"} or
-  \code{"kccasimple"} depending on the value of argument
-  \code{simple}. The simpler objects contain fewer slots and hence are
-  faster to compute, but contain no auxiliary information used by the
-  plotting methods. Most plot methods for \code{"kccasimple"} objects do
-  nothing and return a warning. If only centroids, cluster membership or
-  prediction for new data are of interest, then the simple objects are
-  sufficient.
+  Function \code{qtclust} by default returns objects of class
+  \code{"kccasimple"}. If argument \code{kcca} is \code{TRUE}, function
+    \code{kcca()} is run afterwards (initialized on the QT cluster
+    solution). Data points
+    not clustered by the QT cluster algorithm are omitted from the
+    \code{kcca()} iterations, but filled back into the return
+    object. All plot methods defined for objects of class \code{"kcca"}
+    can be used.
 }
 \references{
   Heyer, L. J., Kruglyak, S., Yooseph, S. (1999). Exploring expression data:

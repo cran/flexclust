@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: conversion.Rd 3937 2008-03-28 14:56:01Z leisch $
+%  $Id: conversion.Rd 4123 2008-09-25 11:27:34Z leisch $
 %
 \name{conversion}
 \alias{as.kcca}
@@ -16,8 +16,8 @@
 \usage{
 as.kcca(object, ...)
 
-\S3method{as.kcca}{kmeans}(object, data, ...)
-\S3method{as.kcca}{partition}(object, data=NULL, ...)
+\S3method{as.kcca}{kmeans}(object, data, save.data=FALSE, ...)
+\S3method{as.kcca}{partition}(object, data=NULL, save.data=FALSE, ...)
 }
 \arguments{
   \item{object}{fitted object.}
@@ -25,6 +25,7 @@ as.kcca(object, ...)
     \code{"partition"} objects
     created by functions from package cluster this is optional, if
     \code{object} contains the data.}
+  \item{save.data}{Save a copy of the data in the return object?}
   \item{\dots}{currently not used.}
 }
 \author{Friedrich Leisch}
@@ -55,4 +56,3 @@ stopifnot(all.equal(clusters(cl2a), clusters(cl2b)))
 stopifnot(all.equal(parameters(cl2a), parameters(cl2b)))
 }
 }
-

@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: AAA-classes.R 3017 2006-10-02 12:45:13Z leisch $
+#  $Id: AAA-classes.R 4125 2008-09-29 09:08:00Z leisch $
 #
 
 setClass("flexclustControl",
@@ -69,7 +69,6 @@ function(from, to){
 
 setClass("kccaFamily",
          representation(name="character",
-                        similarity="logical",
                         dist="function",
                         cent="function",
                         allcent="function",
@@ -109,7 +108,8 @@ setClass("kcca",
                         totaldist="numeric",    # total dist data<->xcent
                         clsim="matrix"))
 
-                        
+## Achtung: Bei Aenderung der Klassen auch dorelabel() entsprechend anpassen
+
                         
 ###**********************************************************
 

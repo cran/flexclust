@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2004-2005 Friedrich Leisch
-%  $Id: Nclus.Rd 1849 2005-10-10 06:15:57Z leisch $
+%  $Id: Nclus.Rd 4123 2008-09-25 11:27:34Z leisch $
 %
 \name{Nclus}
 \alias{Nclus}
@@ -20,6 +20,7 @@ data(Nclus)
 }
 \examples{
 data(Nclus)
-plot(Nclus, col=rep(1:4, c(100, 100, 150, 200)))
+cl <- cclust(Nclus, k=4, simple=FALSE, save.data=TRUE)
+plot(cl)
 }
 \keyword{datasets}

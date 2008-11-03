@@ -1,10 +1,10 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: qtclust.R 3887 2008-02-18 10:19:40Z leisch $
+#  $Id: qtclust.R 4123 2008-09-25 11:27:34Z leisch $
 #
 
 qtclust <- function(x, radius, family=kccaFamily("kmeans"),
-                    control=NULL, simple=TRUE, save.data=FALSE)
+                    control=NULL, save.data=FALSE, kcca=FALSE)
 {
     MYCALL <- match.call()
     control <- as(control, "flexclustControl")
@@ -111,8 +111,22 @@ qtclust <- function(x, radius, family=kccaFamily("kmeans"),
     cluster <- order(table(cluster), decreasing=TRUE)[cluster]
     centers <- family@allcent(x[ok,,drop=FALSE], cluster[ok])
 
-    if(simple)
-    {
+    if(kcca){
+        x1 <- x[ok,]
+        z <- kcca(x1, k=cluster[ok], family=family, simple=FALSE,
+                  save.data=FALSE)
+        z@call <- MYCALL
+        tmp <- cluster
+        tmp[ok] <- z@cluster
+        z@cluster <- tmp
+        tmp[ok] <- z@second
+        z@second <- tmp
+
+        tmp <- matrix(NA, nrow=nrow(x), ncol=ncol(z@cldist))
+        tmp[ok,] <- z@cldist
+        z@cldist <- tmp
+    }
+    else{
         z <- new("kccasimple",
                  k=nrow(centers),
                  cluster=cluster,
@@ -123,18 +137,6 @@ qtclust <- function(x, radius, family=kccaFamily("kmeans"),
                  centers=centers,
                  family=family,
                  clusinfo=data.frame(size=as.integer(table(cluster[ok]))))
-    }
-    else{
-        z <- newKccaObject(x, family, centers, converged=TRUE, call=MYCALL,
-                           iter=as.integer(iter))
-
-        ## newKccaObject assigns to closest centroid, we do not want this
-        ## here -> reassign to original clusters.
-        ## <FIXME>
-        ##   the plot method will still use the KCCA assignment, not
-        ##   sure if this is bug or feature
-        ## </FIXME>
-        z@cluster <- cluster
     }
 
     if(save.data)

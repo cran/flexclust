@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: kcca.R 3937 2008-03-28 14:56:01Z leisch $
+#  $Id: kcca.R 4125 2008-09-29 09:08:00Z leisch $
 #
 
 normWeights <- function(x) x/mean(x)
@@ -15,7 +15,7 @@ mlogit <- function(x){
 
 kccaFamily <- function(which=NULL, dist=NULL,
                        cent=NULL, name=which,
-                       similarity=FALSE, preproc=NULL,
+                       preproc=NULL,
                        trim=0, groupFun="minSumClusters")
 {
     if(is.null(which) && is.null(dist))
@@ -24,7 +24,7 @@ kccaFamily <- function(which=NULL, dist=NULL,
 
     if(is.null(name)) name <- deparse(substitute(dist))
 
-    z <- new("kccaFamily", name=name, similarity=similarity)
+    z <- new("kccaFamily", name=name)
 
     if(!is.null(preproc)) z@preproc <- preproc
 
@@ -82,47 +82,23 @@ kccaFamily <- function(which=NULL, dist=NULL,
             z@cent <- cent        
     }
 
-    if(similarity){
-        z@cluster <- function(x, centers, n=1, distmat=NULL){
+    z@cluster <- function(x, centers, n=1, distmat=NULL){
 
-            if(is.null(distmat))
-                distmat <- z@dist(x, centers)
-            
-            if(n==1){
-                return(max.col(distmat))
-            }
-            else{
-                ## <FIXME> kann man t() einsparen?
-                r <- t(matrix(apply(- distmat, 1,
-                                    rank, ties.method="random"),
-                              nrow=ncol(distmat)))
-                ## </FIXME>
-                z <- list()
-                for(k in 1:n)
-                    z[[k]] <- apply(r, 1, function(x) which(x==k))
-            }
-            return(z)
+        if(is.null(distmat))
+            distmat <- z@dist(x, centers)
+        
+        if(n==1){
+            return(max.col(-distmat))
         }
-    }
-    else{
-        z@cluster <- function(x, centers, n=1, distmat=NULL){
-
-            if(is.null(distmat))
-                distmat <- z@dist(x, centers)
-            
-            if(n==1){
-                return(max.col(-distmat))
-            }
-            else{
-              r <- t(matrix(apply(distmat, 1,
-                                  rank, ties.method="random"),
-                            nrow=ncol(distmat)))
-                z <- list()
-                for(k in 1:n)
-                    z[[k]] <- apply(r, 1, function(x) which(x==k))
-            }
-            return(z)
+        else{
+            r <- t(matrix(apply(distmat, 1,
+                                rank, ties.method="random"),
+                          nrow=ncol(distmat)))
+            z <- list()
+            for(k in 1:n)
+                z[[k]] <- apply(r, 1, function(x) which(x==k))
         }
+        return(z)
     }
 
     z@allcent <- function(x, cluster, k=max(cluster, na.rm=TRUE))
@@ -218,25 +194,22 @@ kcca <- function(x, k, family=kccaFamily("kmeans"), weights=NULL,
     }
     else if(control@classify=="weighted")
     {
-
-        ts <- -1
-        for(iter in 1:control@iter.max){
-
-            ts.old <- ts
+        td <- -1
+        for(iter in 1:control@iter.max)
+        {
+            td.old <- td
             distmat <- family@dist(x, centers)
             cluster <- family@cluster(distmat=distmat)
 
-            ## for weighted kmeans we need similarities
-            if(!family@similarity){
-                distmat <- mlogit(distmat)
-            }
-            ts <- sum(distmat[cbind(1:N, cluster)])
-
+            td <- sum(distmat[cbind(1:N, cluster)])
             if(control@verbose && (iter%%control@verbose==0))
-                printIter(iter, ts, "Sum of similarities")
+                printIter(iter, td, "Sum of distances")
                                 
-            if(abs(ts-ts.old)/(abs(ts)+0.1) < control@tolerance) break
-            
+            if(abs(td-td.old)/(abs(td)+0.1) < control@tolerance) break
+
+            ## for weight computation we need similarities
+            distmat <- mlogit(distmat)
+
             for(n in 1:k){
                 w <- weights*distmat[,n]
                 w[cluster==n] <- w[cluster==n]+control@gamma
@@ -287,9 +260,9 @@ initCenters <- function(x, k, family)
             k <- as.integer(k)
             if(k<2) stop("number of clusters must be at least 2")
             ## we need to avoid duplicates here
-            ux <- unique(x)
+            ux <- na.omit(unique(x))
             if(nrow(ux) < k)
-                stop("more centroids than distinct data points requested")
+                stop("k larger than number of distinct complete data points in x")
             centers <- ux[sample(1:nrow(ux), k), , drop=FALSE]
             rm(ux)
         }
@@ -354,7 +327,7 @@ simple2kcca <- function(x, from, group=NULL, distmat=NULL)
         ## at least 2 clusters
         cldist <- cbind(distmat[cbind(1:nrow(x), cluster[[1]])],
                         distmat[cbind(1:nrow(x), cluster[[2]])])
-        clsim <- clusterSim(distmat,cluster)
+        clsim <- computeClusterSim(distmat,cluster)
     }
     else{
         ## only one cluster
@@ -400,7 +373,7 @@ clusinfo <- function(cluster, cldist, simple=FALSE)
 
 ###**********************************************************
 
-clusterSim <- function(distmat, cluster)
+computeClusterSim <- function(distmat, cluster)
 {
     K <- max(cluster[[1]])
     z <- matrix(0, ncol=K, nrow=K)
@@ -423,6 +396,9 @@ clusterSim <- function(distmat, cluster)
     diag(z) <- 1
     z
 }
+
+
+###**********************************************************
 
 # make random changes in cluster membership
 perturbClusters <- function(cluster, prob)

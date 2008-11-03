@@ -1,20 +1,18 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: projAxes.Rd 3694 2007-09-07 14:47:14Z leisch $
+%  $Id: projAxes.Rd 3997 2008-06-26 11:34:22Z leisch $
 %
 \name{projAxes}
 \alias{projAxes}
 \alias{projAxes}
 \alias{projAxes-class}
 \alias{plot,projAxes,missing-method}
-\alias{show,projAxes-method}
 \alias{placeLabels}
 \alias{placeLabels,projAxes-method}
 \title{Add Arrows for Projeted Axes to a Plot}
 \description{
   Adds arrows for original coordinate axes to a projection
-  plot. Currently only a method for the results of
-  \code{\link[stats]{prcomp}} exists.
+  plot.
 }
 \usage{
 projAxes(object, which=1:2, center=NULL,
@@ -22,7 +20,7 @@ projAxes(object, which=1:2, center=NULL,
                      minradius=0.1, textargs=list(col=col),
                      col.names=getColnames(object),
                      which.names="", group = NULL, groupFun = colMeans,
-                     ...)
+                     plot=TRUE, ...)
 
 placeLabels(object)
 \S4method{placeLabels}{projAxes}(object)
@@ -46,11 +44,13 @@ placeLabels(object)
     coordinates. Coordinates with group \code{NA} are omitted.}
   \item{groupFun}{Function used to aggregate the projected coordinates
     if \code{group} is specified.}
+  \item{plot}{Logical,if \code{TRUE} the axes are added to the current plot.}
   \item{\dots}{Passed to  \code{\link[graphics]{arrows}}.}
 }
 \value{
-  \code{projAxes} returns an object of class \code{"projAxes"}, which is
-  added to the current plot by its \code{show} and \code{plot}
+  \code{projAxes} invisibly returns an object of class
+  \code{"projAxes"}, which can be
+  added to an existing plot by its \code{plot}
   method.}
 \author{Friedrich Leisch}
 \keyword{hplot}
@@ -72,6 +72,21 @@ projAxes(milk.pca, col="blue", center=0, minradius=0)
 ## use points instead of text, plot PC2 and PC3, manual radius
 ## specification, store result
 plot(predict(milk.pca)[,c(2,3)])
-arr <- projAxes(milk.pca, which=c(2,3), radius=1.2)
+arr <- projAxes(milk.pca, which=c(2,3), radius=1.2, plot=FALSE)
 plot(arr)
+
+\dontrun{
+
+## manually try to find new places for the labels: each arrow is marked
+## active in turn, use the left mouse button to find a better location
+## for the label. Use the right mouse button to go on to the next
+## variable.
+
+arr1 <- placeLabels(arr)
+
+## now do the plot again:
+plot(predict(milk.pca)[,c(2,3)])
+plot(arr1)
+}
+
 }

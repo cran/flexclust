@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: plot.R 3775 2007-10-26 12:06:46Z leisch $
+#  $Id: plot.R 4123 2008-09-25 11:27:34Z leisch $
 #
 
 setGeneric("plot")
@@ -347,25 +347,25 @@ function(x, which=NULL, project=NULL, oma=NULL, ...)
 setMethod("plot", signature(x="kccasimple",y="missing"),
 function(x, y)
 {
-    warning("No plot method for kccasimple objects available\n")
+    stop("No plot method for kccasimple objects available!\n")
 })
 
 setMethod("image", signature(x="kccasimple"),
 function(x)
 {
-    warning("No image method for kccasimple objects available\n")
+    stop("No image method for kccasimple objects available!\n")
 })
 
 ## setMethod("barplot", signature(height="kccasimple"),
 ## function(height)
 ## {
-##     warning("No barplot method for kccasimple objects available\n")
+##     warning("No barplot method for kccasimple objects available!\n")
 ## })
 
 setMethod("pairs", signature(x="kccasimple"),
 function(x)
 {
-    warning("No pairs method for kccasimple objects available\n")
+    stop("No pairs method for kccasimple objects available!\n")
 })
 
 ###**********************************************************

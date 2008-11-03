@@ -4,7 +4,8 @@ projAxes <- function(object, which=1:2, center=NULL,
                      col="red", radius=NULL,
                      minradius=0.1, textargs=list(col=col),
                      col.names=getColnames(object),
-                     which.names="", group=NULL, groupFun=colMeans, ...)
+                     which.names="", group=NULL, groupFun=colMeans,
+                     plot=TRUE, ...)
 {
     pu = par("usr")
     if(is.null(center)){
@@ -58,11 +59,13 @@ projAxes <- function(object, which=1:2, center=NULL,
     pos[abs(alpha)>3*pi/4] <- 2
     pos[(alpha <= -pi/4) & (alpha>= -3*pi/4)] <- 1
     
-    new("projAxes",
-        arrows=c(list(x0=x0, y0=y0, x1=x1+x0, y1=y1+y0, col=col), ...),
-        text=c(list(x=x1+x0, y=y1+y0, labels=col.names[ok],
-                    pos=pos, offset=rep(0.5, length(pos))),
-               textargs))
+    z <- new("projAxes",
+             arrows=c(list(x0=x0, y0=y0, x1=x1+x0, y1=y1+y0, col=col), ...),
+             text=c(list(x=x1+x0, y=y1+y0, labels=col.names[ok],
+             pos=pos, offset=rep(0.5, length(pos))),
+             textargs))
+    if(plot) plot(z)
+    invisible(z)
 }
 
 setMethod("plot", signature(x="projAxes", y="missing"),
@@ -70,12 +73,6 @@ function(x, y, ...)
 {          
     do.call("arrows", x@arrows)
     do.call("text", x@text)
-})
-
-setMethod("show", signature(object="projAxes"),
-function(object)
-{          
-    plot(object)
 })
 
 

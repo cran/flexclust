@@ -14,6 +14,7 @@ exportPattern("^dist.*", "^cent.*")
 export(
        as.kcca,
        cclust,
+       clusterSim,
        flxColors,
        kcca,
        kccaFamily,
@@ -40,6 +41,7 @@ exportMethods(
               barchart,
               barplot,
               clusters,
+              clusterSim,
               coerce,
               getModel,
               image,
@@ -50,6 +52,7 @@ exportMethods(
               plot,
               predict,
               randomTour,
+              relabel,
               show,
               summary
               )

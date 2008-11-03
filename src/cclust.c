@@ -5,13 +5,12 @@
  *
  *  Copyright (C) 2005 Friedrich Leisch
  *
- *  $Id: cclust.c 1661 2005-06-10 08:08:02Z leisch $
+ *  $Id: cclust.c 3992 2008-06-23 14:16:23Z leisch $
  */
 
 #include <math.h>
 #include <stdlib.h>
 #include <R.h>
-#include <R_ext/Utils.h>
 
 /**********************************************************/
 
@@ -20,12 +19,17 @@ double median(double *x, int n)
   double xmed;
   int n2;
 
-  R_rsort (x, n);
-  n2 = n / 2;
-  if (n2 << 1 == n) {
-	  xmed = (x[n2] + x[n2 + 1]) * .5;
+  if(n == 0) {
+      /* Empty clusters are deleted in the R code */
+      xmed = DOUBLE_XMAX;
   } else {
+      R_rsort (x, n);  
+      n2 = n / 2;
+      if ((n2 << 1) == n) {
+	  xmed = (x[n2] + x[n2 + 1]) * .5;
+      } else {
 	  xmed = x[n2 + 1];
+      }
   }
   return xmed;
 }

@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: kcca.Rd 3887 2008-02-18 10:19:40Z leisch $
+%  $Id: kcca.Rd 4125 2008-09-29 09:08:00Z leisch $
 %
 \name{kcca}
 \alias{kcca}
@@ -18,7 +18,7 @@
 \usage{
 kcca(x, k, family=kccaFamily("kmeans"), weights=NULL, group=NULL,
      control=NULL, simple=FALSE, save.data=FALSE)
-kccaFamily(which=NULL, dist=NULL, cent=NULL, name=which, similarity=FALSE,
+kccaFamily(which=NULL, dist=NULL, cent=NULL, name=which,
            preproc = NULL, trim=0, groupFun = "minSumClusters")
 
 \S4method{summary}{kccasimple}(object)
@@ -51,14 +51,10 @@ kccaFamily(which=NULL, dist=NULL, cent=NULL, name=which, similarity=FALSE,
 
   \item{name}{Optional long name for family, used only for show methods.}
 
-  \item{dist}{A function for distance or similarity computation, ignored
+  \item{dist}{A function for distance computation, ignored
     if \code{which} is specified.}
 
   \item{cent}{A function for centroid computation, ignored
-    if \code{which} is specified.}
-
-  \item{similarity}{Logical, if \code{TRUE} then \code{dist} is
-    interpreted as a similarity instead of a distance measure, ignored
     if \code{which} is specified.}
 
   \item{preproc}{Function for data preprocessing.}
@@ -110,7 +106,6 @@ kccaFamily(which=NULL, dist=NULL, cent=NULL, name=which, similarity=FALSE,
 
 }
 \value{
-  %% A copy of this paragraph is in qtclust.Rd.
   Function \code{kcca} returns objects of class \code{"kcca"} or
   \code{"kccasimple"} depending on the value of argument
   \code{simple}. The simpler objects contain fewer slots and hence are

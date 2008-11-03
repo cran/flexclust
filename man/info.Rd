@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: info.Rd 3122 2006-11-05 15:10:25Z leisch $
+%  $Id: info.Rd 3977 2008-05-09 09:43:48Z leisch $
 %
 \name{info}
 \alias{info,flexclust,character-method}

@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: info.R 3476 2007-05-06 08:55:17Z leisch $
+#  $Id: info.R 4123 2008-09-25 11:27:34Z leisch $
 #
 
 setMethod("info", signature(object="flexclust", which="character"),
@@ -45,3 +45,53 @@ function(object, ...)
     object@centers
 })
 
+
+###**********************************************************
+
+setGeneric("clusterSim",
+           function(object, ...) standardGeneric("clusterSim"))
+
+setMethod("clusterSim", signature(object="kcca"),
+function(object, data=NULL, method=c("shadow", "centers"),
+         symmetric=FALSE, ...)
+{
+    method <- match.arg(method)
+
+    if((method=="shadow") && is.null(data)){
+        z <- object@clsim
+        if(symmetric) z <- (z+t(z))/2
+    }
+    else{
+        z <- callNextMethod(object=object, data=data, method=method,
+                            symmetric=symmetric, ...)
+    }
+
+    z
+})
+
+setMethod("clusterSim", signature(object="kccasimple"),
+function(object, data=NULL, method=c("shadow", "centers"),
+         symmetric=FALSE, ...)
+{
+    method <- match.arg(method)
+    
+    if(object@k==1) return(matrix(1))
+
+    if((method=="shadow")){
+        if(is.null(data)) data <- getData(object)
+
+        if(any(is.na(object@cluster)))
+            data <- data[!is.na(object@cluster),]
+
+        distmat <- object@family@dist(data, object@centers)
+        cluster <- object@family@cluster(n=2, distmat=distmat)
+        z <- flexclust:::computeClusterSim(distmat, cluster)
+        if(symmetric) z <- (z+t(z))/2
+    }
+    else{
+        z <- object@family@dist(object@centers, object@centers)
+        z <- 1-z/max(z)
+    }
+        
+    z
+})

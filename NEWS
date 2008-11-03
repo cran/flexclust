@@ -1,3 +1,26 @@
+Changes in flexclust version 0.99-1
+
+  o kcca() now chooses the random set of initial centroids only from
+    the complete observations in x, this allows the usage of distance
+    and centroid computation functions which can deal with missing
+    values.
+
+  o Bugfix: cclust segfaulted for manhattan distance when clusters 
+    got empty.
+
+  o Don't use the show() method to plot projected Axes, it only
+    confuses people (including myself).
+
+  o qtclust() now has an argument `kcca' instead of `simple' with
+    slightly different meaning (at the end, run kcca() to convergence
+    rather than only one iteration). This also fixes a bug which
+    reported differnt cluster sizes in the print() and summary()
+    method for the return objects of qtclust().
+
+  o The never really used support for similarity measures has been
+    dropped to make the code cleaner and easier to maintain.
+
+
 Changes in flexclust version 0.99-0
 
   o qtclust() searched only for clusters with size>min.size 
