@@ -13,6 +13,7 @@ exportPattern("^dist.*", "^cent.*")
 
 export(
        as.kcca,
+       bundestag,
        cclust,
        clusterSim,
        flxColors,
