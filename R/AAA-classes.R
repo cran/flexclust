@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: AAA-classes.R 4125 2008-09-29 09:08:00Z leisch $
+#  $Id: AAA-classes.R 4259 2009-02-01 16:08:08Z leisch $
 #
 
 setClass("flexclustControl",
@@ -124,3 +124,15 @@ setClass("stepFlexclust",
 
 
          
+###**********************************************************
+
+setClass("bootFlexclust",
+         representation(k="integer",
+                        centers1="list",
+                        centers2="list",
+                        cluster1="array",
+                        cluster2="array",
+                        index1="matrix",
+                        index2="matrix",
+                        rand="matrix",
+                        call="call"))

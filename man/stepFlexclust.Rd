@@ -1,6 +1,6 @@
 %
-%  Copyright (C) 2005 Friedrich Leisch
-%  $Id: stepFlexclust.Rd 3887 2008-02-18 10:19:40Z leisch $
+%  Copyright (C) 2005-2009 Friedrich Leisch
+%  $Id: stepFlexclust.Rd 4259 2009-02-01 16:08:08Z leisch $
 %
 \name{stepFlexclust}
 \alias{stepFlexclust}
@@ -9,7 +9,7 @@
 \alias{plot,stepFlexclust,missing-method}
 \alias{getModel}
 \alias{getModel,stepFlexclust-method}
-\title{Run FlexClust Algorithms Repeatedly}
+\title{Run Flexclust Algorithms Repeatedly}
 \description{
   Runs clustering algorithms repeatedly for different numbers of
   clusters and returns the minimum within cluster distance solution for
@@ -26,7 +26,7 @@ stepFlexclust(x, k, nrep=3, verbose=TRUE, FUN = kcca, drop=TRUE,
 \S4method{getModel}{stepFlexclust}(object, which=1)
 }
 \arguments{
-  \item{\dots}{passed to \code{\link{kcca}} or \code{\link{cclust}}.}
+  \item{x, \dots}{passed to \code{\link{kcca}} or \code{\link{cclust}}.}
 
   \item{k}{A vector of integers passed in turn to the \code{k} argument
     of \code{\link{kcca}}}
@@ -50,8 +50,6 @@ stepFlexclust(x, k, nrep=3, verbose=TRUE, FUN = kcca, drop=TRUE,
   \item{simple}{Return an object of class \code{kccasimple}?}
 
   \item{save.data}{Save a copy of \code{x} in the return object?}
-
-  \item{x}{Object of class \code{"stepFlexclust"}.}
 
   \item{y}{Not used.}
 

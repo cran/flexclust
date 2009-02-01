@@ -1,3 +1,14 @@
+Changes in flexclust version 1.1-0
+
+  o New generic randIndex() for computation of the Rand Index for partition 
+    agreement. 
+
+  o New function bootFlexclust() to bootstrap cluster stability.
+
+  o show() method for kcca objects reports NAs in cluster assignment
+    only if there are any.
+
+
 Changes in flexclust version 1.0-0
 
   o New data set with German Bundestag election results.

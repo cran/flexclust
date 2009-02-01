@@ -13,6 +13,7 @@ exportPattern("^dist.*", "^cent.*")
 
 export(
        as.kcca,
+       bootFlexclust,
        bundestag,
        cclust,
        clusterSim,
@@ -21,6 +22,7 @@ export(
        kccaFamily,
        projAxes,
        qtclust,
+       randIndex,
        randomTour,
        randomTourMatrix,       
        stepFlexclust
@@ -28,6 +30,7 @@ export(
 
 
 exportClasses(
+              bootFlexclust,
               cclustControl,
               flexclust,
               flexclustControl,
@@ -41,9 +44,11 @@ exportClasses(
 exportMethods(
               barchart,
               barplot,
+              boxplot,
               clusters,
               clusterSim,
               coerce,
+              densityplot,
               getModel,
               image,
               info,
@@ -52,6 +57,7 @@ exportMethods(
               placeLabels,
               plot,
               predict,
+              randIndex,
               randomTour,
               relabel,
               show,

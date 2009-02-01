@@ -1,6 +1,6 @@
 %
-%  Copyright (C) 2005 Friedrich Leisch
-%  $Id: barplot-methods.Rd 3963 2008-04-14 11:49:05Z leisch $
+%  Copyright (C) 2005-2009 Friedrich Leisch
+%  $Id: barplot-methods.Rd 4259 2009-02-01 16:08:08Z leisch $
 %
 \name{barplot-methods}
 \docType{methods}
@@ -30,7 +30,7 @@
     one page, else each plot is on a seperate page.}
   \item{data}{If not \code{NULL}, cluster membership is predicted for
     the new data and used for the plots. By default the
-    values from the traing data are used. Ignored by the \code{barchart}
+    values from the training data are used. Ignored by the \code{barchart}
     method.}
   \item{FUN}{The function to be applied to each cluster for calculating
     the bar heights.}

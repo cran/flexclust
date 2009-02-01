@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2006 Friedrich Leisch
-#  $Id: barplot.R 3919 2008-03-18 12:35:45Z leisch $
+#  $Id: barplot.R 4259 2009-02-01 16:08:08Z leisch $
 #
 
 setMethod("barplot", "kccasimple",
@@ -107,6 +107,8 @@ function(x, data, xlab="", strip.prefix="Cluster ",
     TAB <- x@centers[,which]
     ## sonst musz man die barplots von unten nach oben lesen
     TAB <- TAB[,ncol(TAB):1]
+    xcent <- rev(x@xcent[which])
+
 
     SIZE <- info(x, "size")
     rownames(TAB) <-
@@ -114,25 +116,25 @@ function(x, data, xlab="", strip.prefix="Cluster ",
               round(100 * SIZE/sum(SIZE), 2), "%)", sep="")
     TAB <- as.data.frame(as.table(TAB))
 
-    panel <- createBarchartPanel(x, col=col, mcol=mcol, which=which)
-
+    panel <- createBarchartPanel(m=xcent, col=col,
+                                 mcol=mcol, which=which)
+d
     barchart(Var2~Freq|Var1, data=TAB,
              panel=panel, as.table=TRUE,
              xlab=xlab, ...)
 })
 
-createBarchartPanel <- function(object, col, mcol, which)
+createBarchartPanel <- function(m, col, mcol)
 {
     KKK <- 1
     KKKplus <- function() KKK <<- KKK+1
 
     ## sonst musz man die barplots von unten nach oben lesen
-    XCENT <- rev(object@xcent[which])
 
     mypanel <- function(x, y, shade=FALSE, diff=NULL, ...)
     {
         if(is.null(diff))
-            diff <- c(max(XCENT)/4, 0.5)
+            diff <- c(max(m)/4, 0.5)
         else
             diff <- rep(diff, length=2)
 
@@ -145,8 +147,8 @@ createBarchartPanel <- function(object, col, mcol, which)
             COL <- rep("white", length(x))
             MCOL <- rep(grey, length=length(x))
             BCOL <- rep(grey, length=length(x))
-            d1 <- abs(x-XCENT) >= diff[1]
-            d2 <- abs((x-XCENT)/XCENT) >= diff[2]
+            d1 <- abs(x-m) >= diff[1]
+            d2 <- abs((x-m)/m) >= diff[2]
 
             COL[d1|d2] <- col[KKK]
             MCOL[d1|d2] <- mcol
@@ -154,12 +156,12 @@ createBarchartPanel <- function(object, col, mcol, which)
         }
         
             
-        grid.segments(x0=0, y0=1:length(x), x1=XCENT, y1=1:length(x),
+        grid.segments(x0=0, y0=1:length(x), x1=m, y1=1:length(x),
                       gp=gpar(col=MCOL),
                       default.units="native")
 
         panel.barchart(x, y, col=COL, border=BCOL, ...)
-        grid.points(XCENT, 1:length(x), pch=16,
+        grid.points(m, 1:length(x), pch=16,
                     size=unit(0.5, "char"), gp=gpar(col=MCOL))
         grid.segments(1, 1, 4, 4)
         KKKplus()

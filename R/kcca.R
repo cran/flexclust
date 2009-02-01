@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: kcca.R 4125 2008-09-29 09:08:00Z leisch $
+#  $Id: kcca.R 4259 2009-02-01 16:08:08Z leisch $
 #
 
 normWeights <- function(x) x/mean(x)
@@ -422,7 +422,7 @@ function(object)
         sep="\n")
     if(object@k<20){
         cat("\ncluster sizes:\n")
-        print(table(clusters(object), exclude=NULL))
+        print(table(clusters(object), useNA="ifany"))
     }
     else{
         cat("\n", sum(!is.na(object@cluster)), " points in ",
