@@ -119,9 +119,6 @@ function(x, y, correct=TRUE){
 setMethod("randIndex", signature(x="table", y="missing"),
 function(x, y, correct=TRUE)
 {
-    if(length(dim(x))!=2)
-        stop("Argument x needs to be a 2-dimensional table.")
-    
     n <- sum(x)
     ni <- apply(x, 1, sum)
     nj <- apply(x, 2, sum)

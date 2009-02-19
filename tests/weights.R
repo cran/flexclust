@@ -7,6 +7,7 @@ cl0 <- kcca(x, k=20)
 cl1 <- kcca(x, k=20, weights=x[,1])
 cl2 <- kcca(x, k=20, weights=x[,2])
 
+pdf("weights.pdf")
 plot(cl0)
 plot(cl1)
 plot(cl2)
