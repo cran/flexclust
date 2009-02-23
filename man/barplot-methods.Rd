@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005-2009 Friedrich Leisch
-%  $Id: barplot-methods.Rd 4259 2009-02-01 16:08:08Z leisch $
+%  $Id: barplot-methods.Rd 4281 2009-02-20 06:02:41Z leisch $
 %
 \name{barplot-methods}
 \docType{methods}
@@ -19,7 +19,7 @@
     oma=par("oma"), col=NULL, mcol="darkred", srt=45, ...)
 
 \S4method{barchart}{kcca}(x, data, xlab="", strip.prefix="Cluster ",
-    col=NULL, mcol="darkred", panel=NULL, which=NULL, ...)
+    col=NULL, mcol="darkred", which=NULL, ...)
 }
 \arguments{
   \item{height, x}{An object of class \code{"kcca"}.}
@@ -45,7 +45,6 @@
   \item{srt}{Number between 0 and 90, rotation of the x-axis labels.}
   \item{strip.prefix}{Prefix string for the strips of the Trellis
     display.}
-  \item{panel}{Panel function for \code{\link[lattice]{barchart}}.}
 }
 \author{Friedrich Leisch}
 \keyword{methods}

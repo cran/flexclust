@@ -1,6 +1,6 @@
 #
-#  Copyright (C) 2006 Friedrich Leisch
-#  $Id: barplot.R 3919 2008-03-18 12:35:45Z leisch $
+#  Copyright (C) 2006-2009 Friedrich Leisch
+#  $Id: barplot.R 4281 2009-02-20 06:02:41Z leisch $
 #
 
 setMethod("barplot", "kccasimple",
@@ -94,72 +94,91 @@ function (height, bycluster = TRUE, oneplot = TRUE,
 
 setMethod("barchart", "kccasimple",
 function(x, data, xlab="", strip.prefix="Cluster ",
-         col=NULL, mcol="darkred", panel=NULL, which=NULL, ...)
+         col=NULL, mcol="darkred", which=NULL, ...)
 {
+    SIZE <- info(x, "size")
+    LABELS <-
+        paste(strip.prefix, 1:x@k, ": ", SIZE, " (",
+              round(100 * SIZE/sum(SIZE), 2), "%)", sep="")
+
+    Barchart(x=x@centers, m=x@xcent, labels=LABELS, xlab=xlab,
+             col=col, mcol=mcol, which=which, ...)
+})
+
+
+### Currently not exported, hence document arguments here:
+### x: matrix of cluster centers
+### m: vector with location of total population
+### labels: text for panel header strips (default is rownames(x))
+### REST: see barchart method for kccasimple objects
+Barchart <- function(x, m, labels=NULL, xlab="", col=NULL, mcol="darkred", 
+                     which=NULL, ...)
+{
+    x <- as.matrix(x)
+    m <- as.vector(m)
+
+    if(!is.null(labels))
+        rownames(x) <- rep(labels, length=nrow(x))
+    
     if(is.null(col))
         col <- flxColors(color="light")
 
+    col <- rep(col, length=nrow(x))
+
     if(is.null(which))
-        which <- seq(1, ncol(x@centers))
+        which <- seq(1, ncol(x))
 
-    col <- rep(col, x@k)
-
-    TAB <- x@centers[,which]
+    x <- x[,which]
     ## sonst musz man die barplots von unten nach oben lesen
-    TAB <- TAB[,ncol(TAB):1]
+    x <- x[,ncol(x):1]
+    m <- rev(m[which])
 
-    SIZE <- info(x, "size")
-    rownames(TAB) <-
-        paste(strip.prefix, 1:nrow(TAB), ": ", SIZE, " (",
-              round(100 * SIZE/sum(SIZE), 2), "%)", sep="")
-    TAB <- as.data.frame(as.table(TAB))
+    x <- as.data.frame(as.table(x))
 
-    panel <- createBarchartPanel(x, col=col, mcol=mcol, which=which)
+    panel <- createBarchartPanel(m=m, col=col, mcol=mcol)
 
-    barchart(Var2~Freq|Var1, data=TAB,
+    barchart(Var2~Freq|Var1, data=x,
              panel=panel, as.table=TRUE,
              xlab=xlab, ...)
-})
+}
 
-createBarchartPanel <- function(object, col, mcol, which)
+
+createBarchartPanel <- function(m, col, mcol)
 {
     KKK <- 1
     KKKplus <- function() KKK <<- KKK+1
 
-    ## sonst musz man die barplots von unten nach oben lesen
-    XCENT <- rev(object@xcent[which])
-
     mypanel <- function(x, y, shade=FALSE, diff=NULL, ...)
     {
         if(is.null(diff))
-            diff <- c(max(XCENT)/4, 0.5)
+            diff <- c(max(m)/4, 0.5)
         else
             diff <- rep(diff, length=2)
 
         grey <- flxColors(color="dark", grey=TRUE)
         COL <- col[KKK]
-        MCOL <- mcol
+        MCOL <- rep(mcol, length=length(x))
         BCOL <- "black"
             
         if(shade){
             COL <- rep("white", length(x))
             MCOL <- rep(grey, length=length(x))
             BCOL <- rep(grey, length=length(x))
-            d1 <- abs(x-XCENT) >= diff[1]
-            d2 <- abs((x-XCENT)/XCENT) >= diff[2]
+            d1 <- abs(x-m) >= diff[1]
+            d2 <- abs((x-m)/m) >= diff[2]
 
             COL[d1|d2] <- col[KKK]
             MCOL[d1|d2] <- mcol
             BCOL[d1|d2] <- "black"
         }
-        
-            
-        grid.segments(x0=0, y0=1:length(x), x1=XCENT, y1=1:length(x),
+
+        MCOL[is.na(x)] <- NA
+        grid.segments(x0=0, y0=1:length(x), x1=m, y1=1:length(x),
                       gp=gpar(col=MCOL),
                       default.units="native")
 
         panel.barchart(x, y, col=COL, border=BCOL, ...)
-        grid.points(XCENT, 1:length(x), pch=16,
+        grid.points(m, 1:length(x), pch=16,
                     size=unit(0.5, "char"), gp=gpar(col=MCOL))
         grid.segments(1, 1, 4, 4)
         KKKplus()
