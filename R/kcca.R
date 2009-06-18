@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: kcca.R 4259 2009-02-01 16:08:08Z leisch $
+#  $Id: kcca.R 4359 2009-06-15 16:29:23Z leisch $
 #
 
 normWeights <- function(x) x/mean(x)
@@ -506,23 +506,28 @@ function(object, freq=TRUE, distance=FALSE, ...)
 
 stepFlexclust <- function(x, k, nrep=3, verbose=TRUE,
                           FUN=kcca, drop=TRUE, group=NULL,
-                          simple=FALSE, save.data=FALSE, ...)
+                          simple=FALSE, save.data=FALSE, seed=NULL,
+                          multicore=TRUE, ...)
 {
     MYCALL <- match.call()
     
+    if(!is.null(seed)) set.seed(seed)
+    
     bestKcca <- function(x, k, ...)
     {
-        distsum <- Inf
-        for(m in 1:nrep){
-            if(verbose) cat(" *")
-            y = FUN(x=x, k=k, group=group, simple=TRUE, ...)
-            newdistsum <- info(y, "distsum")
-            if(newdistsum < distsum){
-              z <- y
-              distsum <- newdistsum
-            }
-        }
-        z
+        seed <- as.list(round(1e6*runif(nrep)))
+
+        res <- MClapply(seed, 
+                        function(y){
+                            set.seed(y)
+                            if(verbose) cat(" *")
+                            FUN(x=x, k=k, group=group, simple=TRUE,
+                                save.data=FALSE,
+                                ...)
+                        }, multicore=multicore)
+
+        distsum <- sapply(res, function(y) info(y, "distsum"))
+        res[[which.min(distsum)]]
     }
     
     k = as.integer(k)
@@ -608,3 +613,7 @@ function(object, which=1)
 {
     object@models[[which]]
 })
+
+setMethod("[[", signature(x="stepFlexclust", i="ANY", j="missing"),
+function(x, i, j) getModel(x, i))
+

@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: predict-methods.Rd 3937 2008-03-28 14:56:01Z leisch $
+%  $Id: predict-methods.Rd 4366 2009-06-18 13:43:44Z leisch $
 %
 \name{predict-methods}
 \docType{methods}
@@ -14,7 +14,6 @@
 }
 \usage{
 \S4method{predict}{kccasimple}(object, newdata, \dots)
-\S4method{clusters}{flexclust,missing}(object)
 \S4method{clusters}{flexclust,ANY}(object, newdata, \dots)
 }
 \arguments{

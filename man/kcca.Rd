@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005-2009 Friedrich Leisch
-%  $Id: kcca.Rd 4259 2009-02-01 16:08:08Z leisch $
+%  $Id: kcca.Rd 4331 2009-04-22 14:18:31Z leisch $
 %
 \name{kcca}
 \alias{kcca}
@@ -72,6 +72,19 @@ kccaFamily(which=NULL, dist=NULL, cent=NULL, name=which,
   See the paper \emph{A Toolbox for K-Centroids Cluster Analysis}
   referenced below for details.
 }
+\section{Predefined Families}{
+  Function \code{kccaFamily()} currently has the following predefined
+  families (distance / centroid):
+  \describe{
+    \item{kmeans:}{Euclidean distance / mean}
+    \item{kmedians:}{Manhattan distance / median}
+    \item{angle:}{angle between observation and centroid / standardized
+      mean}
+    \item{jaccard:}{Jaccard distance / numeric optimization}
+    \item{ejaccard:}{Jaccard distance / mean}
+  }
+  See Leisch (2006) for details on all combinations.
+}  
 \section{Group Constraints}{  
   If \code{group} is not \code{NULL}, then observations from the same
   group are restricted to belong to the same cluster (must-link

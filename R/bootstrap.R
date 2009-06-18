@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2009 Friedrich Leisch
-#  $Id: bootstrap.R 4259 2009-02-01 16:08:08Z leisch $
+#  $Id: bootstrap.R 4323 2009-04-04 12:44:45Z leisch $
 #
 
 bootFlexclust <- function(x, k, nboot=100, verbose=TRUE, correct=TRUE, ...)
@@ -119,6 +119,9 @@ function(x, y, correct=TRUE){
 setMethod("randIndex", signature(x="table", y="missing"),
 function(x, y, correct=TRUE)
 {
+    if(length(dim(x))!=2)
+        stop("Argument x needs to be a 2-dimensional table.")
+    
     n <- sum(x)
     ni <- apply(x, 1, sum)
     nj <- apply(x, 2, sum)

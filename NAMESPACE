@@ -9,7 +9,7 @@ import(modeltools)
 importFrom(stats, fitted, predict)
 importFrom(stats4, summary)
 
-exportPattern("^dist.*", "^cent.*")
+exportPattern("^dist.*", "^cent.*", "^panelShadow.+")
 
 export(
        as.kcca,
@@ -21,11 +21,16 @@ export(
        kcca,
        kccaFamily,
        projAxes,
+       propBarchart,
        qtclust,
        randIndex,
        randomTour,
-       randomTourMatrix,       
-       stepFlexclust
+       randomTourMatrix,
+       shadow,
+       shadowStars,
+       Silhouette,
+       stepFlexclust,
+       stripes
        )
 
 
@@ -38,10 +43,12 @@ exportClasses(
               kccasimple,
               kccaFamily,
               projAxes,
+              propBarchart,
               stepFlexclust
               ) 
 
 exportMethods(
+              "[[",
               barchart,
               barplot,
               boxplot,
@@ -60,6 +67,8 @@ exportMethods(
               randIndex,
               randomTour,
               relabel,
+              shadow,
+              Silhouette,
               show,
               summary
               )

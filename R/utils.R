@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005-2008 Friedrich Leisch
-#  $Id: utils.R 4027 2008-07-21 16:46:19Z leisch $
+#  $Id: utils.R 4358 2009-06-15 15:25:19Z leisch $
 #
 
 list2object = function(from, to){
@@ -110,3 +110,18 @@ expandColors <- function(col, object)
     
     col
 }
+
+###**********************************************************
+
+MClapply <- function(X, FUN, multicore=TRUE, ...)
+{
+    if(multicore)
+        multicore <- !inherits(try(loadNamespace("multicore"), silent=TRUE),
+                               "try-error")
+    
+    if(multicore)
+        multicore::mclapply(X, FUN, ...)
+    else
+        lapply(X, FUN, ...)
+}
+

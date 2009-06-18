@@ -1,3 +1,18 @@
+Changes in flexclust version 1.2-0
+
+  o New functions propBarchart(), shadow(), Silhouette(), shadowStars() 
+    and stripes(), see corresponding help files for details.
+
+  o List subsetting operator [[]] can now be used as a 
+    shortcut for getModel() on stepFlexclust objects.
+
+  o New argument legend in barchart() method. Percentages in 
+    panel strips now rounded to next integer.
+
+  o New arguments seed and multicore for stepFlexclust, which now by default 
+    uses multicore for parallel processing if available.
+
+
 Changes in flexclust version 1.1-2
 
   o Set "ZipData: no" in DESCRIPTION.

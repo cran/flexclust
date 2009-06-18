@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005-2009 Friedrich Leisch
-%  $Id: stepFlexclust.Rd 4259 2009-02-01 16:08:08Z leisch $
+%  $Id: stepFlexclust.Rd 4358 2009-06-15 15:25:19Z leisch $
 %
 \name{stepFlexclust}
 \alias{stepFlexclust}
@@ -9,6 +9,7 @@
 \alias{plot,stepFlexclust,missing-method}
 \alias{getModel}
 \alias{getModel,stepFlexclust-method}
+\alias{[[,stepFlexclust,ANY,missing-method}
 \title{Run Flexclust Algorithms Repeatedly}
 \description{
   Runs clustering algorithms repeatedly for different numbers of
@@ -17,7 +18,8 @@
 }
 \usage{
 stepFlexclust(x, k, nrep=3, verbose=TRUE, FUN = kcca, drop=TRUE,
-              group=NULL, simple=FALSE, save.data=FALSE, ...)
+              group=NULL, simple=FALSE, save.data=FALSE, seed=NULL,
+              multicore=TRUE, ...)
 
 \S4method{plot}{stepFlexclust,missing}(x, y,
   type=c("barplot", "lines"), totaldist=NULL,
@@ -51,6 +53,12 @@ stepFlexclust(x, k, nrep=3, verbose=TRUE, FUN = kcca, drop=TRUE,
 
   \item{save.data}{Save a copy of \code{x} in the return object?}
 
+  \item{seed}{If not \code{NULL}, a call to \code{set.seed()} is made
+    before any clustering is done.}
+
+  \item{multicore}{If \code{TRUE}, use package multicore for parallel
+    processing if available.}
+
   \item{y}{Not used.}
 
   \item{type}{Create a barplot or lines plot.}
@@ -75,7 +83,9 @@ cl1
 
 plot(cl1)
 
+# two ways to do the same:
 getModel(cl1, 4)
+cl1[[4]]
 
 opar=par("mfrow")
 par(mfrow=c(2,2))

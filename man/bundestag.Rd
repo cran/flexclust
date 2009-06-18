@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2008 Friedrich Leisch
-%  $Id: bundestag.Rd 4207 2008-12-12 14:46:53Z leisch $
+%  $Id: bundestag.Rd 4366 2009-06-18 13:43:44Z leisch $
 %
 \name{bundestag}
 \alias{bundestag}
@@ -44,9 +44,10 @@ bundestag(year, second=TRUE, percent=TRUE, nazero=TRUE, state=FALSE)
   \item{second}{logical, return second or first votes?}
   \item{percent}{logical, return percentages or absolute numbers?}
   \item{nazero}{logical, convert \code{NA}s to 0?}
-  \item{state}{logical, if \code{TRUE} then only column \code{state}
+  \item{state}{logical or character. If \code{TRUE} then only column \code{state}
     from the corresponding data frame is returned, and all other
-    arguments are ignored.}
+    arguments are ignored. If character, then it is used as pattern to
+    \code{\link{grep}} for the corresponding state(s), see examples.}
 }
 \details{
   \code{btw2002} and \code{btw2005} are the original data sets.
@@ -85,6 +86,9 @@ pairs(p05)
 
 state <- bundestag(2002, state=TRUE)
 table(state)
+
+start.with.b <- bundestag(2002, state="^B")
+table(start.with.b)
 
 pairs(p05, col=2-(state=="Bayern"))
 }

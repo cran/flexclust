@@ -1,8 +1,9 @@
 ##
 ## Copyright (C) 2008 Friedrich Leisch
-## $Id: bundestag.R 4207 2008-12-12 14:46:53Z leisch $
+## $Id: bundestag.R 4366 2009-06-18 13:43:44Z leisch $
 ##
-bundestag <- function(year, second=TRUE, percent=TRUE, nazero=TRUE, state=FALSE)
+bundestag <- function(year, second=TRUE, percent=TRUE, nazero=TRUE,
+                      state=FALSE)
 {
     year <- match.arg(as.character(year), c("2002", "2005"))
     tempenv <- new.env()
@@ -17,7 +18,15 @@ bundestag <- function(year, second=TRUE, percent=TRUE, nazero=TRUE, state=FALSE)
         x <- get("btw2005", envir=tempenv)
     }
 
-    if(state) return(x$state)
+    if(is.logical(state)){
+        if(state) return(x$state)
+    }
+    else{
+        y <- rep("other", nrow(x))
+        ok <- grep(state, x$state)
+        y[ok] <- as.character(x$state)[ok]
+        return(as.factor(y))
+    }
 
     if(second)
         p <- "2$"

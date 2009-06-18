@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: AAA-classes.R 4259 2009-02-01 16:08:08Z leisch $
+#  $Id: AAA-classes.R 4293 2009-03-02 03:22:04Z leisch $
 #
 
 setClass("flexclustControl",
@@ -136,3 +136,13 @@ setClass("bootFlexclust",
                         index2="matrix",
                         rand="matrix",
                         call="call"))
+
+###**********************************************************
+
+setOldClass("trellis")
+setClass("propBarchart",
+         representation(chart="trellis",
+                        gprop="matrix",
+                        tprop="numeric",
+                        p.value="numeric"))
+         
