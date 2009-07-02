@@ -3,6 +3,15 @@
 #  $Id: AAA-classes.R 4293 2009-03-02 03:22:04Z leisch $
 #
 
+.onLoad <- function(libname, pkgname) {
+    options("flexclust" =
+            list(have_multicore = !inherits(try(loadNamespace("multicore"),
+                                                silent=TRUE),
+                                            "try-error")))
+}
+
+###**********************************************************
+
 setClass("flexclustControl",
          representation(iter.max="numeric",
                         tolerance="numeric",

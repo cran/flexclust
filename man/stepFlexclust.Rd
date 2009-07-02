@@ -57,7 +57,9 @@ stepFlexclust(x, k, nrep=3, verbose=TRUE, FUN = kcca, drop=TRUE,
     before any clustering is done.}
 
   \item{multicore}{If \code{TRUE}, use package multicore for parallel
-    processing if available.}
+    processing if available. Availability of \pkg{multicore} is checked
+    when \pkg{flexclust} is loaded and stored in
+    \code{getOption("flexclust")$have_multicore}.}
 
   \item{y}{Not used.}
 

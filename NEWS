@@ -1,3 +1,12 @@
+Changes in flexclust version 1.2-x
+
+  o New arguments seed and multicore for bootFlexclust(), which now by
+    default uses multicore for parallel processing if available. Note
+    that this changes handling of random numbers (we need parallel
+    streams), so results with the same seed are not the same as for
+    previous versions of the package.
+
+
 Changes in flexclust version 1.2-0
 
   o New functions propBarchart(), shadow(), Silhouette(), shadowStars() 
@@ -9,8 +18,11 @@ Changes in flexclust version 1.2-0
   o New argument legend in barchart() method. Percentages in 
     panel strips now rounded to next integer.
 
-  o New arguments seed and multicore for stepFlexclust, which now by default 
-    uses multicore for parallel processing if available.
+  o New arguments seed and multicore for stepFlexclust(), which now by
+    default uses multicore for parallel processing if available. Note
+    that this changes handling of random numbers (we need parallel
+    streams), so results with the same seed are not the same as for
+    previous versions of the package.
 
 
 Changes in flexclust version 1.1-2

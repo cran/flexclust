@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2009 Friedrich Leisch
-%  $Id: bootFlexclust.Rd 4259 2009-02-01 16:08:08Z leisch $
+%  $Id: bootFlexclust.Rd 4372 2009-06-30 14:14:33Z leisch $
 %
 \name{bootFlexclust}
 \alias{bootFlexclust}
@@ -18,8 +18,10 @@
   comparing pairs of partitions.
 }
 \usage{
-bootFlexclust(x, k, nboot=100, verbose=TRUE, correct=TRUE, ...)
+bootFlexclust(x, k, nboot=100, correct=TRUE, seed=NULL,
+              multicore=TRUE, verbose=FALSE, ...)
 
+\S4method{summary}{bootFlexclust}(object)
 \S4method{plot}{bootFlexclust,missing}(x, y, ...)
 \S4method{boxplot}{bootFlexclust}(x, ...)
 \S4method{densityplot}{bootFlexclust}(x, data, ...)
@@ -29,12 +31,22 @@ bootFlexclust(x, k, nboot=100, verbose=TRUE, correct=TRUE, ...)
   
   \item{nboot}{Number of bootstrap pairs of partitions.}
   
-  \item{verbose}{If \code{TRUE}, show progress information during
-    computations.}
-
   \item{correct}{Logical, correct the index for agreement by chance?}
+
+    \item{seed}{If not \code{NULL}, a call to \code{set.seed()} is made
+    before any clustering is done.}
+
+  \item{multicore}{If \code{TRUE}, use package \pkg{multicore} for parallel
+    processing if available. Availability of \pkg{multicore} is checked
+    when \pkg{flexclust} is loaded and stored in
+    \code{getOption("flexclust")$have_multicore}.}
   
+  \item{verbose}{If \code{TRUE}, show progress information during
+    computations. Ignored if \code{multicore=TRUE}.}
+
   \item{y, data}{Not used.}
+
+  \item{object}{An object of class \code{"bootFlexclust"}.}
 
 }
 \author{Friedrich Leisch}

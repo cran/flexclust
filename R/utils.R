@@ -115,11 +115,7 @@ expandColors <- function(col, object)
 
 MClapply <- function(X, FUN, multicore=TRUE, ...)
 {
-    if(multicore)
-        multicore <- !inherits(try(loadNamespace("multicore"), silent=TRUE),
-                               "try-error")
-    
-    if(multicore)
+    if(multicore & getOption("flexclust")$have_multicore)
         multicore::mclapply(X, FUN, ...)
     else
         lapply(X, FUN, ...)

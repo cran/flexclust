@@ -1,6 +1,6 @@
 Package: flexclust
-Version: 1.2-0
-Date: 2009-06-18
+Version: 1.2-1
+Date: 2009-07-02
 Author: Friedrich Leisch
 Maintainer: Friedrich Leisch <Friedrich.Leisch@R-project.org>
 Title: Flexible Cluster Algorithms
@@ -18,6 +18,6 @@ Description: The main function kcca implements a general framework for
 License: GPL-2
 LazyLoad: yes
 ZipData: no
-Packaged: 2009-06-19 12:45:14 UTC; leisch
+Packaged: 2009-07-02 09:02:14 UTC; leisch
 Repository: CRAN
-Date/Publication: 2009-06-19 12:52:11
+Date/Publication: 2009-07-02 09:02:39
