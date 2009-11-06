@@ -1,13 +1,13 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: info.R 4123 2008-09-25 11:27:34Z leisch $
+#  $Id: info.R 4415 2009-09-26 08:11:42Z leisch $
 #
 
 setMethod("info", signature(object="flexclust", which="character"),
 function(object, which, drop=TRUE, ...)
 {
     INFOS <- c(names(object@clusinfo))
-    if(nrow(object@cldist))
+    if(nrow(object@cldist) | all(c("size","av_dist") %in% INFOS))
         INFOS <- c(INFOS, "distsum")
     
     if("help" %in% which){

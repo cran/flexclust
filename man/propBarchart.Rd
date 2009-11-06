@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005-2009 Friedrich Leisch
-%  $Id: propBarchart.Rd 4358 2009-06-15 15:25:19Z leisch $
+%  $Id: propBarchart.Rd 4405 2009-09-14 16:49:24Z leisch $
 %
 \name{propBarchart}
 \alias{propBarchart}
@@ -9,7 +9,7 @@
 \title{Barchart for Proportions of Apriori Segments in Binary Data Matrix}
 \description{
   This function splits a binary data matrix into subgroups, computes the
-  percantage of ones in each column and compares the proportions in the
+  percentage of ones in each column and compares the proportions in the
   groups using \code{\link{prop.test}}. The p-values for all variables
   are adjusted for multiple testing and a barchart of group percentages
   is drawn highlighting variables with significant differences in

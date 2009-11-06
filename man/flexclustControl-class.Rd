@@ -1,9 +1,11 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: flexclustControl-class.Rd 1779 2005-08-18 09:23:15Z leisch $
+%  $Id: flexclustControl-class.Rd 4405 2009-09-14 16:49:24Z leisch $
 %
 \name{flexclustControl-class}
 \docType{class}
+\alias{cclustControl}
+\alias{flexclustControl}
 \alias{flexclustControl-class}
 \alias{coerce,list,flexclustControl-method}
 \alias{coerce,NULL,flexclustControl-method}
@@ -26,7 +28,7 @@
     \item{\code{iter.max}:}{Maximum number of iterations.}
 
     \item{\code{tolerance}:}{The algorithm is stopped when the
-      (relative) change of the optimization criterium is smaller than
+      (relative) change of the optimization criterion is smaller than
       \code{tolerance}.}
     
     \item{\code{verbose}:}{If a positive integer, then progress is
@@ -36,7 +38,7 @@
     \item{\code{classify}:}{Character string, one of \code{"auto"},
       \code{"weighted"}, \code{"hard"} or \code{"simann"}.}
     
-    \item{\code{gamma}:}{Gamma value for weighted hard competitve
+    \item{\code{gamma}:}{Gamma value for weighted hard competitive
       learning.}
     \item{\code{simann}:}{Parameters for simulated annealing
       optimization (only used when \code{classify="simann"}).}

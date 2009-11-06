@@ -1,9 +1,10 @@
 %
 %  Copyright (C) 2005-2009 Friedrich Leisch
-%  $Id: stepFlexclust.Rd 4358 2009-06-15 15:25:19Z leisch $
+%  $Id: stepFlexclust.Rd 4381 2009-07-24 11:48:57Z leisch $
 %
 \name{stepFlexclust}
 \alias{stepFlexclust}
+\alias{stepcclust}
 \alias{stepFlexclust-class}
 \alias{show,stepFlexclust-method}
 \alias{plot,stepFlexclust,missing-method}
@@ -20,6 +21,8 @@
 stepFlexclust(x, k, nrep=3, verbose=TRUE, FUN = kcca, drop=TRUE,
               group=NULL, simple=FALSE, save.data=FALSE, seed=NULL,
               multicore=TRUE, ...)
+
+stepcclust(...)
 
 \S4method{plot}{stepFlexclust,missing}(x, y,
   type=c("barplot", "lines"), totaldist=NULL,
@@ -59,7 +62,9 @@ stepFlexclust(x, k, nrep=3, verbose=TRUE, FUN = kcca, drop=TRUE,
   \item{multicore}{If \code{TRUE}, use package multicore for parallel
     processing if available. Availability of \pkg{multicore} is checked
     when \pkg{flexclust} is loaded and stored in
-    \code{getOption("flexclust")$have_multicore}.}
+    \code{getOption("flexclust")$have_multicore}. Set to \code{FALSE}
+    for debugging and more sensible error messages in case something
+    goes wrong.}
 
   \item{y}{Not used.}
 
@@ -74,6 +79,10 @@ stepFlexclust(x, k, nrep=3, verbose=TRUE, FUN = kcca, drop=TRUE,
 
   \item{which}{Number of model to get. If character, interpreted as
     number of clusters.}
+}
+\details{
+  \code{stepcclust} is a simple wrapper for
+  \code{stepFlexclust(...,FUN=cclust)}.
 }
 \author{Friedrich Leisch}
 \examples{

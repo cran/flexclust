@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: conversion.R 4121 2008-09-22 16:59:44Z leisch $
+#  $Id: conversion.R 4394 2009-08-26 11:38:28Z leisch $
 #
 
 setOldClass("kmeans")
@@ -62,4 +62,44 @@ as.kcca.partition <- function(object, data=NULL, save.data=FALSE, ...)
     z
 }
 
+###**********************************************************
+
+as.kcca.hclust <- function(object, data, k, family=NULL, save.data=FALSE, ...)
+{
+    data <- as.matrix(data)
+    call <- match.call()
+    call[[1]] <- as.name("as.kcca")
+
+    if(is.null(family) & !is.null(object$dist.method))
+    {
+        if(object$dist.method=="euclidean")
+            family <- kccaFamily("kmeans")
+        else if(object$dist.method=="manhattan")
+            family <- kccaFamily("kmedians")
+        else if(object$dist.method=="binary")
+            family <- kccaFamily("jaccard")
+    }
+    
+    if(is.null(family))
+        stop("Cannot automatically detect correct family, please pass family argument.\n")
+
+    cluster <- cutree(object, k=k[1])
+    centers <- family@allcent(data, cluster)
+       
+    z <- flexclust:::newKccaObject(x=data, family=family,
+                                   centers=centers)
+
+    nok <- sum(cluster != clusters(z))
+    if(nok>0)
+        warning(paste(nok, "cluster memberships have changed."))
+    
+    z@converged <- TRUE
+    z@iter <- as.integer(1)
+    z@call <- call
+
+    if(save.data)
+        z@data <- ModelEnvMatrix(designMatrix=data)
+
+    z
+}
 

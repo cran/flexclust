@@ -4,6 +4,8 @@
 %
 \name{distances}
 \alias{centAngle}
+\alias{centMean}
+\alias{centMedian}
 \alias{centOptim01}
 \alias{centOptim}
 \alias{distAngle}
@@ -29,6 +31,8 @@ distMax(x, centers)
 distMinkowski(x, centers, p=2)
 
 centAngle(x)
+centMean(x)
+centMedian(x)
 
 centOptim(x, dist)
 centOptim01(x, dist)

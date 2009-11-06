@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2009 Friedrich Leisch
-#  $Id: bootstrap.R 4372 2009-06-30 14:14:33Z leisch $
+#  $Id: bootstrap.R 4382 2009-07-30 09:22:51Z leisch $
 #
 
 bootFlexclust <- function(x, k, nboot=100, correct=TRUE, seed=NULL,
@@ -81,7 +81,7 @@ bootFlexclust <- function(x, k, nboot=100, correct=TRUE, seed=NULL,
     
     if(verbose) cat("\n")
 
-    new("bootFlexclust", k=k, centers1=cent1, centers2=cent2,
+    new("bootFlexclust", k=as.integer(k), centers1=cent1, centers2=cent2,
         cluster1=clust1, cluster2=clust2, index1=index1, index2=index2,
         rand=rand, call=MYCALL)
 }
@@ -214,6 +214,21 @@ setGeneric("randIndex", function(x, y, correct=TRUE)
 setMethod("randIndex", signature(x="flexclust", y="flexclust"),
 function(x, y, correct=TRUE){
     randIndex(table(clusters(x), clusters(y)), correct=correct)
+})
+
+setMethod("randIndex", signature(x="flexclust", y="integer"),
+function(x, y, correct=TRUE){
+    randIndex(table(clusters(x), y), correct=correct)
+})
+
+setMethod("randIndex", signature(x="integer", y="flexclust"),
+function(x, y, correct=TRUE){
+    randIndex(table(x, clusters(y)), correct=correct)
+})
+
+setMethod("randIndex", signature(x="integer", y="integer"),
+function(x, y, correct=TRUE){
+    randIndex(table(x, y), correct=correct)
 })
 
 setMethod("randIndex", signature(x="table", y="missing"),

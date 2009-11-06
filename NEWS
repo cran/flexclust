@@ -1,10 +1,21 @@
-Changes in flexclust version 1.2-x
+Changes in flexclust version 1.2-2
+
+  o New randIndex methods for integer arguments (cluster membership vectors).
+
+  o New function as.kcca.hclust().
+
+  o Fixed two bugs in the CITATION file.
+
+
+Changes in flexclust version 1.2-1
 
   o New arguments seed and multicore for bootFlexclust(), which now by
     default uses multicore for parallel processing if available. Note
     that this changes handling of random numbers (we need parallel
     streams), so results with the same seed are not the same as for
     previous versions of the package.
+
+  o New wrapper stepcclust() for stepFlexclust(..., FUN=cclust).
 
 
 Changes in flexclust version 1.2-0

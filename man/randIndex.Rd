@@ -1,11 +1,14 @@
 %
 %  Copyright (C) 2009 Friedrich Leisch
-%  $Id: randIndex.Rd 4259 2009-02-01 16:08:08Z leisch $
+%  $Id: randIndex.Rd 4382 2009-07-30 09:22:51Z leisch $
 %
 \name{randIndex}
 \alias{randIndex}
 \alias{randIndex,table,missing-method}
 \alias{randIndex,flexclust,flexclust-method}
+\alias{randIndex,integer,integer-method}
+\alias{randIndex,flexclust,integer-method}
+\alias{randIndex,integer,flexclust-method}
 \title{Rand Index}
 \description{
   Compute the Rand Index for agreement of two partitions.
@@ -14,12 +17,16 @@
 randIndex(x, y, correct=TRUE)
 \S4method{randIndex}{table,missing}(x, y, correct=TRUE)
 \S4method{randIndex}{flexclust,flexclust}(x, y, correct=TRUE)
+\S4method{randIndex}{integer,integer}(x, y, correct=TRUE)
+\S4method{randIndex}{flexclust,integer}(x, y, correct=TRUE)
+\S4method{randIndex}{integer,flexclust}(x, y, correct=TRUE)
 }
 \arguments{
   \item{x}{Either a 2-dimensional cross-tabulation of cluster
-    assignments, or an object inheriting from class \code{"flexclust"}.}
+    assignments, or an object inheriting from class \code{"flexclust"},
+    or an integer vector of cluster memberships.}
   \item{y}{An (optional) object inheriting from class
-    \code{"flexclust"}.}
+    \code{"flexclust"}, or an integer vector of cluster memberships.}
   \item{correct}{Logical, correct the index for agreement by chance?}
   
 }

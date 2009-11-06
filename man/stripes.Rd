@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2009 Friedrich Leisch
-%  $Id: stripes.Rd 4368 2009-06-18 13:47:13Z leisch $
+%  $Id: stripes.Rd 4405 2009-09-14 16:49:24Z leisch $
 %
 \name{stripes}
 \alias{stripes}
@@ -19,7 +19,7 @@ stripes(object, groups=NULL, type=c("first", "second", "all"),
   \item{object}{an object of class \code{"kcca"}.}
   \item{groups}{grouping variable to color-code the stripes. By default
     cluster membership is used as \code{groups}.}
-  \item{type}{plot distance to closest, clostest and second-closest or
+  \item{type}{plot distance to closest, closest and second-closest or
     to all centroids?}
   \item{beside}{logical, make different stripes for different clusters?}
   \item{col}{vector of colors for clusters or groups.}

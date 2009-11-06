@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: qtclust.Rd 4123 2008-09-25 11:27:34Z leisch $
+%  $Id: qtclust.Rd 4394 2009-08-26 11:38:28Z leisch $
 %
 \name{qtclust}
 \alias{qtclust}
@@ -21,7 +21,10 @@ qtclust(x, radius, family = kccaFamily("kmeans"), control = NULL,
 
   \item{family}{Object of class \code{kccaFamily}.}
 
-  \item{control}{An object of class \code{flexclustControl}.}
+  \item{control}{An object of class \code{\link{flexclustControl}}
+  specifying the minimum number of observations per cluster
+  (\code{min.size}), and trials per iteration (\code{ntry}, see details
+  below).}.
 
   \item{save.data}{Save a copy of \code{x} in the return object?}
 

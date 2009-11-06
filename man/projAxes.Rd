@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: projAxes.Rd 3997 2008-06-26 11:34:22Z leisch $
+%  $Id: projAxes.Rd 4405 2009-09-14 16:49:24Z leisch $
 %
 \name{projAxes}
 \alias{projAxes}
@@ -9,7 +9,7 @@
 \alias{plot,projAxes,missing-method}
 \alias{placeLabels}
 \alias{placeLabels,projAxes-method}
-\title{Add Arrows for Projeted Axes to a Plot}
+\title{Add Arrows for Projected Axes to a Plot}
 \description{
   Adds arrows for original coordinate axes to a projection
   plot.

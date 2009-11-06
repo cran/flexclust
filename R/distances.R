@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: distances.R 2528 2006-03-23 14:13:46Z leisch $
+#  $Id: distances.R 4382 2009-07-30 09:22:51Z leisch $
 #
 
 distEuclidean <- function(x, centers)
@@ -118,6 +118,10 @@ dist2 <- function(x, y, method = "euclidean", p=2){
 
 
 ###**********************************************************
+
+centMean <- function(x) colMeans(x)
+
+centMedian <- function(x) apply(x, 2, median)
 
 centOptim <- function(x, dist)
 {

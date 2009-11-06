@@ -1,6 +1,6 @@
 #
-#  Copyright (C) 2005 Friedrich Leisch
-#  $Id: AAA-classes.R 4293 2009-03-02 03:22:04Z leisch $
+#  Copyright (C) 2005-2009 Friedrich Leisch
+#  $Id: AAA-classes.R 4415 2009-09-26 08:11:42Z leisch $
 #
 
 .onLoad <- function(libname, pkgname) {
@@ -20,7 +20,8 @@ setClass("flexclustControl",
                         gamma="numeric",          # for kcca
                         simann="numeric",         # for kcca
                         ntry="numeric",           # for qtclust
-                        min.size="numeric"        # for qtclust
+                        min.size="numeric",       # for qtclust and ockc
+                        subsampling="numeric"     # for ockc
                         ),
          prototype(iter.max=200,
                    tolerance=10e-7,
@@ -29,7 +30,8 @@ setClass("flexclustControl",
                    gamma=1,
                    simann=c(0.3, 0.95, 10),
                    ntry=5,
-                   min.size=2))
+                   min.size=2,
+                   subsampling=1))
 
 
 setAs("list", "flexclustControl",
@@ -131,6 +133,9 @@ setClass("stepFlexclust",
                         totaldist="numeric"     # total dist data<->xcent
                         ))
 
+setClass("ockc",
+         contains = "stepFlexclust",
+         representation(order = "integer"))
 
          
 ###**********************************************************
@@ -155,3 +160,8 @@ setClass("propBarchart",
                         tprop="numeric",
                         p.value="numeric"))
          
+###**********************************************************
+
+
+
+

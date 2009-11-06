@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005-2009 Friedrich Leisch
-%  $Id: kcca.Rd 4331 2009-04-22 14:18:31Z leisch $
+%  $Id: kcca.Rd 4405 2009-09-14 16:49:24Z leisch $
 %
 \name{kcca}
 \alias{kcca}
@@ -88,7 +88,7 @@ kccaFamily(which=NULL, dist=NULL, cent=NULL, name=which,
 \section{Group Constraints}{  
   If \code{group} is not \code{NULL}, then observations from the same
   group are restricted to belong to the same cluster (must-link
-  constraint) or differnt clusters (cannot-link constraint) during the
+  constraint) or different clusters (cannot-link constraint) during the
   fitting process. If \code{groupFun = "minSumClusters"}, then all group
   members are 
   assign to the cluster where the center has minimal average distance to

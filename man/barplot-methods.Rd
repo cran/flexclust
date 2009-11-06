@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005-2009 Friedrich Leisch
-%  $Id: barplot-methods.Rd 4325 2009-04-04 13:28:56Z leisch $
+%  $Id: barplot-methods.Rd 4405 2009-09-14 16:49:24Z leisch $
 %
 \name{barplot-methods}
 \docType{methods}
@@ -28,7 +28,7 @@
     cluster. If \code{FALSE}, then each barplot compares all cluster for
     one input variable.}
   \item{oneplot}{If \code{TRUE}, all barplots are plotted together on
-    one page, else each plot is on a seperate page.}
+    one page, else each plot is on a separate page.}
   \item{data}{If not \code{NULL}, cluster membership is predicted for
     the new data and used for the plots. By default the
     values from the training data are used. Ignored by the \code{barchart}

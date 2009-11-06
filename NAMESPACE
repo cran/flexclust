@@ -9,7 +9,8 @@ import(modeltools)
 importFrom(stats, fitted, predict)
 importFrom(stats4, summary)
 
-exportPattern("^dist.*", "^cent.*", "^panelShadow.+")
+exportPattern("^cent[A-Z].+", "^dist[A-Z].+", "^exp[A-Z].+",
+              "^panelShadow.+", ".+[a-z]Family$")
 
 export(
        as.kcca,
@@ -17,9 +18,9 @@ export(
        bundestag,
        cclust,
        clusterSim,
+       dist2,
        flxColors,
        kcca,
-       kccaFamily,
        projAxes,
        propBarchart,
        qtclust,
@@ -29,6 +30,7 @@ export(
        shadow,
        shadowStars,
        Silhouette,
+       stepcclust,
        stepFlexclust,
        stripes
        )
@@ -74,6 +76,7 @@ exportMethods(
               )
 
 
+S3method(as.kcca, hclust)
 S3method(as.kcca, kmeans)
 S3method(as.kcca, partition)
 

@@ -29,7 +29,7 @@ citEntry(entry = "Article",
 
          
         
-citEntry(entry="Article",
+citEntry(entry="InProceedings",
          author = "Friedrich Leisch and Bettina Gruen",
          title	       = "Extending Standard Cluster Algorithms to Allow for Group Constraints",
          booktitle    = "Compstat 2006---Proceedings in Computational
@@ -48,7 +48,7 @@ citEntry(entry="Article",
         "Compstat 2006-Proceedings in Computational Statistics, pages 885-892.",
         "Physica Verlag, Heidelberg, Germany, 2006."))
          
-citEntry(entry="Article",
+citEntry(entry="InProceedings",
          author = "Theresa Scharl and Friedrich Leisch",
          title	= "The Stochastic QT--clust Algorithm: Evaluation of Stability and Variance on Time--course Microarray Data",
          booktitle    = "Compstat 2006---Proceedings in Computational Statistics",

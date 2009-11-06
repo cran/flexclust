@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005-2008 Friedrich Leisch
-#  $Id: utils.R 4358 2009-06-15 15:25:19Z leisch $
+#  $Id: utils.R 4373 2009-07-02 09:13:47Z leisch $
 #
 
 list2object = function(from, to){

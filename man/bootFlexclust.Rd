@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2009 Friedrich Leisch
-%  $Id: bootFlexclust.Rd 4372 2009-06-30 14:14:33Z leisch $
+%  $Id: bootFlexclust.Rd 4381 2009-07-24 11:48:57Z leisch $
 %
 \name{bootFlexclust}
 \alias{bootFlexclust}
@@ -39,7 +39,9 @@ bootFlexclust(x, k, nboot=100, correct=TRUE, seed=NULL,
   \item{multicore}{If \code{TRUE}, use package \pkg{multicore} for parallel
     processing if available. Availability of \pkg{multicore} is checked
     when \pkg{flexclust} is loaded and stored in
-    \code{getOption("flexclust")$have_multicore}.}
+    \code{getOption("flexclust")$have_multicore}. Set to \code{FALSE}
+    for debugging and more sensible error messages in case something
+    goes wrong.}
   
   \item{verbose}{If \code{TRUE}, show progress information during
     computations. Ignored if \code{multicore=TRUE}.}
