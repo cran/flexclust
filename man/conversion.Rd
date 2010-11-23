@@ -1,18 +1,19 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: conversion.Rd 4394 2009-08-26 11:38:28Z leisch $
+%  $Id: conversion.Rd 4574 2010-07-14 12:09:10Z leisch $
 %
 \name{conversion}
 \alias{as.kcca}
 \alias{as.kcca.hclust}
 \alias{as.kcca.kmeans}
 \alias{as.kcca.partition}
-\title{Convert S3 Partition Objects to KCCA}
+\alias{coerce,kccasimple,kmeans-method}
+\title{Conversion Between S3 Partition Objects and KCCA}
 \description{
   These functions can be used to convert the results from cluster
   functions like
   \code{\link[stats]{kmeans}} or \code{\link[cluster]{pam}} to objects
-  of class \code{"kcca"}.
+  of class \code{"kcca"} and vice versa
 }
 \usage{
 as.kcca(object, ...)
@@ -20,6 +21,7 @@ as.kcca(object, ...)
 \S3method{as.kcca}{hclust}(object, data, k, family=NULL, save.data=FALSE, ...)
 \S3method{as.kcca}{kmeans}(object, data, save.data=FALSE, ...)
 \S3method{as.kcca}{partition}(object, data=NULL, save.data=FALSE, ...)
+\S4method{coerce}{kccasimple,kmeans}(from, to="kmeans", strict=TRUE)
 }
 \arguments{
   \item{object}{fitted object.}
@@ -32,6 +34,7 @@ as.kcca(object, ...)
   \item{family}{object of class \code{kccaFamily}, can be omitted for
     some known distances.}
   \item{\dots}{currently not used.}
+  \item{from, to, strict}{usual arguments for \code{\link{coerce}}}
 }
 \details{
   For hierarchical clustering the cluster memberships of the converted
@@ -49,9 +52,12 @@ cl1 <- kmeans(Nclus, 4)
 cl1
 cl1a <- as.kcca(cl1, Nclus)
 cl1a
+cl1b <- as(cl1a, "kmeans")
 
 \testonly{
 stopifnot(all.equal(cl1$cluster, clusters(cl1a)))
+stopifnot(all.equal(cl1$cluster, cl1b$cluster))
+stopifnot(all.equal(cl1$withinss, cl1b$withinss))
 }
 
 library("cluster")

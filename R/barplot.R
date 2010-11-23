@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2006-2009 Friedrich Leisch
-#  $Id: barplot.R 4326 2009-04-04 16:45:05Z leisch $
+#  $Id: barplot.R 4491 2009-12-16 15:08:12Z leisch $
 #
 
 setMethod("barplot", "kccasimple",
@@ -101,6 +101,8 @@ function(x, data, xlab="", strip.labels=NULL, strip.prefix="Cluster ",
             paste(strip.prefix, 1:x@k, ": ", SIZE, " (",
                   round(100 * SIZE/sum(SIZE)), "%)", sep="")
     }
+
+    if(is.null(mcol)) mcol <- NA
 
     b <- Barchart(x=x@centers, m=x@xcent, strip.labels=strip.labels,
                   xlab=xlab, col=col, mcol=mcol, which=which, ...)

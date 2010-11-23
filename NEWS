@@ -1,3 +1,15 @@
+Changes in flexclust version 1.3-0
+
+  o Added support for parallel processing with package snow in 
+    addition to multicore. 
+
+  o Added data from election for German parliament 2009.
+
+  o barchart(clobj, mcol=NULL) did not work.
+
+  o New conversion method from kccasimple to S3 kmeans.
+
+
 Changes in flexclust version 1.2-2
 
   o New randIndex methods for integer arguments (cluster membership vectors).

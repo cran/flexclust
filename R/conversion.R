@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: conversion.R 4394 2009-08-26 11:38:28Z leisch $
+#  $Id: conversion.R 4574 2010-07-14 12:09:10Z leisch $
 #
 
 setOldClass("kmeans")
@@ -103,3 +103,23 @@ as.kcca.hclust <- function(object, data, k, family=NULL, save.data=FALSE, ...)
     z
 }
 
+###**********************************************************
+
+setAs("kccasimple", "kmeans",
+function(from, to, strict=TRUE){
+  if(from@family@name != "kmeans")
+    warning("Family name is not kmeans.")
+  
+  z <- list(cluster=clusters(from),
+            centers=from@centers,
+            size=info(from, "size"))
+  z$withinss <- double(from@k)
+  for(kk in 1:from@k){
+    z$withinss[kk] <- sum(from@cldist[clusters(from)==kk,1]^2)
+  }
+  class(z) <- "kmeans"
+  z
+})
+  
+          
+  

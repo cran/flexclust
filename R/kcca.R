@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005-2009 Friedrich Leisch
-#  $Id: kcca.R 4381 2009-07-24 11:48:57Z leisch $
+#  $Id: kcca.R 4574 2010-07-14 12:09:10Z leisch $
 #
 
 normWeights <- function(x) x/mean(x)
@@ -232,7 +232,7 @@ simple2kcca <- function(x, from, group=NULL, distmat=NULL)
     z <- as(from, "kcca")
     z@second <- as(cluster[[2]], "integer")
     z@xcent <- xcent
-    z@xrange <- apply(x,2,range)
+    z@xrange <- apply(x, 2, range, na.rm=TRUE)
     z@totaldist <- totaldist
     z@clsim <- clsim
     z@clusinfo <- clusinfo(cluster[[1]], cldist, simple=FALSE)
@@ -406,7 +406,7 @@ stepFlexclust <- function(x, k, nrep=3, verbose=TRUE,
     
     bestKcca <- function(x, k, ...)
     {
-        seed <- as.list(round(1e6*runif(nrep)))
+        seed <- as.list(round(2^31 * runif(nrep, -1, 1)))
 
         res <- MClapply(seed, 
                         function(y){

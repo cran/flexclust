@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: qtclust.Rd 4394 2009-08-26 11:38:28Z leisch $
+%  $Id: qtclust.Rd 4513 2010-02-01 18:29:27Z leisch $
 %
 \name{qtclust}
 \alias{qtclust}
@@ -19,7 +19,8 @@ qtclust(x, radius, family = kccaFamily("kmeans"), control = NULL,
 
   \item{radius}{Maximum radius of clusters.}
 
-  \item{family}{Object of class \code{kccaFamily}.}
+  \item{family}{Object of class \code{\link{kccaFamily}} specifying the
+    distance measure to be used.}
 
   \item{control}{An object of class \code{\link{flexclustControl}}
   specifying the minimum number of observations per cluster

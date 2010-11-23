@@ -33,23 +33,29 @@ bootFlexclust(x, k, nboot=100, correct=TRUE, seed=NULL,
   
   \item{correct}{Logical, correct the index for agreement by chance?}
 
-    \item{seed}{If not \code{NULL}, a call to \code{set.seed()} is made
+  \item{seed}{If not \code{NULL}, a call to \code{set.seed()} is made
     before any clustering is done.}
 
-  \item{multicore}{If \code{TRUE}, use package \pkg{multicore} for parallel
-    processing if available. Availability of \pkg{multicore} is checked
-    when \pkg{flexclust} is loaded and stored in
-    \code{getOption("flexclust")$have_multicore}. Set to \code{FALSE}
-    for debugging and more sensible error messages in case something
-    goes wrong.}
+  \item{multicore}{If \code{TRUE}, use package \pkg{multicore} for
+    parallel processing if available. In addition, it may be a
+    workstation cluster object as returned by
+    \code{\link[snow]{makeCluster}} from package \pkg{snow}, see
+    examples below.}
   
   \item{verbose}{If \code{TRUE}, show progress information during
-    computations. Ignored if \code{multicore=TRUE}.}
+    computations. Will not work with \code{multicore=TRUE}.}
 
   \item{y, data}{Not used.}
 
   \item{object}{An object of class \code{"bootFlexclust"}.}
 
+}
+\details{
+  Availability of \pkg{multicore} is checked
+  when \pkg{flexclust} is loaded and stored in
+  \code{getOption("flexclust")$have_multicore}. Set to \code{FALSE}
+  for debugging and more sensible error messages in case something
+  goes wrong.
 }
 \author{Friedrich Leisch}
 \seealso{
@@ -59,7 +65,13 @@ bootFlexclust(x, k, nboot=100, correct=TRUE, seed=NULL,
 ## data uniform on unit square
 x <- matrix(runif(400), ncol=2)
 
-bcl <- bootFlexclust(x, k=2:7, nboot=20, FUN=cclust)
+
+## run bootstrap replications on snow cluster:
+library("snow")
+cl <- makeCluster(rep("localhost", 2), type = "SOCK")
+clusterCall(cl, function() require("flexclust"))
+bcl <- bootFlexclust(x, k=2:7, FUN=cclust, multicore=cl)
+stopCluster(cl)
 
 bcl
 summary(bcl)

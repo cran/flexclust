@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: plot.R 4123 2008-09-25 11:27:34Z leisch $
+#  $Id: plot.R 4550 2010-04-19 14:14:06Z leisch $
 #
 
 setGeneric("plot")
@@ -134,7 +134,7 @@ clusterEllipses <- function(data, cluster, dist, col,
     col <- rep(col, length=max(cluster))
     for(k in 1:max(cluster)){
         ok <- cluster==k
-        if(length(ok)>3){
+        if(sum(ok)>3){
             lines(ellipse::ellipse(cov(data[ok,]),
                                    centre=colMeans(data[ok,]),
                                    level=level[1]),
@@ -154,18 +154,19 @@ clusterHulls <- function(data, cluster, dist, col, density=0)
     density <- rep(density, length=K)
     ang <- (1:K)*180/K
 
+    cok <- complete.cases(data)
     for(k in 1:max(cluster)){
-        ok <- cluster==k
+        ok <- cok & (cluster==k)
         if(length(ok)>3){
             ok1 <- ok & (dist < median(dist[ok]))
-            if(length(ok1)>3){
+            if(sum(ok1)>3){
                 hpts <- chull(data[ok1,])
                 polygon(data[ok1,][c(hpts, hpts[1]),],
                         border=col[k], lwd=2*par("lwd"),
                         density=density[k], col=col[k], angle=ang[k])
             }
             ok1 <- ok & (dist < 2.5*median(dist[ok]))
-            if(length(ok1)>3){
+            if(sum(ok1)>3){
                 hpts <- chull(data[ok1,])
                 polygon(data[ok1,][c(hpts, hpts[1]),], border=col[k], lty=2)
             }

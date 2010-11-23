@@ -59,12 +59,11 @@ stepcclust(...)
   \item{seed}{If not \code{NULL}, a call to \code{set.seed()} is made
     before any clustering is done.}
 
-  \item{multicore}{If \code{TRUE}, use package multicore for parallel
-    processing if available. Availability of \pkg{multicore} is checked
-    when \pkg{flexclust} is loaded and stored in
-    \code{getOption("flexclust")$have_multicore}. Set to \code{FALSE}
-    for debugging and more sensible error messages in case something
-    goes wrong.}
+  \item{multicore}{If \code{TRUE}, use package \pkg{multicore} for
+    parallel processing if available. In addition, it may be a
+    workstation cluster object as returned by
+    \code{\link[snow]{makeCluster}} from package \pkg{snow}, see
+    examples in \code{\link{bootFlexclust}}.}
 
   \item{y}{Not used.}
 
@@ -83,6 +82,11 @@ stepcclust(...)
 \details{
   \code{stepcclust} is a simple wrapper for
   \code{stepFlexclust(...,FUN=cclust)}.
+
+  Availability of \pkg{multicore} is checked when \pkg{flexclust} is
+  loaded and stored in \code{getOption("flexclust")$have_multicore}. Set
+  to \code{FALSE} for debugging and more sensible error messages in case
+  something goes wrong.
 }
 \author{Friedrich Leisch}
 \examples{

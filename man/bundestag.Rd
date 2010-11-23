@@ -1,23 +1,25 @@
 %
 %  Copyright (C) 2008 Friedrich Leisch
-%  $Id: bundestag.Rd 4366 2009-06-18 13:43:44Z leisch $
+%  $Id: bundestag.Rd 4464 2009-11-24 11:57:41Z leisch $
 %
 \name{bundestag}
 \alias{bundestag}
 \alias{btw2002}
 \alias{btw2005}
+\alias{btw2009}
 \title{German Parliament Election Data}
 \description{
-  Results of the elections 2002 and 2005 for the German Bundestag, the
+  Results of the elections 2002, 2005 or 2009 for the German Bundestag, the
   first chamber of the German parliament.
 }
 \usage{
 data(btw2002)
 data(btw2005)
+data(btw2009)
 bundestag(year, second=TRUE, percent=TRUE, nazero=TRUE, state=FALSE)
 }
 \format{
-  \code{btw2002} and \code{btw2005} are data frames with 299 rows
+  \code{btw200x} are data frames with 299 rows
   (corresponding to constituencies) and 17 columns. All columns except
   \code{state} are numeric.
   \describe{
@@ -50,7 +52,7 @@ bundestag(year, second=TRUE, percent=TRUE, nazero=TRUE, state=FALSE)
     \code{\link{grep}} for the corresponding state(s), see examples.}
 }
 \details{
-  \code{btw2002} and \code{btw2005} are the original data sets.
+  \code{btw200x} are the original data sets.
   \code{bundestag()} is a helper function which extracts first
   or second votes, calculates percentages (number of votes for a party divided by
   number of valid votes), replaces missing values by zero, and converts
@@ -60,7 +62,7 @@ bundestag(year, second=TRUE, percent=TRUE, nazero=TRUE, state=FALSE)
 } 
 \section{German Federal Elections}{ Half of the Members of the German
   Bundestag are elected directly from Germany's 299 constituencies, the
-  other half on the parties' land lists.  Accordingly, each voter has
+  other half on the parties' state lists.  Accordingly, each voter has
   two votes in the elections to the German Bundestag. The first vote,
   allowing voters to elect their local representatives to the Bundestag,
   decides which candidates are sent to Parliament from the
@@ -83,6 +85,8 @@ p02 <- bundestag(2002)
 pairs(p02)
 p05 <- bundestag(2005)
 pairs(p05)
+p09 <- bundestag(2009)
+pairs(p09)
 
 state <- bundestag(2002, state=TRUE)
 table(state)
@@ -90,5 +94,5 @@ table(state)
 start.with.b <- bundestag(2002, state="^B")
 table(start.with.b)
 
-pairs(p05, col=2-(state=="Bayern"))
+pairs(p09, col=2-(state=="Bayern"))
 }

@@ -9,7 +9,7 @@ bootFlexclust <- function(x, k, nboot=100, correct=TRUE, seed=NULL,
     MYCALL <- match.call()
 
     if(!is.null(seed)) set.seed(seed)
-    seed <- round(1e6*runif(nboot))
+    seed <- round(2^31 * runif(nboot, -1, 1))
 
     nk <- length(k)
     nx <- nrow(x)
@@ -25,7 +25,7 @@ bootFlexclust <- function(x, k, nboot=100, correct=TRUE, seed=NULL,
     }
 
     BFUN <- function(b){
-        if(verbose &! multicore){
+        if(verbose){
             if((b %% 100) == 0)
                 cat("\n")
             if((b %% 10) == 0)

@@ -19,13 +19,15 @@ citEntry(entry = "Article",
 	 author = "Friedrich Leisch",
          title = "Neighborhood graphs, stripes and shadow plots for cluster visualization",
          journal = "Statistics and Computing",
-         year = 2009,
-         note = "Accepted for publication on 2009-06-16",
+         year = 2010,
+	 volume = 20,
+	 issue = 4,
+	 pages = "457--469",
          doi = "10.1007/s11222-009-9137-8",
 
          header = "Visualization methods are explained in:",
 
-         textVersion = "Friedrich Leisch. Neighborhood graphs, stripes and shadow plots for cluster visualization. Statistics and Computing, 2009. Accepted for publication on 2009-06-16.")
+         textVersion = "Friedrich Leisch. Neighborhood graphs, stripes and shadow plots for cluster visualization. Statistics and Computing, 20 (4), 457-469, 2010.")
 
          
         

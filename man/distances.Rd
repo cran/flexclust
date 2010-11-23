@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: distances.Rd 1849 2005-10-10 06:15:57Z leisch $
+%  $Id: distances.Rd 4435 2009-11-06 17:09:15Z leisch $
 %
 \name{distances}
 \alias{centAngle}
