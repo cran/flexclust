@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005-2009 Friedrich Leisch
-%  $Id: stepFlexclust.Rd 4381 2009-07-24 11:48:57Z leisch $
+%  $Id: stepFlexclust.Rd 4640 2010-11-24 11:54:47Z leisch $
 %
 \name{stepFlexclust}
 \alias{stepFlexclust}

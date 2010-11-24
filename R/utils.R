@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005-2008 Friedrich Leisch
-#  $Id: utils.R 4373 2009-07-02 09:13:47Z leisch $
+#  $Id: utils.R 4640 2010-11-24 11:54:47Z leisch $
 #
 
 list2object = function(from, to){
@@ -116,7 +116,7 @@ expandColors <- function(col, object)
 MClapply <- function(X, FUN, multicore=TRUE, ...)
 {
     if(inherits(multicore, "cluster"))
-        parLapply(cl, X, FUN)
+        parLapply(multicore, X, FUN)
     else if(multicore & getOption("flexclust")$have_multicore)
         multicore::mclapply(X, FUN, ...)
     else
