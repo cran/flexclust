@@ -1,3 +1,21 @@
+Changes in flexclust version 1.3-2
+
+  o It was not documented that argument k in kcca() and cclust() can
+    also be a vector of initial cluster assignments (in addition to
+    number of clusters and matrix of centroids). The feature has been
+    available for a long time.
+
+  o The line segments to the poulation mean in the barchart() method
+    can now have a diffent color than the corresponding points.
+
+  o It is now documented and checked that parallel processing with
+    snow currently works only for bootFlexclust(), not stepFlexclust().
+
+  o New initialization strategy kmeans++ for kcca() and cclust(),
+    invoked using the control argument. Users can also specify and
+    implement their own initialization strategies.
+
+
 Changes in flexclust version 1.3-1
 
   o Bugfix in parallel processing with snow.

@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2009 Friedrich Leisch
-%  $Id: bootFlexclust.Rd 4641 2010-11-24 14:22:14Z leisch $
+%  $Id: bootFlexclust.Rd 4643 2010-11-25 06:29:46Z leisch $
 %
 \name{bootFlexclust}
 \alias{bootFlexclust}
@@ -65,15 +65,14 @@ bootFlexclust(x, k, nboot=100, correct=TRUE, seed=NULL,
 ## data uniform on unit square
 x <- matrix(runif(400), ncol=2)
 
+cl <- FALSE
+
 \dontrun{
 ## to run bootstrap replications on snow cluster do the following:
 library("snow")
-cl <- makeCluster(rep("localhost", 2), type = "SOCK")
+cl <- makeCluster(2, type = "SOCK")
 clusterCall(cl, function() require("flexclust"))
 }
-
-## omit the following to use snow from above
-cl <- TRUE
 
 ## 50 bootstrap replicates for speed in example,
 ## use more for real applications

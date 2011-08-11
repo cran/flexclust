@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2006-2009 Friedrich Leisch
-#  $Id: barplot.R 4491 2009-12-16 15:08:12Z leisch $
+#  $Id: barplot.R 4661 2011-01-19 12:40:22Z leisch $
 #
 
 setMethod("barplot", "kccasimple",
@@ -93,7 +93,7 @@ function (height, bycluster = TRUE, oneplot = TRUE,
 
 setMethod("barchart", "kccasimple",
 function(x, data, xlab="", strip.labels=NULL, strip.prefix="Cluster ",
-         col=NULL, mcol="darkred", which=NULL, legend=FALSE, ...)
+         col=NULL, mcol="darkred", mlcol=mcol, which=NULL, legend=FALSE, ...)
 {
     if(is.null(strip.labels)){
         SIZE <- info(x, "size")
@@ -103,9 +103,10 @@ function(x, data, xlab="", strip.labels=NULL, strip.prefix="Cluster ",
     }
 
     if(is.null(mcol)) mcol <- NA
+    if(is.null(mlcol)) mlcol <- NA
 
     b <- Barchart(x=x@centers, m=x@xcent, strip.labels=strip.labels,
-                  xlab=xlab, col=col, mcol=mcol, which=which, ...)
+                  xlab=xlab, col=col, mcol=mcol, mlcol=mlcol, which=which, ...)
 
     if(legend){
         grid.newpage()
@@ -116,7 +117,7 @@ function(x, data, xlab="", strip.labels=NULL, strip.prefix="Cluster ",
 
         grid.text("Population center:", 0.1, 0.5, just=1)
         grid.segments(x0=0.12, y0=0.5, x1=0.2, y1=0.5,
-                      gp=gpar(col=mcol))
+                      gp=gpar(col=mlcol))
         grid.points(0.2, 0.5, pch=16,
                     size=unit(0.5, "char"), gp=gpar(col=mcol))
 
@@ -152,7 +153,7 @@ function(x, data, xlab="", strip.labels=NULL, strip.prefix="Cluster ",
 ### labels: text for panel header strips (default is rownames(x))
 ### REST: see barchart method for kccasimple objects
 Barchart <- function(x, m, which=NULL, col=NULL, mcol="darkred",
-                     strip.labels=NULL, xlab="", ...)
+                     mlcol=mcol, strip.labels=NULL, xlab="", ...)
 {
     x <- as.matrix(x)
     m <- as.vector(m)
@@ -175,7 +176,7 @@ Barchart <- function(x, m, which=NULL, col=NULL, mcol="darkred",
 
     x <- as.data.frame(as.table(x))
 
-    panel <- createBarchartPanel(m=m, col=col, mcol=mcol)
+    panel <- createBarchartPanel(m=m, col=col, mcol=mcol, mlcol=mlcol)
 
     barchart(Var2~Freq|Var1, data=x,
              panel=panel, as.table=TRUE,
@@ -183,7 +184,7 @@ Barchart <- function(x, m, which=NULL, col=NULL, mcol="darkred",
 }
 
 
-createBarchartPanel <- function(m, col, mcol)
+createBarchartPanel <- function(m, col, mcol, mlcol)
 {
     KKK <- 1
     KKKplus <- function() KKK <<- KKK+1
@@ -198,6 +199,7 @@ createBarchartPanel <- function(m, col, mcol)
         grey <- flxColors(color="dark", grey=TRUE)
         COL <- rep("white", length(x))
         MCOL <- rep(grey, length=length(x))
+        MLCOL <- rep(grey, length=length(x))
         BCOL <- rep(grey, length=length(x))
             
         if(length(shade)==1){
@@ -218,16 +220,23 @@ createBarchartPanel <- function(m, col, mcol)
         
         COL[shade] <- col[KKK]
         MCOL[shade] <- mcol
+        MLCOL[shade] <- mlcol
         BCOL[shade] <- "black"
         
         MCOL[is.na(x)] <- NA
-        grid.segments(x0=0, y0=1:length(x), x1=m, y1=1:length(x),
-                      gp=gpar(col=MCOL),
-                      default.units="native")
+        MLCOL[is.na(x)] <- NA
+        
+        if(!all(is.na(MLCOL)))
+            grid.segments(x0=0, y0=1:length(x), x1=m, y1=1:length(x),
+                          gp=gpar(col=MLCOL),
+                          default.units="native")
 
         panel.barchart(x, y, col=COL, border=BCOL, ...)
-        grid.points(m, 1:length(x), pch=16,
-                    size=unit(0.5, "char"), gp=gpar(col=MCOL))
+
+        if(!all(is.na(MCOL)))
+            grid.points(m, 1:length(x), pch=16,
+                        size=unit(0.5, "char"), gp=gpar(col=MCOL))
+        
         grid.segments(1, 1, 4, 4)
         KKKplus()
     }

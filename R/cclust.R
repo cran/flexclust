@@ -33,7 +33,7 @@ cclust <- function (x, k, dist = "euclidean", method = "kmeans",
     perm <- sample(N)
     x <- x[perm, ]
 
-    centers <- initCenters(x, k, family)
+    centers <- initCenters(x, k, family, control)
     cluster <- centers$cluster
     k <- centers$k
     centers <- centers$centers

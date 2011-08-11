@@ -17,6 +17,7 @@ setClass("flexclustControl",
                         tolerance="numeric",
                         verbose="numeric",
                         classify="character",
+                        initcent="character",
                         gamma="numeric",          # for kcca
                         simann="numeric",         # for kcca
                         ntry="numeric",           # for qtclust
@@ -27,6 +28,7 @@ setClass("flexclustControl",
                    tolerance=10e-7,
                    verbose=0,
                    classify="auto",
+                   initcent="randomcent",
                    gamma=1,
                    simann=c(0.3, 0.95, 10),
                    ntry=5,

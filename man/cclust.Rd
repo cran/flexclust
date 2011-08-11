@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: cclust.Rd 3977 2008-05-09 09:43:48Z leisch $
+%  $Id: cclust.Rd 4650 2010-12-08 11:59:21Z leisch $
 %
 \name{cclust}
 \title{Convex Clustering}
@@ -18,7 +18,8 @@ cclust(x, k, dist = "euclidean", method = "kmeans",
   \item{x}{A numeric matrix of data, or an object that can be coerced to
     such a matrix (such as a numeric vector or a data frame with all
     numeric columns).}
-  \item{k}{Either the number of clusters or a set of initial
+  \item{k}{Either the number of clusters, or a vector of cluster
+    assignments, or a matrix of initial
     (distinct) cluster centroids.  If a number, a random set of (distinct)
     rows in \code{x} is chosen as the initial centroids.}
   \item{dist}{Distance measure, one of \code{"euclidean"} (mean square

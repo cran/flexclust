@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005-2009 Friedrich Leisch
-#  $Id: kcca.R 4640 2010-11-24 11:54:47Z leisch $
+#  $Id: kcca.R 4663 2011-02-04 14:07:21Z leisch $
 #
 
 normWeights <- function(x) x/mean(x)
@@ -48,7 +48,7 @@ kcca <- function(x, k, family=kccaFamily("kmeans"), weights=NULL,
         weights <- rep(weights, length=N)
     }
     
-    centers <- initCenters(x, k, family)
+    centers <- initCenters(x, k, family, control)
     cluster <- centers$cluster
     k <- centers$k
     centers <- centers$centers
@@ -132,7 +132,7 @@ kcca <- function(x, k, family=kccaFamily("kmeans"), weights=NULL,
 
 ###**********************************************************
 
-initCenters <- function(x, k, family)
+initCenters <- function(x, k, family, control)
 {
     cluster <- integer(nrow(x))
     if(is.matrix(k)){
@@ -151,15 +151,33 @@ initCenters <- function(x, k, family)
             k <- as.integer(k)
             if(k<2) stop("number of clusters must be at least 2")
             ## we need to avoid duplicates here
-            ux <- na.omit(unique(x))
-            if(nrow(ux) < k)
+            x <- na.omit(unique(x))
+            if(nrow(x) < k)
                 stop("k larger than number of distinct complete data points in x")
-            centers <- ux[sample(1:nrow(ux), k), , drop=FALSE]
-            rm(ux)
+            centers <- do.call(control@initcent,
+                               list(x=x, k=k, family=family))
         }
     }
     list(centers=centers, cluster=cluster, k=k)
 }
+
+randomcent <- function(x, k, family)
+{
+    x[sample(1:nrow(x), k), , drop=FALSE]
+}
+
+kmeanspp <- function(x, k, family)
+{
+    centers <- matrix(0, nrow=k, ncol=ncol(x))
+    centers[1,] <- x[sample(1:nrow(x), 1), , drop=FALSE]
+    d <- family@dist(x, centers[1L,,drop=FALSE])^2
+    for(l in 2:k){
+        centers[l,] <- x[sample(1:nrow(x), 1, prob=d), , drop=FALSE]
+        d <- pmin(d, family@dist(x, centers[l,,drop=FALSE])^2)
+    }
+    centers
+}
+                  
 
 ###**********************************************************
 
@@ -403,6 +421,9 @@ stepFlexclust <- function(x, k, nrep=3, verbose=TRUE,
     MYCALL <- match.call()
     
     if(!is.null(seed)) set.seed(seed)
+    
+    if(!is.logical(multicore))
+        stop("argument multicore is not logical (TRUE or FALSE)")
     
     bestKcca <- function(x, k, ...)
     {

@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005-2009 Friedrich Leisch
-%  $Id: stepFlexclust.Rd 4640 2010-11-24 11:54:47Z leisch $
+%  $Id: stepFlexclust.Rd 4663 2011-02-04 14:07:21Z leisch $
 %
 \name{stepFlexclust}
 \alias{stepFlexclust}
@@ -60,10 +60,7 @@ stepcclust(...)
     before any clustering is done.}
 
   \item{multicore}{If \code{TRUE}, use package \pkg{multicore} for
-    parallel processing if available. In addition, it may be a
-    workstation cluster object as returned by
-    \code{\link[snow]{makeCluster}} from package \pkg{snow}, see
-    examples in \code{\link{bootFlexclust}}.}
+    parallel processing if available.}
 
   \item{y}{Not used.}
 
@@ -93,7 +90,8 @@ stepcclust(...)
 data("Nclus")
 plot(Nclus)
 
-cl1 = stepFlexclust(Nclus, k=2:7, FUN=cclust)
+## multicore off for CRAN checks
+cl1 = stepFlexclust(Nclus, k=2:7, FUN=cclust, multicore=FALSE)
 cl1
 
 plot(cl1)

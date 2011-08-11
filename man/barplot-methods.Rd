@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005-2009 Friedrich Leisch
-%  $Id: barplot-methods.Rd 4405 2009-09-14 16:49:24Z leisch $
+%  $Id: barplot-methods.Rd 4661 2011-01-19 12:40:22Z leisch $
 %
 \name{barplot-methods}
 \docType{methods}
@@ -20,7 +20,7 @@
 
 \S4method{barchart}{kcca}(x, data, xlab="",
     strip.labels=NULL, strip.prefix="Cluster ",
-    col=NULL, mcol="darkred", which=NULL, legend=FALSE, ...)
+    col=NULL, mcol="darkred", mlcol=mcol, which=NULL, legend=FALSE, ...)
 }
 \arguments{
   \item{height, x}{An object of class \code{"kcca"}.}
@@ -40,9 +40,10 @@
   \item{names.arg}{A vector of names to be plotted below each bar.}
   \item{main, oma, xlab, \ldots}{Graphical parameters.}
   \item{col}{Vector of colors for the clusters.}
-  \item{mcol}{If not \code{NULL}, the value of
+  \item{mcol,mlcol}{If not \code{NULL}, the value of
     \code{FUN} for the complete data set is plotted over each bar as a
-    line segment with color \code{mcol}.}
+    point with color \code{mcol} and a line segment starting in zero
+    with color \code{mlcol}.} 
   \item{srt}{Number between 0 and 90, rotation of the x-axis labels.}
   \item{strip.labels}{Vector of strings for the strips of the Trellis
     display.}
@@ -56,6 +57,9 @@
     the bars, and sorts them from top to bottom. Default barcharts in
     lattice are the other way round (bottom to top). See the examples
     below how this affects, e.g., manual labels for the y axis.
+
+    The \code{barplot} method is legacy code and only maintained to keep up
+    with changes in R, all active development is done on \code{barchart}.
 }
 \author{Friedrich Leisch}
 \keyword{methods}
@@ -73,10 +77,15 @@
   barchart(cl)
   ## automatic abbreviation of labels
   barchart(cl, scales=list(abbreviate=TRUE))
+  ## origin of bars at zero
+  barchart(cl, scales=list(abbreviate=TRUE), origin=0)
 
   ## Use manual labels. Note that the flexclust barchart orders bars
   ## from top to bottom (the default does it the other way round), hence
   ## we have to rev() the labels:
   LAB <- c("SL", "SW", "PL", "PW")
-  barchart(cl, scales=list(y=list(labels=rev(LAB))))
+  barchart(cl, scales=list(y=list(labels=rev(LAB))), origin=0)
+
+  ## deviation of each cluster center from the population means
+  barchart(cl, origin=rev(cl@xcent), mlcol=NULL)
 }

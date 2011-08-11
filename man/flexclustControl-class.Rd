@@ -38,6 +38,10 @@
     \item{\code{classify}:}{Character string, one of \code{"auto"},
       \code{"weighted"}, \code{"hard"} or \code{"simann"}.}
     
+    \item{\code{initcent}:}{Character string, name of function for
+      initial centroids, currently \code{"randomcent"} (the default) and
+      \code{"kmeanspp"} are available.}
+    
     \item{\code{gamma}:}{Gamma value for weighted hard competitive
       learning.}
     \item{\code{simann}:}{Parameters for simulated annealing
@@ -74,9 +78,13 @@
   examples section on how to obtain default values.
 }
 \references{
-  Martinetz T., Berkovich S., and Schulten K (1993). `Neural-Gas'
+  Martinetz T., Berkovich S., and Schulten K. (1993). "Neural-Gas
   Network for Vector Quantization and its Application to Time-Series
-  Prediction. IEEE Transactions on Neural Networks, 4 (4), pp. 558--569.
+  Prediction." IEEE Transactions on Neural Networks, 4 (4), pp. 558--569.
+
+  Arthur D. and Vassilvitskii S. (2007). "k-means++: the advantages of
+  careful seeding". Proceedings of the 18th annual ACM-SIAM symposium on
+  Discrete algorithms. pp. 1027-1035.
 }
 \author{Friedrich Leisch}
 \seealso{

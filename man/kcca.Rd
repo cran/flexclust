@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005-2009 Friedrich Leisch
-%  $Id: kcca.Rd 4405 2009-09-14 16:49:24Z leisch $
+%  $Id: kcca.Rd 4650 2010-12-08 11:59:21Z leisch $
 %
 \name{kcca}
 \alias{kcca}
@@ -28,10 +28,11 @@ kccaFamily(which=NULL, dist=NULL, cent=NULL, name=which,
     such a matrix (such as a numeric vector or a data frame with all
     numeric columns).}
   
-  \item{k}{Either the number of clusters or a set of initial
+  \item{k}{Either the number of clusters, or a vector of cluster
+    assignments, or a matrix of initial
     (distinct) cluster centroids.  If a number, a random set of (distinct)
     rows in \code{x} is chosen as the initial centroids.}
-
+  
   \item{family}{Object of class \code{kccaFamily}.}
 
   \item{weights}{An optional vector of weights to be used in the clustering
@@ -145,8 +146,11 @@ points(Nclus)
 barplot(cl1)
 
 
-## now use k-medians, cluster centroids should be similar ...
-cl2 = kcca(Nclus, k=4, family=kccaFamily("kmedians"))
+## now use k-medians and kmeans++ initialization, cluster centroids
+## should be similar...
+
+cl2 = kcca(Nclus, k=4, family=kccaFamily("kmedians"),
+           control=list(initcent="kmeanspp"))
 cl2
 
 ## ... but the boundaries of the partitions have a different shape
