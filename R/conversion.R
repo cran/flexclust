@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: conversion.R 4574 2010-07-14 12:09:10Z leisch $
+#  $Id: conversion.R 4807 2012-05-02 10:19:24Z leisch $
 #
 
 setOldClass("kmeans")
@@ -10,9 +10,10 @@ as.kcca <- function(object, ...) UseMethod("as.kcca")
 
 as.kcca.kmeans <- function(object, data, save.data=FALSE, ...)
 {
-    data <- as.matrix(data)
     call <- match.call()
     call[[1]] <- as.name("as.kcca")
+    
+    data <- as.matrix(data)
     fam <- kccaFamily("kmeans")
 
     z <- flexclust:::newKccaObject(x=data,
@@ -26,6 +27,26 @@ as.kcca.kmeans <- function(object, data, save.data=FALSE, ...)
 
     z
 }
+
+###**********************************************************
+
+as.kcca.skmeans <- function(object, data, save.data = FALSE, ...) 
+{
+    call <- match.call()
+    call[[1]] <- as.name("as.kcca")
+    fam <- kccaFamily("angle")
+    data <- fam@preproc(as.matrix(data))
+    z <- flexclust:::newKccaObject(x = data, family = fam,
+                                   centers = object$prototypes)
+    z@converged <- TRUE
+    z@iter <- as.integer(1)
+    z@call <- call
+    if (save.data) 
+        z@data <- ModelEnvMatrix(designMatrix = data)
+    z
+}
+
+###**********************************************************
 
 as.kcca.partition <- function(object, data=NULL, save.data=FALSE, ...)
 {
@@ -102,6 +123,10 @@ as.kcca.hclust <- function(object, data, k, family=NULL, save.data=FALSE, ...)
 
     z
 }
+
+###**********************************************************
+
+
 
 ###**********************************************************
 

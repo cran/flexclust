@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005-2009 Friedrich Leisch
-#  $Id: kcca.R 4663 2011-02-04 14:07:21Z leisch $
+#  $Id: kcca.R 4804 2012-03-21 14:07:47Z leisch $
 #
 
 normWeights <- function(x) x/mean(x)
@@ -419,6 +419,8 @@ stepFlexclust <- function(x, k, nrep=3, verbose=TRUE,
                           multicore=TRUE, ...)
 {
     MYCALL <- match.call()
+
+    if(is.character(FUN)) FUN <- get(FUN, mode="function")
     
     if(!is.null(seed)) set.seed(seed)
     

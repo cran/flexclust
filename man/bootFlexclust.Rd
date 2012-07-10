@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2009 Friedrich Leisch
-%  $Id: bootFlexclust.Rd 4643 2010-11-25 06:29:46Z leisch $
+%  $Id: bootFlexclust.Rd 4807 2012-05-02 10:19:24Z leisch $
 %
 \name{bootFlexclust}
 \alias{bootFlexclust}
@@ -36,10 +36,9 @@ bootFlexclust(x, k, nboot=100, correct=TRUE, seed=NULL,
   \item{seed}{If not \code{NULL}, a call to \code{set.seed()} is made
     before any clustering is done.}
 
-  \item{multicore}{If \code{TRUE}, use package \pkg{multicore} for
-    parallel processing if available. In addition, it may be a
-    workstation cluster object as returned by
-    \code{\link[snow]{makeCluster}} from package \pkg{snow}, see
+  \item{multicore}{If \code{TRUE}, use package \pkg{parallel} for
+    parallel processing. In addition, it may be a workstation cluster
+    object as returned by \code{\link[parallel]{makeCluster}}, see
     examples below.}
   
   \item{verbose}{If \code{TRUE}, show progress information during
@@ -68,9 +67,9 @@ x <- matrix(runif(400), ncol=2)
 cl <- FALSE
 
 \dontrun{
-## to run bootstrap replications on snow cluster do the following:
-library("snow")
-cl <- makeCluster(2, type = "SOCK")
+## to run bootstrap replications on a workstation cluster do the following:
+library("parallel")
+cl <- makeCluster(2, type = "PSOCK")
 clusterCall(cl, function() require("flexclust"))
 }
 

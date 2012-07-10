@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: cclust.R 3992 2008-06-23 14:16:23Z leisch $
+#  $Id: cclust.R 4717 2011-08-11 15:13:39Z leisch $
 #
 
 cclust <- function (x, k, dist = "euclidean", method = "kmeans",

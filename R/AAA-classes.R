@@ -1,16 +1,7 @@
 #
 #  Copyright (C) 2005-2009 Friedrich Leisch
-#  $Id: AAA-classes.R 4415 2009-09-26 08:11:42Z leisch $
+#  $Id: AAA-classes.R 4807 2012-05-02 10:19:24Z leisch $
 #
-
-.onLoad <- function(libname, pkgname) {
-    options("flexclust" =
-            list(have_multicore = !inherits(try(loadNamespace("multicore"),
-                                                silent=TRUE),
-                                            "try-error")))
-}
-
-###**********************************************************
 
 setClass("flexclustControl",
          representation(iter.max="numeric",
@@ -152,6 +143,25 @@ setClass("bootFlexclust",
                         index2="matrix",
                         rand="matrix",
                         call="call"))
+
+setClass("resampleFlexclust",
+         representation(k="integer",
+                        centers1="list",
+                        centers2="list",
+                        cluster1="list",
+                        cluster2="list",
+                        index1="list",
+                        index2="list",
+                        index3="list",
+                        validation="array",
+                        call="call"))
+
+setClass("resampleScheme",
+         representation(traintest="function",
+                        validate="function",
+                        valname="character"))
+
+
 
 ###**********************************************************
 

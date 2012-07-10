@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2009 Friedrich Leisch
-#  $Id: family.R 4382 2009-07-30 09:22:51Z leisch $
+#  $Id: family.R 4804 2012-03-21 14:07:47Z leisch $
 #
 
 kccaFamily <- function(which=NULL, dist=NULL,
@@ -46,6 +46,8 @@ kccaFamily <- function(which=NULL, dist=NULL,
         else if(which == "angle"){
             z@dist <- distAngle
             z@cent <- centAngle
+            z@wcent <- wcentAngle
+            z@weighted <- TRUE
             z@preproc <- function(x) x/sqrt(rowSums(x^2))
         }
         else if(which == "jaccard"){

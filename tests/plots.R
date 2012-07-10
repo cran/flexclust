@@ -25,12 +25,13 @@ flexclust:::stripes(c6, type="all", beside=TRUE)
 plot(flexclust:::shadow(c6))
 plot(flexclust:::Silhouette(c6))
 
-flexclust:::shadowStars(c6)
-flexclust:::shadowStars(c6, varwidth=TRUE)
-flexclust:::shadowStars(c6, varwidth=TRUE,
-                        panel=flexclust:::panelShadowSkeleton)
-flexclust:::shadowStars(c6, varwidth=TRUE,
-                        panel=flexclust:::panelShadowViolin)
-flexclust:::shadowStars(c6, varwidth=TRUE,
-                        panel=flexclust:::panelShadowBP)
+shadowStars(c6)
+shadowStars(c6, varwidth=TRUE)
+shadowStars(c6, varwidth=TRUE,
+            panel=flexclust:::panelShadowSkeleton)
+shadowStars(c6, varwidth=TRUE,
+            panel=flexclust:::panelShadowViolin)
+shadowStars(c6, varwidth=TRUE,
+            panel=flexclust:::panelShadowBP)
 
+dev.off()

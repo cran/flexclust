@@ -6,6 +6,7 @@ import(grid)
 import(lattice)
 import(modeltools)
 
+importFrom(parallel, mclapply, parLapply)
 importFrom(stats, fitted, predict)
 importFrom(stats4, summary)
 
@@ -27,6 +28,7 @@ export(
        randIndex,
        randomTour,
        randomTourMatrix,
+#       resampleFlexclust,
        shadow,
        shadowStars,
        Silhouette,
@@ -79,5 +81,6 @@ exportMethods(
 S3method(as.kcca, hclust)
 S3method(as.kcca, kmeans)
 S3method(as.kcca, partition)
+S3method(as.kcca, skmeans)
 
 

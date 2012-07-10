@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: distances.R 4382 2009-07-30 09:22:51Z leisch $
+#  $Id: distances.R 4804 2012-03-21 14:07:47Z leisch $
 #
 
 distEuclidean <- function(x, centers)
@@ -163,13 +163,19 @@ centAngle <- function(x)
     z/sqrt(sum(z^2))
 }
 
+wcentAngle <- function(x, weights)
+{
+    z <- colMeans(x*normWeights(weights))
+    z/sqrt(sum(z^2))
+}
+
 ###**********************************************************
 
 distCor <- function(x, centers)
 {
    z <- matrix(0,nrow(x), ncol=nrow(centers))
    for(k in 1:nrow(centers)){
-      z[,k] <- 1 - .Internal(cor(t(x),centers[k,], 1, 0))
+      z[,k] <- 1 - cor(t(x), centers[k,])
    }
    z
 }   

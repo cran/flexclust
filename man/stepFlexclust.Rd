@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005-2009 Friedrich Leisch
-%  $Id: stepFlexclust.Rd 4663 2011-02-04 14:07:21Z leisch $
+%  $Id: stepFlexclust.Rd 4800 2012-02-22 09:40:34Z leisch $
 %
 \name{stepFlexclust}
 \alias{stepFlexclust}
@@ -59,8 +59,8 @@ stepcclust(...)
   \item{seed}{If not \code{NULL}, a call to \code{set.seed()} is made
     before any clustering is done.}
 
-  \item{multicore}{If \code{TRUE}, use package \pkg{multicore} for
-    parallel processing if available.}
+  \item{multicore}{If \code{TRUE}, use \code{mclapply()} from package
+    \pkg{parallel} for parallel processing.}
 
   \item{y}{Not used.}
 
@@ -79,11 +79,6 @@ stepcclust(...)
 \details{
   \code{stepcclust} is a simple wrapper for
   \code{stepFlexclust(...,FUN=cclust)}.
-
-  Availability of \pkg{multicore} is checked when \pkg{flexclust} is
-  loaded and stored in \code{getOption("flexclust")$have_multicore}. Set
-  to \code{FALSE} for debugging and more sensible error messages in case
-  something goes wrong.
 }
 \author{Friedrich Leisch}
 \examples{

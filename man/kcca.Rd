@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005-2009 Friedrich Leisch
-%  $Id: kcca.Rd 4650 2010-12-08 11:59:21Z leisch $
+%  $Id: kcca.Rd 4717 2011-08-11 15:13:39Z leisch $
 %
 \name{kcca}
 \alias{kcca}

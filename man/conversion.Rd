@@ -1,12 +1,13 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: conversion.Rd 4574 2010-07-14 12:09:10Z leisch $
+%  $Id: conversion.Rd 4807 2012-05-02 10:19:24Z leisch $
 %
 \name{conversion}
 \alias{as.kcca}
 \alias{as.kcca.hclust}
 \alias{as.kcca.kmeans}
 \alias{as.kcca.partition}
+\alias{as.kcca.skmeans}
 \alias{coerce,kccasimple,kmeans-method}
 \title{Conversion Between S3 Partition Objects and KCCA}
 \description{
@@ -21,6 +22,7 @@ as.kcca(object, ...)
 \S3method{as.kcca}{hclust}(object, data, k, family=NULL, save.data=FALSE, ...)
 \S3method{as.kcca}{kmeans}(object, data, save.data=FALSE, ...)
 \S3method{as.kcca}{partition}(object, data=NULL, save.data=FALSE, ...)
+\S3method{as.kcca}{skmeans}(object, data, save.data=FALSE, ...)
 \S4method{coerce}{kccasimple,kmeans}(from, to="kmeans", strict=TRUE)
 }
 \arguments{

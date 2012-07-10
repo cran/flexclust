@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: flexclustControl-class.Rd 4405 2009-09-14 16:49:24Z leisch $
+%  $Id: flexclustControl-class.Rd 4717 2011-08-11 15:13:39Z leisch $
 %
 \name{flexclustControl-class}
 \docType{class}

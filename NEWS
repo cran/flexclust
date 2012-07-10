@@ -1,3 +1,19 @@
+Changes in flexclust version 1.3-3
+
+  o bootFlexclust() did not work for k of length 1.
+
+  o Use package parallel instead of snow and multicore.
+
+  o Argument FUN of stepFlexclust() can be a character string 
+    naming the function. 
+
+  o kccaFamily("angle") supports weights.
+
+  o New conversion method as.kcca.skmeans().
+
+  o Use cor() instead of .Internal() cor.
+
+
 Changes in flexclust version 1.3-2
 
   o It was not documented that argument k in kcca() and cclust() can
