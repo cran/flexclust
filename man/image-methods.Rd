@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: image-methods.Rd 2479 2006-03-01 15:04:04Z leisch $
+%  $Id: image-methods.Rd 3 2013-06-12 10:06:43Z leisch $
 %
 \name{image-methods}
 \docType{methods}

@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2009 Friedrich Leisch
-#  $Id: family.R 4804 2012-03-21 14:07:47Z leisch $
+#  $Id: family.R 3 2013-06-12 10:06:43Z leisch $
 #
 
 kccaFamily <- function(which=NULL, dist=NULL,

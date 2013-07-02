@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: cclust.Rd 4650 2010-12-08 11:59:21Z leisch $
+%  $Id: cclust.Rd 3 2013-06-12 10:06:43Z leisch $
 %
 \name{cclust}
 \title{Convex Clustering}

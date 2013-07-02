@@ -1,6 +1,6 @@
 #
-#  Copyright (C) 2006-2009 Friedrich Leisch
-#  $Id: barplot.R 4661 2011-01-19 12:40:22Z leisch $
+#  Copyright (C) 2006-2013 Friedrich Leisch
+#  $Id: barplot.R 14 2013-07-02 09:56:24Z leisch $
 #
 
 setMethod("barplot", "kccasimple",
@@ -92,8 +92,9 @@ function (height, bycluster = TRUE, oneplot = TRUE,
 ###**********************************************************
 
 setMethod("barchart", "kccasimple",
-function(x, data, xlab="", strip.labels=NULL, strip.prefix="Cluster ",
-         col=NULL, mcol="darkred", mlcol=mcol, which=NULL, legend=FALSE, ...)
+function(x, data,  xlab="", strip.labels=NULL, strip.prefix="Cluster ",
+         col=NULL, mcol="darkred", mlcol=mcol, which=NULL, legend=FALSE,
+         shade=FALSE, diff=NULL, ...)
 {
     if(is.null(strip.labels)){
         SIZE <- info(x, "size")
@@ -106,10 +107,10 @@ function(x, data, xlab="", strip.labels=NULL, strip.prefix="Cluster ",
     if(is.null(mlcol)) mlcol <- NA
 
     b <- Barchart(x=x@centers, m=x@xcent, strip.labels=strip.labels,
-                  xlab=xlab, col=col, mcol=mcol, mlcol=mlcol, which=which, ...)
+                  xlab=xlab, col=col, mcol=mcol, mlcol=mlcol, which=which,
+                  shade=shade, diff=diff, ...)
 
     if(legend){
-        grid.newpage()
         plot(b, more=TRUE)
 
         pushViewport(viewport(x=0.2,y=0, width=0.8,height=0.05,
@@ -121,10 +122,8 @@ function(x, data, xlab="", strip.labels=NULL, strip.prefix="Cluster ",
         grid.points(0.2, 0.5, pch=16,
                     size=unit(0.5, "char"), gp=gpar(col=mcol))
 
-        grid.text("Segment centers :", 0.48, 0.5, just=1)
+        grid.text("Cluster centers :", 0.48, 0.5, just=1)
 
-        shade <- list(...)$shade
-        if(is.null(shade)) shade <- FALSE
         if(shade){        
             grid.rect(0.5,0.75,width=0.1,height=0.25, just=c(0,0.5),
                       gp=gpar(fill=flxColors(color="light")[3]))
@@ -136,7 +135,7 @@ function(x, data, xlab="", strip.labels=NULL, strip.prefix="Cluster ",
         }
         else{
             grid.rect(0.5, 0.5, width=0.1, height=0.25, just=c(0,0.5),
-                      gp=gpar(fill=flxColors(color="light")[3]))
+                      gp=gpar(fill=col[1]))
         }
         popViewport(1)
         lattice:::lattice.setStatus(print.more = FALSE)
@@ -153,7 +152,8 @@ function(x, data, xlab="", strip.labels=NULL, strip.prefix="Cluster ",
 ### labels: text for panel header strips (default is rownames(x))
 ### REST: see barchart method for kccasimple objects
 Barchart <- function(x, m, which=NULL, col=NULL, mcol="darkred",
-                     mlcol=mcol, strip.labels=NULL, xlab="", ...)
+                     mlcol=mcol, strip.labels=NULL, xlab="",
+                     shade=FALSE, diff=NULL, ...)
 {
     x <- as.matrix(x)
     m <- as.vector(m)
@@ -176,27 +176,29 @@ Barchart <- function(x, m, which=NULL, col=NULL, mcol="darkred",
 
     x <- as.data.frame(as.table(x))
 
-    panel <- createBarchartPanel(m=m, col=col, mcol=mcol, mlcol=mlcol)
+    panel <- createBarchartPanel(m=m, col=col, mcol=mcol, mlcol=mlcol,
+                                 shade=shade, diff=diff)
 
-    barchart(Var2~Freq|Var1, data=x,
-             panel=panel, as.table=TRUE,
+    barchart(Var2~Freq|Var1, data=x, panel=panel, as.table=TRUE,
              xlab=xlab, ...)
 }
 
 
-createBarchartPanel <- function(m, col, mcol, mlcol)
+createBarchartPanel <- function(m, col, mcol, mlcol, shade, diff)
 {
     KKK <- 1
     KKKplus <- function() KKK <<- KKK+1
 
-    mypanel <- function(x, y, shade=FALSE, diff=NULL, ...)
-    {
-        if(is.null(diff))
-            diff <- c(max(m)/4, 0.5)
-        else
-            diff <- rep(diff, length=2)
+    if(is.null(diff))
+        diff <- c(max(m)/4, 0.5)
+    else
+        diff <- rep(diff, length=2)
             
-        grey <- flxColors(color="dark", grey=TRUE)
+    grey <- flxColors(color="dark", grey=TRUE)
+
+
+    mypanel <- function(x, y, ...)
+    {
         COL <- rep("white", length(x))
         MCOL <- rep(grey, length=length(x))
         MLCOL <- rep(grey, length=length(x))
@@ -246,10 +248,15 @@ createBarchartPanel <- function(m, col, mcol, mlcol)
 ###**********************************************************
 
 propBarchart <- function(x, g, alpha=0.05, correct="holm",
+                         test="prop.test", sort=FALSE,
                          strip.prefix="", strip.labels=NULL,
                          which=NULL, ...)
 {
+    call <- match.call()
     x <- as(x, "matrix")
+    if(sort && is.null(which))
+        which <- rev(order(colMeans(x)))
+
     if(!is.null(which))
         x <- x[,which,drop=FALSE]
     storage.mode(x) <- "integer"
@@ -257,7 +264,7 @@ propBarchart <- function(x, g, alpha=0.05, correct="holm",
         stop("x must be a binary matrix")
     
     g <- as.factor(g)
-    b <- as.matrix(aggregate(x, list(g), mean, na.rm=TRUE)[,-1])
+    b <- 100 * as.matrix(aggregate(x, list(g), mean, na.rm=TRUE)[,-1])
     rownames(b) <- levels(g)
 
     ltab <- table(g)
@@ -267,15 +274,27 @@ propBarchart <- function(x, g, alpha=0.05, correct="holm",
         if(length(unique(strip.labels))!=nrow(b))
             stop("need as many unique strip.labels as non-empty groups in g")
 
-    p <- pa <- apply(x, 2, function(z) prop.test(table(g, z))$p.value)
+    if(is.character(test)) test <- get(test, mode="function")
+    
+    p <- pa <- apply(x, 2, function(z) test(table(g, z))$p.value)
     if(!is.null(correct))
         pa <- p.adjust(p, method=correct)
 
-    m <- colMeans(x, na.rm=TRUE)
+    m <- 100*colMeans(x, na.rm=TRUE)
+
+    cpval <- format.pval(pa, digits=3)
+    cpval[pa>alpha] <- "."
+    TAB <- cbind(t(round(b)), all=round(m), p.value=cpval)
 
     new("propBarchart", chart=Barchart(b, m, strip.labels=strip.labels,
                                        shade=pa<=alpha, col="grey", ...),
-        gprop = b, tprop = m, p.value=pa)
+        gprop = b, tprop = m, p.value=pa, table=TAB)
 }
 
-setMethod("show", "propBarchart", function(object) print(object@chart))
+setMethod("show", "propBarchart", function(object) plot(object@chart))
+
+setMethod("summary", "propBarchart",
+function(object, ...)
+{
+    print(object@table, quote=FALSE, ...)
+})

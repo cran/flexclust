@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: shadow.R 4366 2009-06-18 13:43:44Z leisch $
+#  $Id: shadow.R 3 2013-06-12 10:06:43Z leisch $
 #
 
 setClass("shadow",

@@ -1,6 +1,6 @@
 %
-%  Copyright (C) 2005-2009 Friedrich Leisch
-%  $Id: barplot-methods.Rd 4661 2011-01-19 12:40:22Z leisch $
+%  Copyright (C) 2005-2013 Friedrich Leisch
+%  $Id: barplot-methods.Rd 8 2013-06-28 16:06:50Z leisch $
 %
 \name{barplot-methods}
 \docType{methods}
@@ -18,9 +18,9 @@
     which = 1:height@k, names.arg = NULL,
     oma=par("oma"), col=NULL, mcol="darkred", srt=45, ...)
 
-\S4method{barchart}{kcca}(x, data, xlab="",
-    strip.labels=NULL, strip.prefix="Cluster ",
-    col=NULL, mcol="darkred", mlcol=mcol, which=NULL, legend=FALSE, ...)
+\S4method{barchart}{kcca}(x, data, xlab="", strip.labels=NULL,
+    strip.prefix="Cluster ", col=NULL, mcol="darkred", mlcol=mcol,
+    which=NULL, legend=FALSE, shade=FALSE, diff=NULL, ...)
 }
 \arguments{
   \item{height, x}{An object of class \code{"kcca"}.}
@@ -52,6 +52,12 @@
   \item{legend}{If \code{TRUE}, the barchart is always plotted on the
     current graphics device and a legend is added to the bottom of the
     plot.}
+  \item{shade}{If \code{TRUE}, only bars with large absolute or relative
+    deviation deviation from the  sample mean of the respective
+    variables are plotted in color.}
+  \item{diff}{A numerical vector of length two with absolute and
+    relative deviations for shading, default is \eqn{max/4} absolute
+    deviation and 50\% relative deviation.}
 }
 \note{The flexclust barchart method uses a horizontal arrangements of
     the bars, and sorts them from top to bottom. Default barcharts in
@@ -62,6 +68,11 @@
     with changes in R, all active development is done on \code{barchart}.
 }
 \author{Friedrich Leisch}
+\references{
+  Sara Dolnicar and Friedrich Leisch. Using graphical statistics to
+  better understand market segmentation solutions. International Journal
+  of Market Research, 2013, accepted for publication.
+}
 \keyword{methods}
 \keyword{hplot}
 \examples{
@@ -88,4 +99,10 @@
 
   ## deviation of each cluster center from the population means
   barchart(cl, origin=rev(cl@xcent), mlcol=NULL)
+
+  ## use shading to highlight large deviations from population mean
+  barchart(cl, shade=TRUE)
+
+  ## use smaller deviation limit than default and add a legend
+  barchart(cl, shade=TRUE, diff=0.2, legend=TRUE)
 }

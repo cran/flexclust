@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: qtclust.R 4123 2008-09-25 11:27:34Z leisch $
+#  $Id: qtclust.R 3 2013-06-12 10:06:43Z leisch $
 #
 
 qtclust <- function(x, radius, family=kccaFamily("kmeans"),

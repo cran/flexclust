@@ -21,7 +21,11 @@ export(
        clusterSim,
        dist2,
        flxColors,
+       groupBWplot,
        kcca,
+       kcca2df,
+#       paraBoot,
+       priceFeature,
        projAxes,
        propBarchart,
        qtclust,
@@ -35,6 +39,7 @@ export(
        stepcclust,
        stepFlexclust,
        stripes
+#       transitions
        )
 
 
@@ -56,9 +61,11 @@ exportMethods(
               barchart,
               barplot,
               boxplot,
+              bwplot,
               clusters,
               clusterSim,
               coerce,
+              comPart,
               densityplot,
               getModel,
               image,
@@ -82,5 +89,4 @@ S3method(as.kcca, hclust)
 S3method(as.kcca, kmeans)
 S3method(as.kcca, partition)
 S3method(as.kcca, skmeans)
-
-
+S3method(plot, priceFeature)

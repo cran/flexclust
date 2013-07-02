@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005-2009 Friedrich Leisch
-#  $Id: kcca.R 4804 2012-03-21 14:07:47Z leisch $
+#  $Id: kcca.R 3 2013-06-12 10:06:43Z leisch $
 #
 
 normWeights <- function(x) x/mean(x)
@@ -77,8 +77,11 @@ kcca <- function(x, k, family=kccaFamily("kmeans"), weights=NULL,
             k <- nrow(centers)
             
             changes <- sum(cluster!=clustold)
-            if(control@verbose && (iter%%control@verbose==0))
-                printIter(iter, changes, "Changes")
+            if(control@verbose && (iter%%control@verbose==0)){
+                td <- sum(distmat[cbind(1:N, cluster)])
+                printIter(iter, paste(changes, format(td), sep=" / "),
+                          "Changes / Distsum")
+            }
 
             if(changes==0) break
         }
@@ -412,124 +415,4 @@ function(object, freq=TRUE, distance=FALSE, ...)
         
     
 ###**********************************************************        
-
-stepFlexclust <- function(x, k, nrep=3, verbose=TRUE,
-                          FUN=kcca, drop=TRUE, group=NULL,
-                          simple=FALSE, save.data=FALSE, seed=NULL,
-                          multicore=TRUE, ...)
-{
-    MYCALL <- match.call()
-
-    if(is.character(FUN)) FUN <- get(FUN, mode="function")
-    
-    if(!is.null(seed)) set.seed(seed)
-    
-    if(!is.logical(multicore))
-        stop("argument multicore is not logical (TRUE or FALSE)")
-    
-    bestKcca <- function(x, k, ...)
-    {
-        seed <- as.list(round(2^31 * runif(nrep, -1, 1)))
-
-        res <- MClapply(seed, 
-                        function(y){
-                            set.seed(y)
-                            if(verbose) cat(" *")
-                            FUN(x=x, k=k, group=group, simple=TRUE,
-                                save.data=FALSE,
-                                ...)
-                        }, multicore=multicore)
-
-        distsum <- sapply(res, function(y) info(y, "distsum"))
-        res[[which.min(distsum)]]
-    }
-    
-    k = as.integer(k)
-    if(length(k)==0)
-        return(list())
-    
-    z = list()
-    MYCALL1 <- MYCALL
-    if("drop" %in% names(MYCALL))
-        MYCALL1[["drop"]] <- NULL
-    
-    for(n in 1:length(k)){
-        if(verbose) cat(k[n], ":")
-        kn <- as.character(k[n])
-        z[[kn]] = bestKcca(x=x, k=k[n], ...)
-        MYCALL1[["k"]] <- k[n]
-        z[[kn]]@call <- MYCALL1
-
-        if(!simple){
-            ## x is usually at the beginning of kcca() pre-porcessed,
-            ## here we have to do it manually!
-            z[[kn]] <- simple2kcca(x=z[[kn]]@family@preproc(x),
-                                   from=z[[kn]], group=group)
-        }
-        else{
-        }
-        if(verbose) cat("\n")
-    }
-
-    if(save.data){
-        me <- ModelEnvMatrix(designMatrix=x)
-        for(n in seq_along(z))
-            z[[n]]@data <- me
-    }
-    
-    if(drop && length(k)==1){
-        return(z[[1]])
-    }
-    else{
-        z <- new("stepFlexclust", models=z, k=as(k, "integer"),
-                 nrep=as(nrep, "integer"), call=MYCALL)
-        if(simple){
-            x <- z@models[[1]]@family@preproc(x)
-            z@xcent <- z@models[[1]]@family@cent(x)
-            z@totaldist <-
-                sum(z@models[[1]]@family@dist(x,
-                                              matrix(z@xcent,nrow=1)))
-        }
-        else{
-            z@xcent <- z@models[[1]]@xcent
-            z@totaldist <- z@models[[1]]@totaldist
-        }
-        return(z)
-    }
-}
-
-stepcclust <- function(...) stepFlexclust(..., FUN=cclust)
-
-
-setMethod("show", "stepFlexclust",
-function(object)
-{
-    cat("stepFlexclust object of family",
-        sQuote(object@models[[1]]@family@name),"\n\n")
-    cat("call:", deparse(object@call,0.75*getOption("width")),
-        sep="\n")
-    cat("\n")
-    
-    z <- data.frame(iter = sapply(object@models, function(x) x@iter),
-                    converged = sapply(object@models, function(x) x@converged),
-                    distsum = sapply(object@models,
-                                     function(x) info(x, "distsum")))
-
-    z1 <- data.frame(iter = NA,
-                     converged = NA,
-                     distsum = object@totaldist)
-    
-    z <- rbind(z1, z)
-    
-    print(z, na.string="")
-})
-    
-setMethod("getModel", "stepFlexclust",
-function(object, which=1)
-{
-    object@models[[which]]
-})
-
-setMethod("[[", signature(x="stepFlexclust", i="ANY", j="missing"),
-function(x, i, j) getModel(x, i))
 

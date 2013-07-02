@@ -1,8 +1,9 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: distances.Rd 4435 2009-11-06 17:09:15Z leisch $
+%  $Id: distances.Rd 13 2013-07-01 05:15:35Z leisch $
 %
 \name{distances}
+\alias{distances}
 \alias{centAngle}
 \alias{centMean}
 \alias{centMedian}

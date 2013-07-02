@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2008 Friedrich Leisch
-%  $Id: clusterSim.Rd 4125 2008-09-29 09:08:00Z leisch $
+%  $Id: clusterSim.Rd 3 2013-06-12 10:06:43Z leisch $
 %
 \name{clusterSim}
 \alias{clusterSim}

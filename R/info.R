@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: info.R 4415 2009-09-26 08:11:42Z leisch $
+#  $Id: info.R 3 2013-06-12 10:06:43Z leisch $
 #
 
 setMethod("info", signature(object="flexclust", which="character"),

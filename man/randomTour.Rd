@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2008 Friedrich Leisch
-%  $Id: randomTour.Rd 3977 2008-05-09 09:43:48Z leisch $
+%  $Id: randomTour.Rd 3 2013-06-12 10:06:43Z leisch $
 %
 \name{randomTour}
 \docType{methods}

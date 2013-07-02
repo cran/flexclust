@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2009 Friedrich Leisch
-%  $Id: shadowStars.Rd 4368 2009-06-18 13:47:13Z leisch $
+%  $Id: shadowStars.Rd 3 2013-06-12 10:06:43Z leisch $
 %
 \name{shadowStars}
 \alias{shadowStars}

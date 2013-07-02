@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2009 Friedrich Leisch
-%  $Id: bootFlexclust.Rd 4807 2012-05-02 10:19:24Z leisch $
+%  $Id: bootFlexclust.Rd 3 2013-06-12 10:06:43Z leisch $
 %
 \name{bootFlexclust}
 \alias{bootFlexclust}
@@ -61,17 +61,18 @@ bootFlexclust(x, k, nboot=100, correct=TRUE, seed=NULL,
   \code{\link{stepFlexclust}}
 }
 \examples{
+\dontrun{
+
 ## data uniform on unit square
 x <- matrix(runif(400), ncol=2)
 
 cl <- FALSE
 
-\dontrun{
 ## to run bootstrap replications on a workstation cluster do the following:
 library("parallel")
 cl <- makeCluster(2, type = "PSOCK")
 clusterCall(cl, function() require("flexclust"))
-}
+
 
 ## 50 bootstrap replicates for speed in example,
 ## use more for real applications
@@ -84,5 +85,5 @@ summary(bcl)
 ## solution (increase nboot if not)
 plot(bcl)
 densityplot(bcl, from=0)
-}
+}}
 \keyword{cluster}

@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: flxColors.Rd 3919 2008-03-18 12:35:45Z leisch $
+%  $Id: flxColors.Rd 3 2013-06-12 10:06:43Z leisch $
 %
 \name{flxColors}
 \alias{flxColors}

@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: distances.R 4804 2012-03-21 14:07:47Z leisch $
+#  $Id: distances.R 3 2013-06-12 10:06:43Z leisch $
 #
 
 distEuclidean <- function(x, centers)

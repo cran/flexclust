@@ -1,6 +1,6 @@
 ##
 ## Copyright (C) 2008 Friedrich Leisch
-## $Id: bundestag.R 4464 2009-11-24 11:57:41Z leisch $
+## $Id: bundestag.R 3 2013-06-12 10:06:43Z leisch $
 ##
 bundestag <- function(year, second=TRUE, percent=TRUE, nazero=TRUE,
                       state=FALSE)

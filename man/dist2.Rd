@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: dist2.Rd 1849 2005-10-10 06:15:57Z leisch $
+%  $Id: dist2.Rd 3 2013-06-12 10:06:43Z leisch $
 %
 \name{dist2}
 \alias{dist2}

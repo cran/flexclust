@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2008 Friedrich Leisch
-#  $Id: tour.R 4381 2009-07-24 11:48:57Z leisch $
+#  $Id: tour.R 3 2013-06-12 10:06:43Z leisch $
 #
 
 setGeneric("randomTour",

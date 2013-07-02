@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: qtclust.Rd 4513 2010-02-01 18:29:27Z leisch $
+%  $Id: qtclust.Rd 3 2013-06-12 10:06:43Z leisch $
 %
 \name{qtclust}
 \alias{qtclust}
@@ -33,17 +33,19 @@ qtclust(x, radius, family = kccaFamily("kmeans"), control = NULL,
     converged?}
 }
 \details{
-  This function implements a generalization of the QT clustering algorithm by
-  Heyer et al. (1999), see Scharl and Leisch (2006). The only difference
+  This function implements a variation of the QT clustering algorithm by
+  Heyer et al. (1999), see Scharl and Leisch (2006). The main difference
   is that in each iteration not
   all possible cluster start points are considered, but only a random
-  sample of size \code{control@ntry}. In most cases the resulting
+  sample of size \code{control@ntry}. We also consider only points as initial
+  centers where at least one other point is within a circle with radius
+  \code{radius}.  In most cases the resulting
   solutions are almost
   the same at a considerable speed increase, in some cases even better
   solutions are obtained than with the original algorithm. If
-  \code{control@ntry} is
-  set to the size of the data set, the original algorithm as proposed by
-  Heyer et al. (1999) is obtained.
+  \code{control@ntry} is set to the size of the data set, an algorithm
+  similar to the original algorithm as proposed by Heyer et al. (1999)
+  is obtained.
 }
 \value{
   Function \code{qtclust} by default returns objects of class

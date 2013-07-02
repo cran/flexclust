@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: projAxes.Rd 4405 2009-09-14 16:49:24Z leisch $
+%  $Id: projAxes.Rd 3 2013-06-12 10:06:43Z leisch $
 %
 \name{projAxes}
 \alias{projAxes}

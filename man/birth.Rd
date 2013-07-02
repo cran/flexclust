@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: birth.Rd 1661 2005-06-10 08:08:02Z leisch $
+%  $Id: birth.Rd 3 2013-06-12 10:06:43Z leisch $
 %
 \name{birth}
 \alias{birth}

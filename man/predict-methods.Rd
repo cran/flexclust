@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: predict-methods.Rd 4366 2009-06-18 13:43:44Z leisch $
+%  $Id: predict-methods.Rd 3 2013-06-12 10:06:43Z leisch $
 %
 \name{predict-methods}
 \docType{methods}

@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: plot.R 4550 2010-04-19 14:14:06Z leisch $
+#  $Id: plot.R 3 2013-06-12 10:06:43Z leisch $
 #
 
 setGeneric("plot")
@@ -11,14 +11,14 @@ function(x, y, which=1:2, project=NULL,
          hull=TRUE, hull.args=NULL, 
          number = TRUE, simlines=TRUE,
          lwd=1, maxlwd=8*lwd, cex=1.5, numcol=FALSE, nodes=16,
-         add=FALSE, xlab="", ylab="", xlim = NULL,
+         add=FALSE, xlab=NULL, ylab=NULL, xlim = NULL,
          ylim = NULL, pch=NULL, col=NULL, ...)
 {
     if(length(which)!=2)
         stop(sQuote("which"), " must have length 2")
 
-    ## try to get data from cluuster object
-    if(is.null(data)) data <- getData(x)
+    ## try to get data from cluster object
+    if(is.null(data)) data <- flexclust:::getData(x)
 
     ## if still NULL we cannot draw points and hulls even if user wants to
     if(is.null(data)){
@@ -34,6 +34,13 @@ function(x, y, which=1:2, project=NULL,
         }
     }    
     centers <- project(x@centers)[,which]
+    if(!is.null(colnames(centers))){
+        if(is.null(xlab)) xlab <- colnames(centers)[which[1]]
+        if(is.null(ylab)) ylab <- colnames(centers)[which[2]]
+    }
+    if(is.null(xlab)) xlab <- ""
+    if(is.null(ylab)) ylab <- ""
+    
     xrange <- apply(centers, 2, range)
 
     if(is(hull, "function")){
@@ -128,7 +135,7 @@ function(x, y, which=1:2, project=NULL,
 })
 
 clusterEllipses <- function(data, cluster, dist, col,
-                            level=c(0.5, 0.95))
+                            level=c(0.5, 0.95), lwd=2*par("lwd"))
 {
     level <- sort(rep(level, length=2))
     col <- rep(col, length=max(cluster))
@@ -138,16 +145,17 @@ clusterEllipses <- function(data, cluster, dist, col,
             lines(ellipse::ellipse(cov(data[ok,]),
                                    centre=colMeans(data[ok,]),
                                    level=level[1]),
-                  col=col[k], lwd=2*par("lwd"))
+                  col=col[k], lwd=lwd)
             lines(ellipse::ellipse(cov(data[ok,]),
                                    centre=colMeans(data[ok,]),
                                    level=level[2]),
-                  col=col[k], lty=2)
+                  col=col[k], lty=2, lwd=lwd/2)
         }
     }
 }
 
-clusterHulls <- function(data, cluster, dist, col, density=0)
+clusterHulls <- function(data, cluster, dist, col,
+                         density=0, lwd=2*par("lwd"))
 {
     K <- max(cluster)
     col <- rep(col, length=K)
@@ -162,13 +170,14 @@ clusterHulls <- function(data, cluster, dist, col, density=0)
             if(sum(ok1)>3){
                 hpts <- chull(data[ok1,])
                 polygon(data[ok1,][c(hpts, hpts[1]),],
-                        border=col[k], lwd=2*par("lwd"),
+                        border=col[k], lwd=lwd,
                         density=density[k], col=col[k], angle=ang[k])
             }
             ok1 <- ok & (dist < 2.5*median(dist[ok]))
             if(sum(ok1)>3){
                 hpts <- chull(data[ok1,])
-                polygon(data[ok1,][c(hpts, hpts[1]),], border=col[k], lty=2)
+                polygon(data[ok1,][c(hpts, hpts[1]),], border=col[k],
+                        lty=2, lwd=lwd/2)
             }
         }
     }

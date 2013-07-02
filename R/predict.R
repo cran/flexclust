@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: predict.R 3937 2008-03-28 14:56:01Z leisch $
+#  $Id: predict.R 3 2013-06-12 10:06:43Z leisch $
 #
 
 setMethod("clusters", signature(object="flexclust", newdata="missing"),

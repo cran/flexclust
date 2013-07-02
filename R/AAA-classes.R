@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005-2009 Friedrich Leisch
-#  $Id: AAA-classes.R 4807 2012-05-02 10:19:24Z leisch $
+#  $Id: AAA-classes.R 14 2013-07-02 09:56:24Z leisch $
 #
 
 setClass("flexclustControl",
@@ -94,6 +94,7 @@ setClass("flexclust",
                         iter="integer",
                         converged="logical",
                         clusinfo="data.frame",
+                        index="numeric",
                         call="call",
                         control="flexclustControl",
                         data="ModelEnv"))
@@ -152,7 +153,7 @@ setClass("resampleFlexclust",
                         cluster2="list",
                         index1="list",
                         index2="list",
-                        index3="list",
+                        indextest="list",
                         validation="array",
                         call="call"))
 
@@ -170,7 +171,9 @@ setClass("propBarchart",
          representation(chart="trellis",
                         gprop="matrix",
                         tprop="numeric",
-                        p.value="numeric"))
+                        p.value="numeric",
+                        table="matrix",
+                        call="call"))
          
 ###**********************************************************
 

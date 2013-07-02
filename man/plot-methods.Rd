@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: plot-methods.Rd 3977 2008-05-09 09:43:48Z leisch $
+%  $Id: plot-methods.Rd 3 2013-06-12 10:06:43Z leisch $
 %
 \name{plot-methods}
 \docType{methods}

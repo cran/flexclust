@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2009 Friedrich Leisch
-#  $Id: bootstrap.R 4807 2012-05-02 10:19:24Z leisch $
+#  $Id: bootstrap.R 3 2013-06-12 10:06:43Z leisch $
 #
 
 bootFlexclust <- function(x, k, nboot=100, correct=TRUE, seed=NULL,

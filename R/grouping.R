@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2006 Friedrich Leisch
-#  $Id: grouping.R 2925 2006-09-07 12:56:48Z leisch $
+#  $Id: grouping.R 3 2013-06-12 10:06:43Z leisch $
 #
 
 

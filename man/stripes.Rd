@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2009 Friedrich Leisch
-%  $Id: stripes.Rd 4405 2009-09-14 16:49:24Z leisch $
+%  $Id: stripes.Rd 3 2013-06-12 10:06:43Z leisch $
 %
 \name{stripes}
 \alias{stripes}

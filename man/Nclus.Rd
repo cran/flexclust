@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2004-2005 Friedrich Leisch
-%  $Id: Nclus.Rd 4123 2008-09-25 11:27:34Z leisch $
+%  $Id: Nclus.Rd 3 2013-06-12 10:06:43Z leisch $
 %
 \name{Nclus}
 \alias{Nclus}

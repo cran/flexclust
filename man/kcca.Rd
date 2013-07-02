@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005-2009 Friedrich Leisch
-%  $Id: kcca.Rd 4717 2011-08-11 15:13:39Z leisch $
+%  $Id: kcca.Rd 3 2013-06-12 10:06:43Z leisch $
 %
 \name{kcca}
 \alias{kcca}
@@ -130,7 +130,8 @@ kccaFamily(which=NULL, dist=NULL, cent=NULL, name=which,
   sufficient.
 }
 \author{Friedrich Leisch}
-\seealso{\code{\link{stepFlexclust}}, \code{\link{cclust}}}
+\seealso{\code{\link{stepFlexclust}}, \code{\link{cclust}},
+  \code{\link{distances}}}
 \examples{
 data("Nclus")
 plot(Nclus)

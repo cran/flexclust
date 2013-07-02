@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: conversion.Rd 4807 2012-05-02 10:19:24Z leisch $
+%  $Id: conversion.Rd 3 2013-06-12 10:06:43Z leisch $
 %
 \name{conversion}
 \alias{as.kcca}
