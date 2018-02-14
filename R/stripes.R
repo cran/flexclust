@@ -9,8 +9,7 @@ stripes <- function(object, groups=NULL, type=c("first", "second", "all"),
 
     xd <- NULL
     if(type=="all"){
-        xd <- object@family@dist(flexclust:::getData(object),
-                                 object@centers)
+        xd <- object@family@dist(getData(object), object@centers)
     }
     
     if(is.null(ylim)){

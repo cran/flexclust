@@ -10,6 +10,13 @@ importFrom(parallel, mclapply, parLapply)
 importFrom(stats, fitted, predict)
 importFrom(stats4, summary)
 
+importFrom("grDevices", "chull", "grey", "hcl")
+importFrom("stats", "aggregate", "approx", "complete.cases", "cor",
+           "cov", "cutree", "density", "dist", "kruskal.test",
+           "median", "optim", "p.adjust", "quantile", "rnorm", "runif")
+importFrom("utils", "tail")
+
+
 exportPattern("^cent[A-Z].+", "^dist[A-Z].+", "^exp[A-Z].+",
               "^panelShadow.+", ".+[a-z]Family$")
 

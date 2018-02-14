@@ -120,7 +120,7 @@ boxOverlap <- function(data, ...)
 kcca2df <- function(object, data=NULL)
 {
     if(is.null(data)){
-        data <- flexclust:::getData(object, error=TRUE)
+        data <- getData(object, error=TRUE)
         cluster <- clusters(object)
     }
     else

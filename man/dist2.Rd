@@ -29,6 +29,10 @@ dist2(x, y, method = "euclidean", p=2)
   implementation is efficient only if \code{y} has not too many
   rows (the code is vectorized in \code{x} but not in \code{y}).
 }
+\note{
+  The definition of Canberra distance was wrong for negative data
+  prior to version 1.3-5.
+}
 \seealso{\code{\link[stats]{dist}}}
 \author{Friedrich Leisch}
 \keyword{multivariate}

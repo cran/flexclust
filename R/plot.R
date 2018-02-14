@@ -18,7 +18,7 @@ function(x, y, which=1:2, project=NULL,
         stop(sQuote("which"), " must have length 2")
 
     ## try to get data from cluster object
-    if(is.null(data)) data <- flexclust:::getData(x)
+    if(is.null(data)) data <- getData(x)
 
     ## if still NULL we cannot draw points and hulls even if user wants to
     if(is.null(data)){

@@ -134,7 +134,7 @@ int reloc(int *xrows, int *xcols, double *x, int *ncenters,
 
 /**********************************************************/
 
-int kmeans(int *xrows, int *xcols, double *x, int *ncenters,
+void kmeans(int *xrows, int *xcols, double *x, int *ncenters,
 	   double *centers, int *cluster,
 	   int *itermax, int *iter, int *changes,
 	   int *clustersize, int *verbose, int *dist)
@@ -161,7 +161,6 @@ int kmeans(int *xrows, int *xcols, double *x, int *ncenters,
     }
     changes[(*iter)-1] = change;
   }
-  return 0;
 }
      
 /**********************************************************/
@@ -247,7 +246,7 @@ int  oncent(int *xrows, int *xcols, double *x, int *ncenters,
 
 /**********************************************************/
 
-int hardcl(int *xrows, int *xcols, double *x, int *ncenters,
+void hardcl(int *xrows, int *xcols, double *x, int *ncenters,
 	   double *centers, int *cluster,
 	   int *itermax, int *iter, 
 	   int *clustersize, int *verbose, int *dist, int *methrate,
@@ -275,7 +274,6 @@ int hardcl(int *xrows, int *xcols, double *x, int *ncenters,
   for(k=0; k<*xrows; k++){
       clustersize[cluster[k]]++;
   }
-  return 0;
 }
      
 /**********************************************************/
@@ -419,7 +417,7 @@ int  oncentb(int *xrows, int *xcols, double *x, int *ncenters,
 
 /**********************************************************/
 
-int neuralgas(int *xrows, int *xcols, double *x, int *ncenters,
+void neuralgas(int *xrows, int *xcols, double *x, int *ncenters,
 	      double *centers, int *cluster,int *itermax, int *iter,
 	      int *clustersize, int *verbose, int *dist,double *par)
 {
@@ -441,6 +439,5 @@ int neuralgas(int *xrows, int *xcols, double *x, int *ncenters,
   clustersize[cluster[k]]++; 
   /*printf("size%d\n...cluster%d\n",clustersize[cluster[k]],cluster[k]);*/
   }
-  return 0;
 }
 

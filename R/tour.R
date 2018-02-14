@@ -99,7 +99,7 @@ randomTourRennes <- function(object, x=NULL, directions=10,
                              ...)
 {
     if(is.null(x))
-        x <- flexclust:::getData(object, error=TRUE)
+        x <- getData(object, error=TRUE)
     
     col <- clusters(object)
     

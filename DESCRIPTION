@@ -1,6 +1,6 @@
 Package: flexclust
-Version: 1.3-4
-Date: 2013-07-02
+Version: 1.3-5
+Date: 2018-02-14
 Authors@R: c(person(given="Friedrich", family="Leisch",
         email="Friedrich.Leisch@R-project.org", role=c("aut", "cre")),
         person(given="Evgenia", family="Dimitriadou", role="ctb"))
@@ -17,10 +17,16 @@ Description: The main function kcca implements a general framework for
         barcharts of centroids, ...), and bootstrap methods for the
         analysis of cluster stability.
 License: GPL-2
-LazyLoad: yes
-Packaged: 2013-07-02 10:30:20 UTC; leisch
-Author: Friedrich Leisch [aut, cre], Evgenia Dimitriadou [ctb]
+Encoding: UTF-8
+Packaged: 2018-02-14 12:30:29 UTC; ripley
+Author: Friedrich Leisch [aut, cre],
+  Evgenia Dimitriadou [ctb]
 Maintainer: Friedrich Leisch <Friedrich.Leisch@R-project.org>
 NeedsCompilation: yes
+X-CRAN-Comment: Orphaned and corrected on 2018-02-14 as check errors
+        were not corrected despite reminders.
+ .
+ Included incorrect formula for Canberra distance, no registration,
+        missing imports.
 Repository: CRAN
-Date/Publication: 2013-07-02 12:32:50
+Date/Publication: 2018-02-14 13:38:47 UTC

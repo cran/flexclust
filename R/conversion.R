@@ -16,7 +16,7 @@ as.kcca.kmeans <- function(object, data, save.data=FALSE, ...)
     data <- as.matrix(data)
     fam <- kccaFamily("kmeans")
 
-    z <- flexclust:::newKccaObject(x=data,
+    z <- newKccaObject(x=data,
                                    family=fam, centers=object$centers)
     z@converged <- TRUE
     z@iter <- as.integer(1)
@@ -36,7 +36,7 @@ as.kcca.skmeans <- function(object, data, save.data = FALSE, ...)
     call[[1]] <- as.name("as.kcca")
     fam <- kccaFamily("angle")
     data <- fam@preproc(as.matrix(data))
-    z <- flexclust:::newKccaObject(x = data, family = fam,
+    z <- newKccaObject(x = data, family = fam,
                                    centers = object$prototypes)
     z@converged <- TRUE
     z@iter <- as.integer(1)
@@ -71,7 +71,7 @@ as.kcca.partition <- function(object, data=NULL, save.data=FALSE, ...)
             fam <- kccaFamily("kmedians")
     }
 
-    z <- flexclust:::newKccaObject(x=data,
+    z <- newKccaObject(x=data,
                                    family=fam, centers=object$medoids)
     z@converged <- TRUE
     z@iter <- as.integer(1)
@@ -107,8 +107,7 @@ as.kcca.hclust <- function(object, data, k, family=NULL, save.data=FALSE, ...)
     cluster <- cutree(object, k=k[1])
     centers <- family@allcent(data, cluster)
        
-    z <- flexclust:::newKccaObject(x=data, family=family,
-                                   centers=centers)
+    z <- newKccaObject(x=data, family=family, centers=centers)
 
     nok <- sum(cluster != clusters(z))
     if(nok>0)

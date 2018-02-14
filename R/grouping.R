@@ -97,12 +97,12 @@ getDifferentCluster <- function(cluster, group, distmat)
     x <- table(group, cluster)
     ok <- (apply(x, 1, max)==1)
     nok.names <- unique(row.names(x[!ok,,drop=FALSE]))
-    require("clue")
+#    require("clue")
 
     for(n in nok.names){
         ok <- group==n
         if(sum(ok)>1)
-            cluster[ok] <- solve_LSAP(distmat[ok,])
+            cluster[ok] <- clue::solve_LSAP(distmat[ok,])
     }
     cluster
 }

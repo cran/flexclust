@@ -1,7 +1,10 @@
 library(flexclust)
 
+## Canberra is really only defined for >= 0 matrices, and changed 
+## in dist in 2018
+
 ## create a random matrix
-x <- matrix(rnorm(1000), ncol=4)
+x <- abs(matrix(rnorm(1000), ncol=4))
 rownames(x) <- 1:nrow(x)
 
 ## test canberra at margin

@@ -85,7 +85,7 @@ function(object, data=NULL, method=c("shadow", "centers"),
 
         distmat <- object@family@dist(data, object@centers)
         cluster <- object@family@cluster(n=2, distmat=distmat)
-        z <- flexclust:::computeClusterSim(distmat, cluster)
+        z <- computeClusterSim(distmat, cluster)
         if(symmetric) z <- (z+t(z))/2
     }
     else{

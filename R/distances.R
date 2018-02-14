@@ -64,7 +64,7 @@ distCanberra <- function(x, centers)
     tx <- t(x)
     for(k in 1:nrow(centers)){
         d <- abs(tx-centers[k,])
-        s <- abs(tx+centers[k,])
+        s <- abs(tx) + abs(centers[k,])
         q <- d/s
         q[s<.Machine$double.eps] <- 0
         ## in dist() erhöhen doppelte nullen die distanz um einen
