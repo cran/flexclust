@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: flexclustControl-class.Rd 3 2013-06-12 10:06:43Z leisch $
+%  $Id: flexclustControl-class.Rd 252 2018-09-17 08:40:24Z gruen $
 %
 \name{flexclustControl-class}
 \docType{class}
@@ -23,7 +23,7 @@
 }
 
 \section{Slots}{
-  Objects of class \code{flexclustControl} have the following slots:
+  Objects of class \code{"flexclustControl"} have the following slots:
   \describe{
     \item{\code{iter.max}:}{Maximum number of iterations.}
 
@@ -51,16 +51,16 @@
     \item{\code{min.size}:}{Clusters smaller than this value are treated
       as outliers.}
   }
-  Objects of class \code{cclustControl} inherit from
-  \code{flexclustControl} and have the following additional slots:
+  Objects of class \code{"cclustControl"} inherit from
+  \code{"flexclustControl"} and have the following additional slots:
   \describe{
     \item{\code{method}:}{Learning rate for hard competitive learning,
       one of \code{"polynomial"} or \code{"exponential"}.}
     \item{\code{pol.rate}:}{Positive number for polynomial learning rate
-      of form \eqn{1/iter^par}.}
+      of form \eqn{1/iter^{par}}.}
     \item{\code{exp.rate}}{Vector of length 2 with parameters for
       exponential learning rate of form
-      \eqn{par1*(par2/par1)^(iter/iter.max)}}.
+      \eqn{par1*(par2/par1)^{(iter/iter.max)}}}.
     \item{\code{ng.rate}:}{Vector of length 4 with parameters for neural
       gas, see details below.}
   }
@@ -72,8 +72,8 @@
   centroid with
   respect to distance to data point \eqn{x} (0=closest, 1=second,
   \ldots). The parameters \eqn{e} and \eqn{l} are given by
-  \deqn{e = par1*(par2/par1)^(iter/iter.max),}
-  \deqn{l = par3*(par4/par3)^(iter/iter.max).}
+  \deqn{e = par1*(par2/par1)^{(iter/iter.max)},}
+  \deqn{l = par3*(par4/par3)^{(iter/iter.max)}.}
   See Martinetz et al (1993) for details of the algorithm, and the
   examples section on how to obtain default values.
 }
@@ -96,7 +96,7 @@
 new("flexclustControl")
 
 ## corce a list
-mycont = list(iter=500, tol=0.001, class="w")
+mycont <- list(iter=500, tol=0.001, class="w")
 as(mycont, "flexclustControl")
 
 ## some additional slots

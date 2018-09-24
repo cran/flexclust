@@ -1,7 +1,28 @@
 #
 #  Copyright (C) 2009 Friedrich Leisch
-#  $Id: bootstrap.R 3 2013-06-12 10:06:43Z leisch $
+#  $Id: bootstrap.R 251 2018-04-30 10:37:30Z gruen $
 #
+
+disp <- function(x, clus, square = TRUE) {
+  n <- length(clus)
+  k <- max(clus)
+  clus <- as.numeric(clus)
+  x <- as.matrix(x)
+  centers <- matrix(nrow = k, ncol = ncol(x))
+  for (i in 1:k) {
+    tryCatch(centers[i, ] <- apply(x[clus == i, ], 2, mean), 
+             error = function(e) {print(dim(x))})
+  }
+  sumsq <- rep(0, k)
+  if(square == TRUE) 
+    x <- (x - centers[clus, ])^2
+  else
+    x <- abs((x - centers[clus, ]))
+  for (i in 1:k) {
+    sumsq[i] <- sum(x[clus == i, ])
+  }
+  sumsq
+}
 
 bootFlexclust <- function(x, k, nboot=100, correct=TRUE, seed=NULL,
                           multicore=TRUE, verbose=FALSE, ...)
@@ -34,9 +55,29 @@ bootFlexclust <- function(x, k, nboot=100, correct=TRUE, seed=NULL,
 
         set.seed(seed[b])
         s1 <- stepFlexclust(x[index1[,b],,drop=FALSE], k=k, verbose=FALSE,
-                            simple=TRUE, multicore=FALSE, ...)
+                            drop=FALSE, simple=TRUE, multicore=FALSE, ...)
         s2 <- stepFlexclust(x[index2[,b],,drop=FALSE], k=k, verbose=FALSE,
-                            simple=TRUE, multicore=FALSE, ...)
+                            drop=FALSE, simple=TRUE, multicore=FALSE, ...)
+
+        repeat {
+            count <- sapply(1:nk, function(i) {
+                m1 <- getModel(s1, i)
+                m2 <- getModel(s2, i)
+
+                sapply(list(m1,m2), function(m) {
+                    any(table(m@cluster)<2) ||
+                    length(table(m@cluster)) != m@k ||
+                    any(m@clusinfo[,2] == 0) #||
+                    #any(disp(x[index1[[b]],,drop=FALSE], m@cluster) == 0)
+                })
+            })
+
+            if(!any(count) || 1) break
+            #cat("Repeating ...\n")
+            rejected <- rejected + 1
+            count <- 0
+        }
+
 
         clust1 <- clust2 <- matrix(integer(1), nrow=nx, ncol=nk)
         cent1 <- cent2 <- list()
@@ -44,14 +85,8 @@ bootFlexclust <- function(x, k, nboot=100, correct=TRUE, seed=NULL,
         
         for(l in 1:nk)
         {
-            if(nk>1){
-                cl1 <- getModel(s1, l)
-                cl2 <- getModel(s2, l)
-            }
-            else{
-                cl1 <- s1
-                cl2 <- s2
-            }
+            cl1 <- getModel(s1, l)
+            cl2 <- getModel(s2, l)
 
             clust1[,l] <- clusters(cl1, newdata=x)
             clust2[,l] <- clusters(cl2, newdata=x)
@@ -61,6 +96,20 @@ bootFlexclust <- function(x, k, nboot=100, correct=TRUE, seed=NULL,
 
             rand[l] <- randIndex(table(clust1[,l], clust2[,l]),
                                  correct=correct)
+
+            if(nrow(cl1@centers) < k[l]) {
+                extra <- matrix(NA, 
+                                ncol=ncol(cl1@centers), 
+                                nrow=k[l]-nrow(cl1@centers))
+                cent1[[l]] <- rbind(cl1@centers, extra)
+            }
+
+            if(nrow(cl2@centers) < k[l]) {
+                extra <- matrix(NA, 
+                                ncol=ncol(cl2@centers), 
+                                nrow=k[l]-nrow(cl2@centers))
+                cent2[[l]] <- rbind(cl2@centers, extra)
+            }
         }
         list(cent1=cent1, cent2=cent2, clust1=clust1, clust2=clust2,
              rand=rand)

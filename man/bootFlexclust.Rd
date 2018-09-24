@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2009 Friedrich Leisch
-%  $Id: bootFlexclust.Rd 3 2013-06-12 10:06:43Z leisch $
+%  $Id: bootFlexclust.Rd 252 2018-09-17 08:40:24Z gruen $
 %
 \name{bootFlexclust}
 \alias{bootFlexclust}
@@ -51,7 +51,8 @@ bootFlexclust(x, k, nboot=100, correct=TRUE, seed=NULL,
 }
 \details{
   Availability of \pkg{multicore} is checked
-  when \pkg{flexclust} is loaded and stored in
+  when \pkg{flexclust} is loaded. This information is stored and can be
+  obtained using
   \code{getOption("flexclust")$have_multicore}. Set to \code{FALSE}
   for debugging and more sensible error messages in case something
   goes wrong.

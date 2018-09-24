@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005-2008 Friedrich Leisch
-#  $Id: utils.R 3 2013-06-12 10:06:43Z leisch $
+#  $Id: utils.R 228 2017-04-11 07:08:48Z leisch $
 #
 
 list2object = function(from, to){
@@ -74,6 +74,8 @@ flxColors <- function(n=1:8, color=c("full","medium", "light","dark"),
         }
     }
 }
+
+flxPalette <- function(n, ...) flxColors(1:n)
 
 ###**********************************************************
 

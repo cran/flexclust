@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: birth.Rd 3 2013-06-12 10:06:43Z leisch $
+%  $Id: birth.Rd 252 2018-09-17 08:40:24Z gruen $
 %
 \name{birth}
 \alias{birth}
@@ -13,8 +13,8 @@
 \format{
   A data frame with 70 observations on the following 2 variables.
   \describe{
-    \item{birth:}{birth rate (in percent)}
-    \item{death:}{death rate (in percent)}
+    \item{\code{birth}}{Birth rate (in percent).}
+    \item{\code{death}}{Death rate (in percent).}
   }
 }
 %\source{

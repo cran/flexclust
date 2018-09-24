@@ -39,12 +39,22 @@
   }
 }
 \source{
-Institute for Innovation in Business and Social Research,
-University of Wollongong, NSW, Australia
+The volunteering data was collected by the Institute for Innovation in
+Business and Social Research, University of Wollongong (NSW, Australia),
+using funding from Bushcare Wollongong and the Australian Research
+Council under the ARC Linkage Grant scheme (LP0453682).
+}
+\references{
+Melanie Randle and Sara Dolnicar. Not Just Any Volunteers: Segmenting the
+Market to Attract the High-Contributors. Journal of Non-profit and
+Public Sector Marketing, 21(3), 271-282, 2009.
+
+Melanie Randle and Sara Dolnicar. Self-congruity and volunteering: A
+multi-organisation comparison. European Journal of Marketing, 45(5),
+739-758, 2011.
 
 Melanie Randle, Friedrich Leisch, and Sara Dolnicar. Competition or
 collaboration? The effect of non-profit brand image on volunteer
-recruitment strategy. Journal of Brand Management, 2013. Accepted for
-publication.
+recruitment strategy. Journal of Brand Management, 20(8):689-704, 2013. 
 }
 \keyword{datasets}

@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: distances.R 3 2013-06-12 10:06:43Z leisch $
+#  $Id: distances.R 252 2018-09-17 08:40:24Z gruen $
 #
 
 distEuclidean <- function(x, centers)
@@ -67,8 +67,8 @@ distCanberra <- function(x, centers)
         s <- abs(tx) + abs(centers[k,])
         q <- d/s
         q[s<.Machine$double.eps] <- 0
-        ## in dist() erhöhen doppelte nullen die distanz um einen
-        ## faktor -> abgekupfert für konsistenz. 
+        ## in dist() erhoehen doppelte nullen die distanz um einen
+        ## faktor -> abgekupfert fuer konsistenz. 
         z[,k] <- colSums(q) * ncol(x) / colSums(s>.Machine$double.eps)
     }
     z

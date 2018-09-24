@@ -1,4 +1,4 @@
-priceFeature <- function(n, which=c("2clust", "3clust", "5clust",
+priceFeature <- function(n, which=c("2clust", "3clust", "3clustold", "5clust",
                             "ellipse", "triangle", "circle", "square",
                             "largesmall"))
 {
@@ -20,6 +20,11 @@ priceFeature <- function(n, which=c("2clust", "3clust", "5clust",
         x <- rbind(x, 2 * circle(n-nrow(x)) + 7)
     }
     else if(which=="3clust"){
+        x <- rbind(1.5 * circle(round(0.4*n)) + 2,
+                   1.5 * circle(round(0.4*n)) + 5)
+        x <- rbind(x, circle(n-nrow(x)) + 8)
+    }
+    else if(which=="3clustold"){
         x <- rbind(1.5 * circle(round(0.4*n)) + 2,
                    1.5 * circle(round(0.4*n)) + 8)
         x <- rbind(x, circle(n-nrow(x)) + 5)

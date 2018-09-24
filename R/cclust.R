@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: cclust.R 3 2013-06-12 10:06:43Z leisch $
+#  $Id: cclust.R 252 2018-09-17 08:40:24Z gruen $
 #
 
 cclust <- function (x, k, dist = "euclidean", method = "kmeans",
@@ -41,7 +41,7 @@ cclust <- function (x, k, dist = "euclidean", method = "kmeans",
 
     if (method == "kmeans")
     {
-        z <- .C("kmeans",
+        z <- .C(C_kmeans,
                 xrows = as.integer(nrow(x)),
                 xcols = as.integer(ncol(x)), 
                 x = as.double(x),
@@ -53,7 +53,7 @@ cclust <- function (x, k, dist = "euclidean", method = "kmeans",
                 changes = integer(control@iter.max),
                 clustersize = integer(k), 
                 verbose = as.integer(control@verbose),
-                dist = as.integer(idist-1), PACKAGE="flexclust")
+                dist = as.integer(idist-1))
     }
     else if (method == "hardcl") {
         if(is.null(weights)){
@@ -76,7 +76,7 @@ cclust <- function (x, k, dist = "euclidean", method = "kmeans",
             rate.par <- control@exp.rate
         }
         
-        z <- .C("hardcl",
+        z <- .C(C_hardcl,
                 xrows = as.integer(nrow(x)),
                 xcols = as.integer(ncol(x)), 
                 x = as.double(x),
@@ -90,11 +90,10 @@ cclust <- function (x, k, dist = "euclidean", method = "kmeans",
                 dist = as.integer(idist-1),
                 methrate = as.integer(methrate), 
                 par = as.double(rate.par),
-                weights = as.double(weights),
-                PACKAGE="flexclust")
+                weights = as.double(weights))
     }
     else if (method == "neuralgas") {
-        z <- .C("neuralgas",
+        z <- .C(C_neuralgas,
                 xrows = as.integer(nrow(x)), 
                 xcols = as.integer(ncol(x)),
                 x = as.double(x),
@@ -106,8 +105,7 @@ cclust <- function (x, k, dist = "euclidean", method = "kmeans",
                 clustersize = integer(k),
                 verbose = as.integer(control@verbose), 
                 dist = as.integer(idist-1),
-                par = as.double(control@ng.rate),
-                PACKAGE="flexclust")
+                par = as.double(control@ng.rate))
     }
 
     centers <- matrix(z$centers, nrow=k)

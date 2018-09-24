@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: dentitio.Rd 3 2013-06-12 10:06:43Z leisch $
+%  $Id: dentitio.Rd 252 2018-09-17 08:40:24Z gruen $
 %
 \name{dentitio}
 \alias{dentitio}
@@ -14,14 +14,14 @@
 \format{
   A data frame with 66 observations on the following 8 variables.
   \describe{
-    \item{top.inc:}{top incisors}
-    \item{bot.inc:}{bottom incisors}
-    \item{top.can:}{top canines}
-    \item{bot.can:}{bottom canines}
-    \item{top.pre:}{top premolars}
-    \item{bot.pre:}{bottom premolars}
-    \item{top.mol:}{top molars}
-    \item{bot.mol:}{bottom molars}
+    \item{\code{top.inc}}{Top incisors.}
+    \item{\code{bot.inc}}{Bottom incisors.}
+    \item{\code{top.can}}{Top canines.}
+    \item{\code{bot.can}}{Bottom canines.}
+    \item{\code{top.pre}}{Top premolars.}
+    \item{\code{bot.pre}}{Bottom premolars.}
+    \item{\code{top.mol}}{Top molars.}
+    \item{\code{bot.mol}}{Bottom molars.}
   }
 }
 %\source{

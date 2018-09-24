@@ -4,7 +4,6 @@ void predstr_calcSums(int pred[], int tc[], int *length, int *levels, int res[])
 
   int mat = 0;
   int i, j, k;
-  int co[*length];
   
   for(i = 0; i < *length; i++){
     for(j = i + 1; j < *length; j++){

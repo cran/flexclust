@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2009 Friedrich Leisch
-%  $Id: stripes.Rd 3 2013-06-12 10:06:43Z leisch $
+%  $Id: stripes.Rd 252 2018-09-17 08:40:24Z gruen $
 %
 \name{stripes}
 \alias{stripes}
@@ -16,21 +16,21 @@ stripes(object, groups=NULL, type=c("first", "second", "all"),
         margins=c(2,5,3,2), ...)
 }
 \arguments{
-  \item{object}{an object of class \code{"kcca"}.}
-  \item{groups}{grouping variable to color-code the stripes. By default
+  \item{object}{An object of class \code{"kcca"}.}
+  \item{groups}{Grouping variable to color-code the stripes. By default
     cluster membership is used as \code{groups}.}
-  \item{type}{plot distance to closest, closest and second-closest or
+  \item{type}{Plot distance to closest, closest and second-closest or
     to all centroids?}
-  \item{beside}{logical, make different stripes for different clusters?}
-  \item{col}{vector of colors for clusters or groups.}
-  \item{gp.line, gp.bar, gp.bar2}{graphical parameters for horizontal
+  \item{beside}{Logical, make different stripes for different clusters?}
+  \item{col}{Vector of colors for clusters or groups.}
+  \item{gp.line, gp.bar, gp.bar2}{Graphical parameters for horizontal
     lines and background rectangular areas, see
     \code{\link[grid]{gpar}}.}
-  \item{number}{logical, write cluster numbers on x-axis?}
-  \item{legend}{logical, plot a legend for the groups?}
-  \item{ylim, ylab}{graphical parameters for y-axis.}
-  \item{margins}{margin of the plot.}
-  \item{\dots}{further graphical parameters.}
+  \item{number}{Logical, write cluster numbers on x-axis?}
+  \item{legend}{Logical, plot a legend for the groups?}
+  \item{ylim, ylab}{Graphical parameters for y-axis.}
+  \item{margins}{Margin of the plot.}
+  \item{\dots}{Further graphical parameters.}
 }
 \details{
   A simple, yet very effective plot for visualizing the distance of each
@@ -44,8 +44,7 @@ stripes(object, groups=NULL, type=c("first", "second", "all"),
 \author{Friedrich Leisch}
 \references{
   Friedrich Leisch. Neighborhood graphs, stripes and shadow plots for
-  cluster visualization. Statistics and Computing, 2009. Accepted for
-  publication on 2009-06-16.
+  cluster visualization. Statistics and Computing, 20(4), 457--469, 2010.
 }
 \keyword{hplot}
 \examples{

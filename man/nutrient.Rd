@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: nutrient.Rd 3 2013-06-12 10:06:43Z leisch $
+%  $Id: nutrient.Rd 252 2018-09-17 08:40:24Z gruen $
 %
 \name{nutrient}
 \alias{nutrient}
@@ -14,11 +14,11 @@
 \format{
   A data frame with 27 observations on the following 5 variables.
   \describe{
-    \item{energy:}{food energy (calories)}
-    \item{protein:}{protein (grams)}
-    \item{fat:}{fat (grams)}
-    \item{calcium:}{calcium (milli grams)}
-    \item{iron:}{iron (milli grams)}
+    \item{\code{energy}}{Food energy (calories).}
+    \item{\code{protein}}{Protein (grams).}
+    \item{\code{fat}}{Fat (grams).}
+    \item{\code{calcium}}{calcium (milli grams).}
+    \item{\code{iron}}{Iron (milli grams).}
   }
 }
 %\source{

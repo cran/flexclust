@@ -1,7 +1,13 @@
 #
-#  Copyright (C) 2005-2009 Friedrich Leisch
-#  $Id: AAA-classes.R 14 2013-07-02 09:56:24Z leisch $
+#  Copyright (C) 2005-2016 Friedrich Leisch
+#  $Id: AAA-classes.R 222 2017-03-03 16:29:43Z leisch $
 #
+
+setOldClass("hclust")
+setOldClass("kmeans")
+setOldClass("partition")
+
+###**********************************************************
 
 setClass("flexclustControl",
          representation(iter.max="numeric",
@@ -115,7 +121,22 @@ setClass("kcca",
 
 ## Achtung: Bei Aenderung der Klassen auch dorelabel() entsprechend anpassen
 
-                        
+###**********************************************************
+
+setClass("bclust",
+         contains="kccasimple",
+         representation(allcenters = "ANY",
+                        allcluster = "ANY",
+                        hclust = "ANY", 
+                        members = "ANY",
+                        base.iter = "integer",
+                        base.k = "integer",
+                        xcent="numeric",            # centroid of all data
+                        colnames = "character",
+                        dist.method = "character",
+                        hclust.method = "character",
+                        maxcluster = "integer"))
+
 ###**********************************************************
 
 setClass("stepFlexclust",

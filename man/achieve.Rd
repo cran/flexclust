@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: achieve.Rd 3 2013-06-12 10:06:43Z leisch $
+%  $Id: achieve.Rd 252 2018-09-17 08:40:24Z gruen $
 %
 \name{achieve}
 \alias{achieve}
@@ -14,10 +14,10 @@
 \format{
   A data frame with 25 observations on the following 4 variables.
   \describe{
-    \item{read4:}{4th grade reading}
-    \item{arith4:}{4th grade arithmetic}
-    \item{read6:}{6th grade reading}
-    \item{arith6:}{6th grade arithmetic}
+    \item{\code{read4}}{4th grade reading.}
+    \item{\code{arith4}}{4th grade arithmetic.}
+    \item{\code{read6}}{6th grade reading.}
+    \item{\code{arith6}}{6th grade arithmetic.}
   }
 }
 %\source{

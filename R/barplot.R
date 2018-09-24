@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2006-2013 Friedrich Leisch
-#  $Id: barplot.R 14 2013-07-02 09:56:24Z leisch $
+#  $Id: barplot.R 252 2018-09-17 08:40:24Z gruen $
 #
 
 setMethod("barplot", "kccasimple",
@@ -92,23 +92,27 @@ function (height, bycluster = TRUE, oneplot = TRUE,
 ###**********************************************************
 
 setMethod("barchart", "kccasimple",
-function(x, data,  xlab="", strip.labels=NULL, strip.prefix="Cluster ",
+function(x, data, xlab="", strip.labels=NULL, strip.prefix="Cluster ",
          col=NULL, mcol="darkred", mlcol=mcol, which=NULL, legend=FALSE,
-         shade=FALSE, diff=NULL, ...)
+         shade=FALSE, diff=NULL, byvar=FALSE, clusters=1:x@k, ...)
 {
     if(is.null(strip.labels)){
-        SIZE <- info(x, "size")
-        strip.labels <-
-            paste(strip.prefix, 1:x@k, ": ", SIZE, " (",
+        strip.labels <- paste(strip.prefix, 1:x@k, sep="")
+        if(!byvar){
+            SIZE <- info(x, "size")
+            strip.labels <-
+            paste(strip.labels, ": ", SIZE, " (",
                   round(100 * SIZE/sum(SIZE)), "%)", sep="")
+        }
     }
 
     if(is.null(mcol)) mcol <- NA
     if(is.null(mlcol)) mlcol <- NA
 
-    b <- Barchart(x=x@centers, m=x@xcent, strip.labels=strip.labels,
+    b <- Barchart(x=x@centers[clusters,],
+                  m=x@xcent, strip.labels=strip.labels[clusters],
                   xlab=xlab, col=col, mcol=mcol, mlcol=mlcol, which=which,
-                  shade=shade, diff=diff, ...)
+                  shade=shade, diff=diff, byvar=byvar, ...)
 
     if(legend){
         plot(b, more=TRUE)
@@ -153,7 +157,7 @@ function(x, data,  xlab="", strip.labels=NULL, strip.prefix="Cluster ",
 ### REST: see barchart method for kccasimple objects
 Barchart <- function(x, m, which=NULL, col=NULL, mcol="darkred",
                      mlcol=mcol, strip.labels=NULL, xlab="",
-                     shade=FALSE, diff=NULL, ...)
+                     shade=FALSE, diff=NULL, byvar=FALSE, ...)
 {
     x <- as.matrix(x)
     m <- as.vector(m)
@@ -169,30 +173,35 @@ Barchart <- function(x, m, which=NULL, col=NULL, mcol="darkred",
     if(is.null(which))
         which <- seq(1, ncol(x))
 
-    x <- x[,which]
+    x <- x[, which, drop = FALSE]
     ## sonst musz man die barplots von unten nach oben lesen
-    x <- x[,ncol(x):1]
+    x <- x[, ncol(x):1, drop = FALSE]
     m <- rev(m[which])
 
     x <- as.data.frame(as.table(x))
 
     panel <- createBarchartPanel(m=m, col=col, mcol=mcol, mlcol=mlcol,
-                                 shade=shade, diff=diff)
+                                 shade=shade, diff=diff, byvar=byvar)
 
-    barchart(Var2~Freq|Var1, data=x, panel=panel, as.table=TRUE,
-             xlab=xlab, ...)
+    if(byvar){
+        barchart(Var1~Freq|Var2, data=x, panel=panel, as.table=TRUE,
+                 xlab=xlab, ...)
+    } else {
+        barchart(Var2~Freq|Var1, data=x, panel=panel, as.table=TRUE,
+                 xlab=xlab, ...)
+    }        
 }
 
 
-createBarchartPanel <- function(m, col, mcol, mlcol, shade, diff)
+createBarchartPanel <- function(m, col, mcol, mlcol, shade, diff, byvar)
 {
     KKK <- 1
     KKKplus <- function() KKK <<- KKK+1
 
     if(is.null(diff))
-        diff <- c(max(m)/4, 0.5)
+        diff <- c(1/4, 0.5)
     else
-        diff <- rep(diff, length=2)
+        diff <- rep(diff, length.out = 2)
             
     grey <- flxColors(color="dark", grey=TRUE)
 
@@ -203,7 +212,11 @@ createBarchartPanel <- function(m, col, mcol, mlcol, shade, diff)
         MCOL <- rep(grey, length=length(x))
         MLCOL <- rep(grey, length=length(x))
         BCOL <- rep(grey, length=length(x))
-            
+
+        if(byvar) m <- rep(m[KKK], length(x))
+
+        #browser()
+        
         if(length(shade)==1){
             if(shade){
                 d1 <- abs(x-m) >= diff[1]
@@ -215,21 +228,38 @@ createBarchartPanel <- function(m, col, mcol, mlcol, shade, diff)
             }
         }
         else{
-            if(is.matrix(shade)) shade <- shade[KKK,]
-            ### reverse to match reversing in Barchart() above
-            shade <- rev(rep(as.logical(shade), length=length(x)))
+            if(is.matrix(shade)){
+                if(byvar)
+                    shade <- shade[,KKK]
+                else
+                    shade <- shade[KKK,]
+                ## reverse to match reversing in Barchart() above
+                shade <- rev(rep(as.logical(shade), length=length(x)))
+            }
+            else{## reverse to match reversing in Barchart() above
+                if(byvar){
+                    shade <- rep(rev(shade)[KKK], length(x))
+                }
+                else{
+                    shade <- rev(shade)
+                }
+            }
         }
-        
-        COL[shade] <- col[KKK]
+
+        if(byvar)
+            COL[shade] <- col[shade]
+        else
+            COL[shade] <- col[KKK]
+
         MCOL[shade] <- mcol
         MLCOL[shade] <- mlcol
         BCOL[shade] <- "black"
         
         MCOL[is.na(x)] <- NA
         MLCOL[is.na(x)] <- NA
-        
+
         if(!all(is.na(MLCOL)))
-            grid.segments(x0=0, y0=1:length(x), x1=m, y1=1:length(x),
+            grid.segments(x0=pmin(0,x), y0=1:length(x), x1=m, y1=1:length(x),
                           gp=gpar(col=MLCOL),
                           default.units="native")
 
@@ -239,7 +269,7 @@ createBarchartPanel <- function(m, col, mcol, mlcol, shade, diff)
             grid.points(m, 1:length(x), pch=16,
                         size=unit(0.5, "char"), gp=gpar(col=MCOL))
         
-        grid.segments(1, 1, 4, 4)
+        ## grid.segments(1, 1, 4, 4)
         KKKplus()
     }
     return(mypanel)
@@ -250,7 +280,7 @@ createBarchartPanel <- function(m, col, mcol, mlcol, shade, diff)
 propBarchart <- function(x, g, alpha=0.05, correct="holm",
                          test="prop.test", sort=FALSE,
                          strip.prefix="", strip.labels=NULL,
-                         which=NULL, ...)
+                         which=NULL, byvar=FALSE, ...)
 {
     call <- match.call()
     x <- as(x, "matrix")
@@ -268,8 +298,12 @@ propBarchart <- function(x, g, alpha=0.05, correct="holm",
     rownames(b) <- levels(g)
 
     ltab <- table(g)
-    if(is.null(strip.labels))
-        strip.labels <- paste(strip.prefix, names(ltab), ": ", ltab, sep="")
+    if(is.null(strip.labels)){
+        if(byvar)
+            strip.labels <- names(ltab)
+        else
+            strip.labels <- paste(strip.prefix, names(ltab), ": ", ltab, sep="")
+    }
     else
         if(length(unique(strip.labels))!=nrow(b))
             stop("need as many unique strip.labels as non-empty groups in g")
@@ -287,7 +321,7 @@ propBarchart <- function(x, g, alpha=0.05, correct="holm",
     TAB <- cbind(t(round(b)), all=round(m), p.value=cpval)
 
     new("propBarchart", chart=Barchart(b, m, strip.labels=strip.labels,
-                                       shade=pa<=alpha, col="grey", ...),
+                        shade=pa<=alpha, col="grey", byvar=byvar, ...),
         gprop = b, tprop = m, p.value=pa, table=TAB)
 }
 
@@ -297,4 +331,63 @@ setMethod("summary", "propBarchart",
 function(object, ...)
 {
     print(object@table, quote=FALSE, ...)
+})
+
+###**********************************************************
+
+setMethod("barchart", "hclust",
+function(x, data,  xlab="", strip.labels=NULL, strip.prefix="Cluster ",
+         col=NULL, mcol="darkred", mlcol=mcol, which=NULL,
+         shade=FALSE, diff=NULL, byvar=FALSE, k=2, ...)
+{
+    part <- cutree(x, k=k)
+    if(is.null(strip.labels)){
+        strip.labels <- paste(strip.prefix, 1:k, sep="")
+        if(!byvar){
+            SIZE <- table(part)
+            strip.labels <-
+            paste(strip.labels, ": ", SIZE, " (",
+                  round(100 * SIZE/sum(SIZE)), "%)", sep="")
+        }
+    }
+
+    if(is.null(mcol)) mcol <- NA
+    if(is.null(mlcol)) mlcol <- NA
+
+    cm <- t(simplify2array(by(data, list(part), colMeans, na.rm=TRUE)))
+    xm <- colMeans(data, na.rm=TRUE)
+
+    b <- Barchart(cm, xm, strip.labels=strip.labels,
+                  xlab=xlab, col=col, mcol=mcol, mlcol=mlcol, which=which,
+                  shade=shade, diff=diff, byvar=byvar, ...)
+
+    return(b)
+})
+
+###**********************************************************
+
+setMethod("barchart", "bclust",
+function(x, data,  xlab="", strip.labels=NULL, strip.prefix="Cluster ",
+         col=NULL, mcol="darkred", mlcol=mcol, which=NULL, legend=FALSE,
+         shade=FALSE, diff=NULL, byvar=FALSE, k=x@k, clusters=1:k, ...)
+{
+    if(is.null(strip.labels)){
+        strip.labels <- paste(strip.prefix, 1:k, sep="")
+        if(!byvar){
+            SIZE <- table(clusters(x, k=k))
+            strip.labels <-
+            paste(strip.labels, ": ", SIZE, " (",
+                  round(100 * SIZE/sum(SIZE)), "%)", sep="")
+        }
+    }
+
+    if(is.null(mcol)) mcol <- NA
+    if(is.null(mlcol)) mlcol <- NA
+
+    b <- Barchart(x=parameters(x, k=k)[clusters,],
+                  m=x@xcent, strip.labels=strip.labels[clusters],
+                  xlab=xlab, col=col, mcol=mcol, mlcol=mlcol, which=which,
+                  shade=shade, diff=diff, byvar=byvar, ...)
+
+    return(b)
 })

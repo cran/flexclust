@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: pairs.Rd 3 2013-06-12 10:06:43Z leisch $
+%  $Id: pairs.Rd 252 2018-09-17 08:40:24Z gruen $
 %
 \name{pairs-methods}
 \docType{methods}
@@ -14,7 +14,7 @@
   \S4method{pairs}{kcca}(x, which=NULL, project=NULL, oma=NULL, \dots)
 }
 \arguments{
-  \item{x}{an object of class \code{"kcca"}}
+  \item{x}{An object of class \code{"kcca"}}
   \item{which}{Index numbers of dimensions of (projected) input space
     to plot, default is to plot all dimensions.}
   \item{project}{Projection object for which a \code{predict} method

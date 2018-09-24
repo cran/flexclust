@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005-2009 Friedrich Leisch
-%  $Id: kcca.Rd 3 2013-06-12 10:06:43Z leisch $
+%  $Id: kcca.Rd 252 2018-09-17 08:40:24Z gruen $
 %
 \name{kcca}
 \alias{kcca}
@@ -33,7 +33,7 @@ kccaFamily(which=NULL, dist=NULL, cent=NULL, name=which,
     (distinct) cluster centroids.  If a number, a random set of (distinct)
     rows in \code{x} is chosen as the initial centroids.}
   
-  \item{family}{Object of class \code{kccaFamily}.}
+  \item{family}{Object of class \code{"kccaFamily"}.}
 
   \item{weights}{An optional vector of weights to be used in the clustering
     process, cannot be combined with all families.}
@@ -41,9 +41,9 @@ kccaFamily(which=NULL, dist=NULL, cent=NULL, name=which,
   \item{group}{An optional grouping vector for the data, see details
     below.}
 
-  \item{control}{An object of class \code{flexclustControl}.}
+  \item{control}{An object of class \code{"flexclustControl"}.}
 
-  \item{simple}{Return an object of class \code{kccasimple}?}
+  \item{simple}{Return an object of class \code{"kccasimple"}?}
 
   \item{save.data}{Save a copy of \code{x} in the return object?}
 
@@ -137,7 +137,7 @@ data("Nclus")
 plot(Nclus)
 
 ## try kmeans 
-cl1 = kcca(Nclus, k=4)
+cl1 <- kcca(Nclus, k=4)
 cl1
 
 image(cl1)
@@ -150,7 +150,7 @@ barplot(cl1)
 ## now use k-medians and kmeans++ initialization, cluster centroids
 ## should be similar...
 
-cl2 = kcca(Nclus, k=4, family=kccaFamily("kmedians"),
+cl2 <- kcca(Nclus, k=4, family=kccaFamily("kmedians"),
            control=list(initcent="kmeanspp"))
 cl2
 

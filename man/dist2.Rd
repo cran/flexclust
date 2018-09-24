@@ -1,10 +1,10 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: dist2.Rd 3 2013-06-12 10:06:43Z leisch $
+%  $Id: dist2.Rd 252 2018-09-17 08:40:24Z gruen $
 %
 \name{dist2}
 \alias{dist2}
-\title{Compute pairwise distances between two data sets}
+\title{Compute Pairwise Distances Between Two Data sets}
 \description{
   This function computes and returns the distance matrix computed by
   using the specified distance measure to compute the pairwise distances
@@ -38,9 +38,9 @@ dist2(x, y, method = "euclidean", p=2)
 \keyword{multivariate}
 \keyword{cluster}
 \examples{
-x = matrix(rnorm(20), ncol=4)
+x <- matrix(rnorm(20), ncol=4)
 rownames(x) = paste("X", 1:nrow(x), sep=".")
-y = matrix(rnorm(12), ncol=4)
+y <- matrix(rnorm(12), ncol=4)
 rownames(y) = paste("Y", 1:nrow(y), sep=".")
 
 dist2(x, y)

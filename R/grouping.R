@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2006 Friedrich Leisch
-#  $Id: grouping.R 3 2013-06-12 10:06:43Z leisch $
+#  $Id: grouping.R 248 2018-04-30 09:36:44Z gruen $
 #
 
 
@@ -97,7 +97,6 @@ getDifferentCluster <- function(cluster, group, distmat)
     x <- table(group, cluster)
     ok <- (apply(x, 1, max)==1)
     nok.names <- unique(row.names(x[!ok,,drop=FALSE]))
-#    require("clue")
 
     for(n in nok.names){
         ok <- group==n

@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: cclust.Rd 3 2013-06-12 10:06:43Z leisch $
+%  $Id: cclust.Rd 252 2018-09-17 08:40:24Z gruen $
 %
 \name{cclust}
 \title{Convex Clustering}
@@ -28,9 +28,9 @@ cclust(x, k, dist = "euclidean", method = "kmeans",
     \code{"hardcl"} or \code{"neuralgas"}, see details below.}
   \item{weights}{An optional vector of weights to be used in the fitting
     process. Works only in combination with hard competitive learning.}
-  \item{control}{An object of class \code{cclustControl}.}
+  \item{control}{An object of class \code{"cclustControl"}.}
   \item{group}{Currently ignored.}
-  \item{simple}{Return an object of class \code{kccasimple}?}
+  \item{simple}{Return an object of class \code{"kccasimple"}?}
   \item{save.data}{Save a copy of \code{x} in the return object?}
 }
 \details{
@@ -86,17 +86,17 @@ cclust(x, k, dist = "euclidean", method = "kmeans",
 }
 \examples{
 ## a 2-dimensional example
-x<-rbind(matrix(rnorm(100,sd=0.3),ncol=2),
-         matrix(rnorm(100,mean=1,sd=0.3),ncol=2))
-cl<-cclust(x,2)
+x <- rbind(matrix(rnorm(100, sd=0.3), ncol=2),
+           matrix(rnorm(100, mean=1, sd=0.3), ncol=2))
+cl <- cclust(x,2)
 plot(x, col=predict(cl))
 points(cl@centers, pch="x", cex=2, col=3) 
 
 ## a 3-dimensional example 
-x<-rbind(matrix(rnorm(150,sd=0.3),ncol=3),
-         matrix(rnorm(150,mean=2,sd=0.3),ncol=3),
-         matrix(rnorm(150,mean=4,sd=0.3),ncol=3))
-cl<-cclust(x, 6, method="neuralgas", save.data=TRUE)
+x <- rbind(matrix(rnorm(150, sd=0.3), ncol=3),
+           matrix(rnorm(150, mean=2, sd=0.3), ncol=3),
+           matrix(rnorm(150, mean=4, sd=0.3), ncol=3))
+cl <- cclust(x, 6, method="neuralgas", save.data=TRUE)
 pairs(x, col=predict(cl))
 plot(cl)
 }

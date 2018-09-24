@@ -67,5 +67,25 @@ citEntry(entry="InProceedings",
         "on Time-course Microarray Data. In Alfredo Rizzi and Maurizio Vichi, editors,",
         "Compstat 2006-Proceedings in Computational Statistics, pages 1015-1022.",
         "Physica Verlag, Heidelberg, Germany, 2006."))
+
+citEntry(entry = "Book",
+         author = "Sara Dolnicar and Bettina Gruen and Friedrich Leisch",
+         title	= "Market Segmentation Analysis --- Understanding It, Doing It, and Making It Useful",
+         publisher = "Springer",
+         year	   = "2018",
+         address   = "Singapore",
+         doi	   = "10.1007/978-981-10-8818-6",
+
+         header = "Using flexclust for market segmentation is explained in:",
+
+         textVersion =
+         paste("Sara Dolnicar, Bettina Gruen, and Friedrich Leisch.",
+               "Market Segmentation Analysis --- Understanding It,",
+               "Doing It, and Making It Useful.",
+               "Management for Professionals. Springer, Singapore, 2018.",
+               "doi:10.1007/978-981-10-8818-6"))
+
+
+
          
-citFooter("Papers are available from http://www.stat.uni-muenchen.de/~leisch")
+citFooter("Papers are available from https://homepage.boku.ac.at/leisch/papers/fl-publications.html")

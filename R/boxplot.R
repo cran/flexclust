@@ -1,11 +1,11 @@
 #
 #  Copyright (C) 2013 Friedrich Leisch
-#  $Id: boxplot.R 13 2013-07-01 05:15:35Z leisch $
+#  $Id: boxplot.R 222 2017-03-03 16:29:43Z leisch $
 #
 
 setMethod("bwplot", "kccasimple",
 function(x, data, xlab="", strip.labels=NULL, strip.prefix="Cluster ",
-         col=NULL, shade=!is.null(shadefun), shadefun=NULL, ...)
+         col=NULL, shade=!is.null(shadefun), shadefun=NULL, byvar=FALSE, ...)
 {
     if(is.character(shadefun))
         shadefun <- get(shadefun, mode="function")
@@ -15,10 +15,13 @@ function(x, data, xlab="", strip.labels=NULL, strip.prefix="Cluster ",
     }
     
     if(is.null(strip.labels)){
-        SIZE <- info(x, "size")
-        strip.labels <-
-            paste(strip.prefix, 1:x@k, ": ", SIZE, " (",
+        strip.labels <- paste(strip.prefix, 1:x@k, sep="")
+        if(!byvar){
+            SIZE <- info(x, "size")
+            strip.labels <-
+            paste(strip.labels, ": ", SIZE, " (",
                   round(100 * SIZE/sum(SIZE)), "%)", sep="")
+        }
     }
 
     if(missing(data)) data <- NULL
@@ -32,22 +35,28 @@ function(x, data, xlab="", strip.labels=NULL, strip.prefix="Cluster ",
     levels(DF$group) <- strip.labels
 
     panel <- createBWplotPanel(data=DF, col=col,
-                               shade=shade, shadefun=shadefun)
+                               shade=shade, shadefun=shadefun,
+                               byvar=byvar)
 
-    bwplot(variable~value|group, data=DF,
-           as.table=TRUE, xlab=xlab, panel=panel, ...)
+    if(byvar){
+        bwplot(group~value|variable, data=DF,
+               as.table=TRUE, xlab=xlab, panel=panel, ...)
+    } else {
+        bwplot(variable~value|group, data=DF,
+               as.table=TRUE, xlab=xlab, panel=panel, ...)
+    }
 })
 
 ###**********************************************************
 
-
-createBWplotPanel <- function(data, col, shade, shadefun, ...)
+createBWplotPanel <- function(data, col, shade, shadefun, byvar, ...)
 {
     KKK <- 1
     KKKplus <- function() KKK <<- KKK+1
             
     grey <- flxColors(color="dark", grey=TRUE)
-    nvar <- length(levels(data$variable))
+    nvar <- ifelse(byvar, nlevels(data$group),
+                   nlevels(data$variable))
 
     brect1 <- brect2 <- trellis.par.get("box.rectangle")
     bumbr1 <- bumbr2 <- trellis.par.get("box.umbrella")
@@ -61,20 +70,25 @@ createBWplotPanel <- function(data, col, shade, shadefun, ...)
         OK <- matrix(TRUE, nrow=length(levels(data$variable)),
                      ncol=length(levels(data$group)))
     }
-        
+
     mypanel <- function(x, y, ...)
     {
         if(shade){
             COL <- rep("white", nvar)
-            COL[OK[,KKK]] <- col[KKK]
+            if(byvar)
+                COL[OK[KKK,]] <- col[OK[KKK,]]
+            else
+                COL[OK[,KKK]] <- col[KKK]
         }
         else{
-            COL <- col[KKK]
+            COL <- if(byvar) col else col[KKK]
         }
 
         trellis.par.set("box.rectangle", brect2)
         trellis.par.set("box.umbrella", bumbr2)
-        panel.bwplot(data$value, data$variable, box.ratio=0.3, col=grey)
+        if(!byvar)
+            panel.bwplot(data$value, data$variable, box.ratio=0.3, col=grey)
+        
         trellis.par.set("box.rectangle", brect1)
         trellis.par.set("box.umbrella", bumbr1)
         panel.bwplot(x, y, fill=COL, ...)
@@ -148,9 +162,10 @@ matrix2df <- function(data, group)
     
 ###**********************************************************
 
-groupBWplot <- function(x, g, alpha=0.05, correct="holm", col=NULL,
+groupBWplot <- function(x, g, alpha=0.05, correct="holm", xlab="", col=NULL,
                         shade=!is.null(shadefun), shadefun=NULL,
-                        strip.prefix="", strip.labels=NULL, which=NULL, ...)
+                        strip.prefix="", strip.labels=NULL, which=NULL,
+                        byvar=FALSE, ...)
 {
     ## body very similar to bwplot,kcca-method -> fix bugs in both
     
@@ -168,18 +183,23 @@ groupBWplot <- function(x, g, alpha=0.05, correct="holm", col=NULL,
     }
 
     if(is.null(col))
-        col <- flxColors(color="full")
-
+        col <- flxColors(color="full")[1]
+    
     col <- rep(col, length=nlevels(g))
 
     DF <- matrix2df(x, g)
 
     panel <- createBWplotPanel(data=DF, col=col,
                                shade=shade, shadefun=shadefun,
-                               alpha=alpha, correct=correct)
+                               alpha=alpha, correct=correct, byvar=byvar)
 
-    bwplot(variable~value|group, data=DF, 
-           panel=panel, ...)
+    if(byvar){
+        bwplot(group~value|variable, data=DF,
+               as.table=TRUE, xlab=xlab, panel=panel, ...)
+    } else {
+        bwplot(variable~value|group, data=DF,
+               as.table=TRUE, xlab=xlab, panel=panel, ...)
+    }
 }
     
 kruskalTest <- function(data, alpha, correct)

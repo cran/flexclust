@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005-2009 Friedrich Leisch
-#  $Id: kcca.R 3 2013-06-12 10:06:43Z leisch $
+#  $Id: kcca.R 222 2017-03-03 16:29:43Z leisch $
 #
 
 normWeights <- function(x) x/mean(x)

@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2008 Friedrich Leisch
-%  $Id: bundestag.Rd 3 2013-06-12 10:06:43Z leisch $
+%  $Id: bundestag.Rd 252 2018-09-17 08:40:24Z gruen $
 %
 \name{bundestag}
 \alias{bundestag}
@@ -23,30 +23,30 @@ bundestag(year, second=TRUE, percent=TRUE, nazero=TRUE, state=FALSE)
   (corresponding to constituencies) and 17 columns. All columns except
   \code{state} are numeric.
   \describe{
-    \item{state:}{factor, the 16 German federal states.}
-    \item{eligible:}{number of citizens eligible to vote.}
-    \item{votes:}{number of eligible citizens who did vote.}
-    \item{invalid1, invalid2:}{number of invalid first and second votes (see
+    \item{\code{state}}{Factor, the 16 German federal states.}
+    \item{\code{eligible}}{Number of citizens eligible to vote.}
+    \item{\code{votes}}{Number of eligible citizens who did vote.}
+    \item{\code{invalid1, invalid2}}{Number of invalid first and second votes (see
       details below).}
-    \item{valid1, valid2:}{number of valid first and second votes.}
-    \item{SPD1, SPD2:}{number of first and second votes for the Social Democrats.}
-    \item{UNION1, UNION2:}{number of first and second votes for CDU/CSU,
+    \item{\code{valid1, valid2}}{Number of valid first and second votes.}
+    \item{\code{SPD1, SPD2}}{Number of first and second votes for the Social Democrats.}
+    \item{\code{UNION1, UNION2}}{Number of first and second votes for CDU/CSU,
       the conservative Christian Democrats.}
-    \item{GRUENE1, GRUENE2:}{number of first and second votes for the
+    \item{\code{GRUENE1, GRUENE2}}{Number of first and second votes for the
       Green Party.}
-    \item{FDP1, FDP2:}{number of first and second votes for the Liberal Party.}
-    \item{LINKE1, LINKE2:}{number of first and second votes for the Left
+    \item{\code{FDP1, FDP2}}{Number of first and second votes for the Liberal Party.}
+    \item{\code{LINKE1, LINKE2}}{Number of first and second votes for the Left
       Party (PDS in 2002).}
   }
   Missing values indicate that a party did not candidate in the
   corresponding constituency.
 }
 \arguments{
-  \item{year}{numeric or character, year of the election.}
-  \item{second}{logical, return second or first votes?}
-  \item{percent}{logical, return percentages or absolute numbers?}
-  \item{nazero}{logical, convert \code{NA}s to 0?}
-  \item{state}{logical or character. If \code{TRUE} then only column \code{state}
+  \item{year}{Numeric or character, year of the election.}
+  \item{second}{Logical, return second or first votes?}
+  \item{percent}{Logical, return percentages or absolute numbers?}
+  \item{nazero}{Logical, convert \code{NA}s to 0?}
+  \item{state}{Logical or character. If \code{TRUE} then only column \code{state}
     from the corresponding data frame is returned, and all other
     arguments are ignored. If character, then it is used as pattern to
     \code{\link{grep}} for the corresponding state(s), see examples.}

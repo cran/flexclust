@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2008 Friedrich Leisch
-%  $Id: clusterSim.Rd 3 2013-06-12 10:06:43Z leisch $
+%  $Id: clusterSim.Rd 252 2018-09-17 08:40:24Z gruen $
 %
 \name{clusterSim}
 \alias{clusterSim}
@@ -18,7 +18,7 @@
            symmetric=FALSE, ...)
 }
 \arguments{
-  \item{object}{fitted object.}
+  \item{object}{Fitted object.}
   
   \item{data}{Data to use for computation of the shadow values. If
     the cluster object \code{x} was created with \code{save.data=TRUE},
@@ -29,7 +29,7 @@
   \item{symmetric}{Compute symmetric or asymmetric shadow values?
     Ignored if \code{method="centers"}.}
   
-  \item{\dots}{currently not used.}
+  \item{\dots}{Currently not used.}
 }
 
 \details{

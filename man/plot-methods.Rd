@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: plot-methods.Rd 3 2013-06-12 10:06:43Z leisch $
+%  $Id: plot-methods.Rd 252 2018-09-17 08:40:24Z gruen $
 %
 \name{plot-methods}
 \docType{methods}
@@ -20,8 +20,8 @@
          ylim = NULL, pch=NULL, col=NULL, \dots)
 }
 \arguments{
-  \item{x}{an object of class \code{"kcca"}}
-  \item{y}{not used}
+  \item{x}{An object of class \code{"kcca"}}
+  \item{y}{Not used}
   \item{which}{Index numbers of dimensions of (projected) input space
     to plot.}
   \item{project}{Projection object for which a \code{predict} method

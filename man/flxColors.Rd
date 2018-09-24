@@ -1,20 +1,24 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: flxColors.Rd 3 2013-06-12 10:06:43Z leisch $
+%  $Id: flxColors.Rd 252 2018-09-17 08:40:24Z gruen $
 %
 \name{flxColors}
 \alias{flxColors}
+\alias{flxPalette}
 \title{Flexclust Color Palettes}
 \description{
   Create and access palettes for the plot methods.
 }
 \usage{
   flxColors(n=1:8, color=c("full","medium", "light","dark"), grey=FALSE)
+  flxPalette(n, ...)
 }
 \arguments{
-  \item{n}{Index number of color to return (1 to 8)}
+  \item{n}{Index number of color to return (1 to 8) for \code{flxColor},
+    number of colors to return for \code{flxPalette()}.}
   \item{color}{Type of color, see details.}
   \item{grey}{Return grey value corresponding to palette.}
+  \item{\dots}{Passed on to \code{flxColors()}.}
 }
 \details{
   This function creates color palettes in HCL space for up to 8
@@ -29,7 +33,7 @@
 \keyword{color}
 \examples{
 opar <- par(c("mfrow", "mar", "xaxt"))
-par(mfrow=c(2,2), mar=c(0,0,2,0), yaxt="n")
+par(mfrow=c(2, 2), mar=c(0, 0, 2, 0), yaxt="n")
 
 x <- rep(1, 8)
 

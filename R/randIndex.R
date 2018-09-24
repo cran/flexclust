@@ -90,7 +90,7 @@ countPairs <- function(x, y)
     if(length(x)!=length(y))
         stop("x an y must have the same length")
     
-    res <- .C("countPairs",
+    res <- .C(C_countPairs,
               as.integer(x),
               as.integer(y),
               as.integer(length(x)),

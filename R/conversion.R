@@ -1,10 +1,7 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: conversion.R 3 2013-06-12 10:06:43Z leisch $
+#  $Id: conversion.R 222 2017-03-03 16:29:43Z leisch $
 #
-
-setOldClass("kmeans")
-setOldClass("partition")
 
 as.kcca <- function(object, ...) UseMethod("as.kcca")
 
@@ -85,6 +82,24 @@ as.kcca.partition <- function(object, data=NULL, save.data=FALSE, ...)
 
 ###**********************************************************
 
+Cutree <- function(tree, k=NULL, h=NULL)
+{
+    cl <- cutree(tree, k, h)
+    o <- tree$order
+    ncl <- integer(length(cl))
+    a <- 1:max(cl)
+    aa <- 1
+    while(length(a)){
+        b <- min(which(ncl[o]==0))
+        c <- cl[o[b]]
+        ncl[cl==c] <- aa
+        a <- a[a!=c]
+        aa <- aa+1
+    }
+    ncl
+}
+
+
 as.kcca.hclust <- function(object, data, k, family=NULL, save.data=FALSE, ...)
 {
     data <- as.matrix(data)
@@ -104,10 +119,11 @@ as.kcca.hclust <- function(object, data, k, family=NULL, save.data=FALSE, ...)
     if(is.null(family))
         stop("Cannot automatically detect correct family, please pass family argument.\n")
 
-    cluster <- cutree(object, k=k[1])
+    cluster <- Cutree(object, k=k[1])
     centers <- family@allcent(data, cluster)
        
-    z <- newKccaObject(x=data, family=family, centers=centers)
+    z <- newKccaObject(x=data, family=family,
+                                   centers=centers)
 
     nok <- sum(cluster != clusters(z))
     if(nok>0)

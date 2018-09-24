@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2009 Friedrich Leisch
-%  $Id: shadow.Rd 3 2013-06-12 10:06:43Z leisch $
+%  $Id: shadow.Rd 252 2018-09-17 08:40:24Z gruen $
 %
 \name{shadow}
 \docType{methods}
@@ -12,7 +12,7 @@
 \alias{Silhouette,kcca-method}
 \alias{show,Silhouette-method}
 \alias{plot,Silhouette,ANY-method}
-\title{Cluster shadows and silhouettes}
+\title{Cluster Shadows and Silhouettes}
 \description{
   Compute and plot shadows and silhouettes.
 }
@@ -21,12 +21,12 @@
 \S4method{Silhouette}{kcca}(object, data=NULL, ...)
 }
 \arguments{
-  \item{object}{an object of class \code{"kcca"} or
+  \item{object}{An object of class \code{"kcca"} or
     \code{"kccasimple"}.}
-  \item{data}{data to compute silhouette values for. If the cluster
+  \item{data}{Data to compute silhouette values for. If the cluster
     \code{object} was created with \code{save.data=TRUE}, then these are
     used by default.}
- \item{\dots}{currently not used.}
+ \item{\dots}{Currently not used.}
 }
 \details{
 The shadow value of each data point is defined as twice the distance to

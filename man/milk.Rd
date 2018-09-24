@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: milk.Rd 3 2013-06-12 10:06:43Z leisch $
+%  $Id: milk.Rd 252 2018-09-17 08:40:24Z gruen $
 %
 \name{milk}
 \alias{milk}
@@ -14,11 +14,11 @@
   A data frame with 25 observations on the following 5 variables (all in
   percent). 
   \describe{
-    \item{water:}{water}
-    \item{protein:}{protein}
-    \item{fat:}{fat}
-    \item{lactose:}{lactose}
-    \item{ash:}{ash}
+    \item{\code{water}}{Water.}
+    \item{\code{protein}}{Protein.}
+    \item{\code{fat}}{Fat.}
+    \item{\code{lactose}}{Lactose.}
+    \item{\code{ash}}{Ash.}
   }
 }
 %\source{

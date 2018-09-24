@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: shadow.R 3 2013-06-12 10:06:43Z leisch $
+#  $Id: shadow.R 222 2017-03-03 16:29:43Z leisch $
 #
 
 setClass("shadow",
@@ -84,8 +84,10 @@ function(object, nrow=NULL, varwidth=is.null(nrow),
         pushViewport(viewport(x=0, y=0,
                               height=unit(1, "npc")-unit(1, "lines"),
                               just=c("left", "bottom")))
-        panel(yk, ylim=ylim, breaks=min(length(yk), 100),
-              similarity=object@similarity, ...)
+        if(length(yk) >= 2L) {
+            panel(yk, ylim=ylim, breaks=min(length(yk), 100),
+                similarity=object@similarity, ...)
+        }
         popViewport(2)
         k <- k+1
     }
@@ -104,7 +106,7 @@ setMethod("Silhouette", signature(object="kcca"),
 function(object, data=NULL, ...)
 {
     if(is.null(data)){
-        data <- getData(object)
+        data <- getData(object, error=TRUE)
         cluster <- object@cluster
     }
     else {

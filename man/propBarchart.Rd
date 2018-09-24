@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005-2009 Friedrich Leisch
-%  $Id: propBarchart.Rd 14 2013-07-02 09:56:24Z leisch $
+%  $Id: propBarchart.Rd 250 2018-04-30 10:02:58Z gruen $
 %
 \name{propBarchart}
 \alias{propBarchart}
@@ -16,13 +16,14 @@
 \usage{
 propBarchart(x, g, alpha=0.05, correct="holm", test="prop.test",
              sort=FALSE, strip.prefix="", strip.labels=NULL,
-             which=NULL, ...)
+             which=NULL, byvar=FALSE, ...)
 
 \S4method{summary}{propBarchart}(object, ...)
 
-groupBWplot(x, g, alpha=0.05, correct="holm", col=NULL,
+groupBWplot(x, g, alpha=0.05, correct="holm", xlab="", col=NULL,
             shade=!is.null(shadefun), shadefun=NULL,
-            strip.prefix="", strip.labels=NULL, which=NULL, ...)
+            strip.prefix="", strip.labels=NULL, which=NULL, byvar=FALSE,
+            ...)
 }
 \arguments{
   \item{x}{A binary data matrix.}
@@ -40,9 +41,13 @@ groupBWplot(x, g, alpha=0.05, correct="holm", col=NULL,
   \item{strip.labels}{Character vector of labels to use for strips of
     \code{\link[lattice]{barchart}}.}
   \item{which}{Index numbers or names of variables to plot.}
+  \item{byvar}{If \code{TRUE}, a panel is plotted for each variable. By
+    default a panel is plotted for each group.}
   \item{\ldots}{Passed on to \code{\link[lattice]{barchart}}
     or \code{\link[lattice]{bwplot}}.}
   \item{object}{Return value of \code{propBarchart}.}
+  \item{xlab}{A title for the x-axis: see \code{\link[graphics]{title}}. 
+    The default is \code{""}.}
   \item{col}{Vector of colors for the panels.}
   \item{shade}{If \code{TRUE}, only variables with significant 
     differences in median are filled with color.}
@@ -82,10 +87,12 @@ groupBWplot(x, g, alpha=0.05, correct="holm", col=NULL,
  p <- propBarchart(x, iris$Species)
  p
  summary(p)
+ propBarchart(x, iris$Species, byvar=TRUE)
  
  x <- iris[,-5]
  x <- cbind(x, Noise=rnorm(150, mean=3))
  groupBWplot(x, iris$Species)
  groupBWplot(x, iris$Species, shade=TRUE)
  groupBWplot(x, iris$Species, shadefun="medianInside")
+ groupBWplot(x, iris$Species, shade=TRUE, byvar=TRUE)
 }

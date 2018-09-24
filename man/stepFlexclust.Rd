@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005-2009 Friedrich Leisch
-%  $Id: stepFlexclust.Rd 3 2013-06-12 10:06:43Z leisch $
+%  $Id: stepFlexclust.Rd 252 2018-09-17 08:40:24Z gruen $
 %
 \name{stepFlexclust}
 \alias{stepFlexclust}
@@ -31,7 +31,7 @@ stepcclust(...)
 \S4method{getModel}{stepFlexclust}(object, which=1)
 }
 \arguments{
-  \item{x, \dots}{passed to \code{\link{kcca}} or \code{\link{cclust}}.}
+  \item{x, \dots}{Passed to \code{\link{kcca}} or \code{\link{cclust}}.}
 
   \item{k}{A vector of integers passed in turn to the \code{k} argument
     of \code{\link{kcca}}}
@@ -52,7 +52,7 @@ stepcclust(...)
   \item{group}{An optional grouping vector for the data, see
     \code{\link{kcca}} for details.}
 
-  \item{simple}{Return an object of class \code{kccasimple}?}
+  \item{simple}{Return an object of class \code{"kccasimple"}?}
 
   \item{save.data}{Save a copy of \code{x} in the return object?}
 
@@ -86,7 +86,7 @@ data("Nclus")
 plot(Nclus)
 
 ## multicore off for CRAN checks
-cl1 = stepFlexclust(Nclus, k=2:7, FUN=cclust, multicore=FALSE)
+cl1 <- stepFlexclust(Nclus, k=2:7, FUN=cclust, multicore=FALSE)
 cl1
 
 plot(cl1)
@@ -95,8 +95,8 @@ plot(cl1)
 getModel(cl1, 4)
 cl1[[4]]
 
-opar=par("mfrow")
-par(mfrow=c(2,2))
+opar <- par("mfrow")
+par(mfrow=c(2, 2))
 for(k in 3:6){
   image(getModel(cl1, as.character(k)), data=Nclus)
   title(main=paste(k, "clusters"))
@@ -104,3 +104,4 @@ for(k in 3:6){
 par(opar)
 }
 \keyword{cluster}
+

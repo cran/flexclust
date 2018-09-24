@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005-2012 Friedrich Leisch
-#  $Id: stepflexclust.R 13 2013-07-01 05:15:35Z leisch $
+#  $Id: stepflexclust.R 245 2017-09-29 15:40:06Z gruen $
 #
 
 
@@ -21,7 +21,7 @@ stepFlexclust <- function(x, k, nrep=3, verbose=TRUE,
     bestKcca <- function(x, k, ...)
     {
         seed <- as.list(round(2^31 * runif(nrep, -1, 1)))
-
+        oldseed <- .GlobalEnv$.Random.seed
         res <- MClapply(seed, 
                         function(y){
                             set.seed(y)
@@ -30,6 +30,7 @@ stepFlexclust <- function(x, k, nrep=3, verbose=TRUE,
                                 save.data=FALSE,
                                 ...)
                         }, multicore=multicore)
+        .GlobalEnv$.Random.seed <- oldseed
 
         distsum <- sapply(res, function(y) info(y, "distsum"))
         res[[which.min(distsum)]]
@@ -56,8 +57,6 @@ stepFlexclust <- function(x, k, nrep=3, verbose=TRUE,
             ## here we have to do it manually!
             z[[kn]] <- simple2kcca(x=z[[kn]]@family@preproc(x),
                                    from=z[[kn]], group=group)
-        }
-        else{
         }
         if(verbose) cat("\n")
     }
@@ -89,7 +88,12 @@ stepFlexclust <- function(x, k, nrep=3, verbose=TRUE,
     }
 }
 
-stepcclust <- function(...) stepFlexclust(..., FUN=cclust)
+stepcclust <- function(...){
+    MYCALL <- match.call()
+    z <- stepFlexclust(..., FUN=cclust)
+    z@call <- MYCALL
+    return(z)
+}
 
 
 setMethod("show", "stepFlexclust",

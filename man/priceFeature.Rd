@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2012 Friedrich Leisch
-%  $Id: priceFeature.Rd 3 2013-06-12 10:06:43Z leisch $
+%  $Id: priceFeature.Rd 252 2018-09-17 08:40:24Z gruen $
 %
 \name{priceFeature}
 \alias{priceFeature}
@@ -14,13 +14,13 @@
   product.
 }
 \usage{
-priceFeature(n, which=c("2clust", "3clust", "5clust",
+priceFeature(n, which=c("2clust", "3clust", "3clustold", "5clust",
                         "ellipse", "triangle", "circle", "square",
                         "largesmall"))
 }
 \arguments{
-  \item{n}{sample size}
-  \item{which}{shape of data set}
+  \item{n}{Sample size.}
+  \item{which}{Shape of data set.}
 }
 \references{
   Sara Dolnicar and Friedrich Leisch. Evaluation of structure and
@@ -31,6 +31,7 @@ priceFeature(n, which=c("2clust", "3clust", "5clust",
 \examples{
 plot(priceFeature(200, "2clust"))
 plot(priceFeature(200, "3clust"))
+plot(priceFeature(200, "3clustold"))
 plot(priceFeature(200, "5clust"))
 plot(priceFeature(200, "ell"))
 plot(priceFeature(200, "tri"))

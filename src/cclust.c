@@ -5,7 +5,7 @@
  *
  *  Copyright (C) 2005 Friedrich Leisch
  *
- *  $Id: cclust.c 3 2013-06-12 10:06:43Z leisch $
+ *  $Id: cclust.c 252 2018-09-17 08:40:24Z gruen $
  */
 
 #include <math.h>

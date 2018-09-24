@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005-2013 Friedrich Leisch
-%  $Id: barplot-methods.Rd 8 2013-06-28 16:06:50Z leisch $
+%  $Id: barplot-methods.Rd 252 2018-09-17 08:40:24Z gruen $
 %
 \name{barplot-methods}
 \docType{methods}
@@ -8,19 +8,29 @@
 \alias{barplot,kccasimple-method}
 \alias{barchart,kcca-method}
 \alias{barchart,kccasimple-method}
+\alias{barchart,hclust-method}
+\alias{barchart,bclust-method}
 \title{Barplot/chart Methods in Package `flexclust'}
 \description{
   Barplot of cluster centers or other cluster statistics.
 }
 \usage{
 \S4method{barplot}{kcca}(height, bycluster = TRUE, oneplot = TRUE,
-    data = NULL, FUN=colMeans, main = deparse(substitute(height)), 
+    data = NULL, FUN = colMeans, main = deparse(substitute(height)), 
     which = 1:height@k, names.arg = NULL,
-    oma=par("oma"), col=NULL, mcol="darkred", srt=45, ...)
+    oma = par("oma"), col = NULL, mcol = "darkred", srt = 45, ...)
 
 \S4method{barchart}{kcca}(x, data, xlab="", strip.labels=NULL,
     strip.prefix="Cluster ", col=NULL, mcol="darkred", mlcol=mcol,
-    which=NULL, legend=FALSE, shade=FALSE, diff=NULL, ...)
+    which=NULL, legend=FALSE, shade=FALSE, diff=NULL, byvar=FALSE,
+    clusters=1:x@k, ...)
+\S4method{barchart}{hclust}(x, data, xlab="", strip.labels=NULL,
+    strip.prefix="Cluster ", col=NULL, mcol="darkred", mlcol=mcol,
+    which=NULL, shade=FALSE, diff=NULL, byvar=FALSE, k=2, ...)
+\S4method{barchart}{bclust}(x, data, xlab="", strip.labels=NULL,
+       strip.prefix="Cluster ", col=NULL, mcol="darkred", mlcol=mcol, 
+       which=NULL, legend=FALSE, shade=FALSE, diff=NULL, byvar=FALSE,
+       k=x@k, clusters=1:k, ...)
 }
 \arguments{
   \item{height, x}{An object of class \code{"kcca"}.}
@@ -58,6 +68,10 @@
   \item{diff}{A numerical vector of length two with absolute and
     relative deviations for shading, default is \eqn{max/4} absolute
     deviation and 50\% relative deviation.}
+  \item{byvar}{If \code{TRUE}, a panel is plotted for each variable. By
+    default a panel is plotted for each cluster.}
+  \item{clusters}{Integer vector of clusters to plot.}
+  \item{k}{Integer specifying the desired number of clusters.}
 }
 \note{The flexclust barchart method uses a horizontal arrangements of
     the bars, and sorts them from top to bottom. Default barcharts in
@@ -71,7 +85,7 @@
 \references{
   Sara Dolnicar and Friedrich Leisch. Using graphical statistics to
   better understand market segmentation solutions. International Journal
-  of Market Research, 2013, accepted for publication.
+  of Market Research, 56(2), 97-120, 2014.
 }
 \keyword{methods}
 \keyword{hplot}

@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2009 Friedrich Leisch
-%  $Id: shadowStars.Rd 3 2013-06-12 10:06:43Z leisch $
+%  $Id: shadowStars.Rd 252 2018-09-17 08:40:24Z gruen $
 %
 \name{shadowStars}
 \alias{shadowStars}
@@ -24,21 +24,21 @@ panelShadowBP(x, ...)
 panelShadowSkeleton(x, ...)
 }
 \arguments{
-  \item{object}{an object of class \code{"kcca"}}
-  \item{which}{index numbers of dimensions of (projected) input space
+  \item{object}{An object of class \code{"kcca"}.}
+  \item{which}{Index numbers of dimensions of (projected) input space
     to plot.}
-  \item{project}{projection object for which a \code{predict} method
+  \item{project}{Projection object for which a \code{predict} method
     exists, e.g., the result of \code{\link{prcomp}}.}
-  \item{width}{width of vertices connecting the cluster centroids.}
-  \item{varwidth}{logical, shall all vertices have the same width or
+  \item{width}{Width of vertices connecting the cluster centroids.}
+  \item{varwidth}{Logical, shall all vertices have the same width or
     should the width be proportional to number of points shown on the
     vertex?}
-  \item{panel}{function used to draw vertices.}
-  \item{box}{color of rectangle drawn around each vertex.}
-  \item{col}{a vector of colors for the clusters.}
-  \item{add}{logical, start a new plot?}
-  \item{...}{passed on to panel function.}
-  \item{x}{shadow values of data points corresponding to the vertex.}
+  \item{panel}{Function used to draw vertices.}
+  \item{box}{Color of rectangle drawn around each vertex.}
+  \item{col}{A vector of colors for the clusters.}
+  \item{add}{Logical, start a new plot?}
+  \item{...}{Passed on to panel function.}
+  \item{x}{Shadow values of data points corresponding to the vertex.}
 }
 \details{
   

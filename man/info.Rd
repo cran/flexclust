@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: info.Rd 3 2013-06-12 10:06:43Z leisch $
+%  $Id: info.Rd 252 2018-09-17 08:40:24Z gruen $
 %
 \name{info}
 \alias{info,flexclust,character-method}
@@ -13,15 +13,15 @@
 \S4method{info}{flexclust,character}(object, which, drop=TRUE, ...)
 }
 \arguments{
-  \item{object}{fitted object.}
+  \item{object}{Fitted object.}
 
-  \item{which}{which information to get. Use \code{which="help"} to list
+  \item{which}{Which information to get. Use \code{which="help"} to list
     available information.}
 
-  \item{drop}{logical. If \code{TRUE} the result is coerced to the lowest
+  \item{drop}{Logical. If \code{TRUE} the result is coerced to the lowest
     possible dimension.}
   
-  \item{\dots}{passed to methods.}
+  \item{\dots}{Passed to methods.}
 }
 \details{
   Function \code{info} can be used to access slots of fitted flexclust
@@ -37,7 +37,7 @@
 data("Nclus")
 plot(Nclus)
 
-cl1 = cclust(Nclus, k=4)
+cl1 <- cclust(Nclus, k=4)
 summary(cl1)
 
 ## these two are the same
@@ -45,15 +45,15 @@ info(cl1)
 info(cl1, "help")
 
 ## cluster sizes
-i1 = info(cl1, "size")
+i1 <- info(cl1, "size")
 i1
 
 ## average within cluster distances
-i2 = info(cl1, "av_dist")
+i2 <- info(cl1, "av_dist")
 i2
 
 ## the sum of all within-cluster distances
-i3 = info(cl1, "distsum")
+i3 <- info(cl1, "distsum")
 i3
 
 ## sum(i1*i2) must of course be the same as i3
@@ -66,7 +66,7 @@ infoCheck(cl1, "size")
 ## and this FALSE
 infoCheck(cl1, "Homer Simpson")
 ## both combined
-i4 = infoCheck(cl1, c("size", "Homer Simpson"))
+i4 <- infoCheck(cl1, c("size", "Homer Simpson"))
 i4
 
 stopifnot(all.equal(i4, c(TRUE, FALSE)))
