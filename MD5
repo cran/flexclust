@@ -1,6 +1,6 @@
-a20c6e446f5562bdf5a296fa02fda0df *DESCRIPTION
+d1bdc488fded6c67944fba138c20d3a7 *DESCRIPTION
 02d57ff29f0e3672d841bf730095d2c4 *NAMESPACE
-7f35533cda562e5ae27ab22c53592898 *NEWS
+efb8752bedf6c95f7ca0c0b0926f376a *NEWS
 99c0e056ee9fc53eee75a47e3de96f49 *R/AAA-classes.R
 78cf9b9270cfa12e83d0a3703b0914c8 *R/barplot.R
 02c885fa0ce0d617deeaf5d97cf48ac3 *R/bclust.R
@@ -24,7 +24,7 @@ d0d7b847e399d33e9a7e18014e74a8f2 *R/predict.R
 f27ed6ec45a31f5a4be0f406d5194bd3 *R/relabel.R
 f8eba404de7c7e6505fdc9ae37bcfe5d *R/resample.R
 e49e8d05f626761c70b605bb5528edfa *R/shadow.R
-44ef8fd77ca679141a62bdf664e01fbb *R/stepflexclust.R
+aa5178064cbd8aef8596652fcde45a4c *R/stepflexclust.R
 1e5838e5e73155360ab1443523b4f8f2 *R/stripes.R
 4913b8261371f1a81456a0a0fdebefb7 *R/tour.R
 5c3cb571b717f315b08e90655616a0d5 *R/utils.R
@@ -45,12 +45,12 @@ bb9ec72b08a02c0b7d3093261dae6cfe *man/Nclus.Rd
 9defea65dc6f54744f7f9f11f29e1944 *man/achieve.Rd
 7ae4211e66a93989c272dfdbf1f85687 *man/auto.Rd
 78a3c85bbeac7bb193ad011affde00b2 *man/barplot-methods.Rd
-1d25294599a98b33ff7672d9b51b3234 *man/bclust.Rd
+cf79aa4d124244449ffa33daf964daa1 *man/bclust.Rd
 f7f9825e41cd495043740d2fb1b536ba *man/birth.Rd
-9be35f57f4cbcbb760cdb8061a91bcfb *man/bootFlexclust.Rd
-056e29cc2d3dea18139022743be335af *man/bundestag.Rd
+d0af11b785cbb416b24528d583724443 *man/bootFlexclust.Rd
+2083a6d6a87e9e4e05ceb6512cb74d19 *man/bundestag.Rd
 4b5e090bea6e20cb3d45c15c044d0ac3 *man/bwplot-methods.Rd
-915a9e1fcd9672498f7733f78daf6a8d *man/cclust.Rd
+51539023a008d22c6b7bfc8512181000 *man/cclust.Rd
 5e02f1572a42d0548d4812a685722002 *man/clusterSim.Rd
 6a189fd6bddd0823ece468a6bc9a1eeb *man/conversion.Rd
 0b3ceeefc0d601ca1d8065167ef17304 *man/dentitio.Rd
@@ -84,7 +84,7 @@ e41b3bdf365dce7d28587f6452545228 *man/stepFlexclust.Rd
 d3471b4ef9924056900d5d6399afc285 *man/stripes.Rd
 8d241ed125436ff9c77a0672854de89a *man/vacmot.Rd
 06de32353f6404697fbc887d792c0891 *man/volunteers.Rd
-89e0d0305dee6f73439ecb1c20b19524 *src/cclust.c
+5775838fdffe3044a5fef3b4a876b407 *src/cclust.c
 f56cfccd3dddb18c080e48329f132cbe *src/flexclust.h
 55a5979239cfc0e1bce9feefe0b9eb4b *src/index.c
 fec4a0f0aad04887ffea60064da048e4 *src/init.c

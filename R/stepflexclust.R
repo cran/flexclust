@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005-2012 Friedrich Leisch
-#  $Id: stepflexclust.R 245 2017-09-29 15:40:06Z gruen $
+#  $Id: stepflexclust.R 256 2018-10-05 06:29:48Z gruen $
 #
 
 
@@ -44,6 +44,16 @@ stepFlexclust <- function(x, k, nrep=3, verbose=TRUE,
     MYCALL1 <- MYCALL
     if("drop" %in% names(MYCALL))
         MYCALL1[["drop"]] <- NULL
+
+    if(!is.null(group))
+    {
+        N <- nrow(x)
+        if(length(group)>N)
+            warning("group vector longer than nrow(x)")
+        
+        group <- rep(group, length=N)
+        group <- as.factor(group)
+    }
     
     for(n in 1:length(k)){
         if(verbose) cat(k[n], ":")

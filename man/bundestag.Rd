@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2008 Friedrich Leisch
-%  $Id: bundestag.Rd 252 2018-09-17 08:40:24Z gruen $
+%  $Id: bundestag.Rd 355 2022-04-08 10:23:17Z gruen $
 %
 \name{bundestag}
 \alias{bundestag}
@@ -77,7 +77,7 @@ bundestag(year, second=TRUE, percent=TRUE, nazero=TRUE, state=FALSE)
   distributed.
 }
 \references{Homepage of the Bundestag:
-  \url{http://www.bundestag.de}
+  \url{https://www.bundestag.de}
 }
 \keyword{datasets}
 \examples{

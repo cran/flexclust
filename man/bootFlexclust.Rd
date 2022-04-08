@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2009 Friedrich Leisch
-%  $Id: bootFlexclust.Rd 252 2018-09-17 08:40:24Z gruen $
+%  $Id: bootFlexclust.Rd 356 2022-04-08 10:29:08Z gruen $
 %
 \name{bootFlexclust}
 \alias{bootFlexclust}
@@ -14,7 +14,7 @@
 \description{
   Runs clustering algorithms repeatedly for different numbers of
   clusters on bootstrap replica of the original data and returns
-  corresponding cluster assignments, centroids and Rand indices
+  corresponding cluster assignments, centroids and (adjusted) Rand indices
   comparing pairs of partitions.
 }
 \usage{
@@ -31,7 +31,8 @@ bootFlexclust(x, k, nboot=100, correct=TRUE, seed=NULL,
   
   \item{nboot}{Number of bootstrap pairs of partitions.}
   
-  \item{correct}{Logical, correct the index for agreement by chance?}
+  \item{correct}{Logical, correct the Rand index for agreement by chance
+   also called adjusted Rand index)?}
 
   \item{seed}{If not \code{NULL}, a call to \code{set.seed()} is made
     before any clustering is done.}

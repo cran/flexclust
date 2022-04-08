@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: cclust.Rd 252 2018-09-17 08:40:24Z gruen $
+%  $Id: cclust.Rd 257 2020-05-28 07:53:10Z leisch $
 %
 \name{cclust}
 \title{Convex Clustering}
@@ -26,7 +26,8 @@ cclust(x, k, dist = "euclidean", method = "kmeans",
     distance) or \code{"manhattan "} (absolute distance).}
   \item{method}{Clustering algorithm: one of \code{"kmeans"},
     \code{"hardcl"} or \code{"neuralgas"}, see details below.}
-  \item{weights}{An optional vector of weights to be used in the fitting
+  \item{weights}{An optional vector of weights for the observations
+    (rows of the \code{x}) to be used in the fitting
     process. Works only in combination with hard competitive learning.}
   \item{control}{An object of class \code{"cclustControl"}.}
   \item{group}{Currently ignored.}

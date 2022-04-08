@@ -1,12 +1,12 @@
 Package: flexclust
-Version: 1.4-0
-Date: 2018-09-20
+Version: 1.4-1
+Date: 2022-04-08
 Authors@R: c(person(given="Friedrich", family="Leisch",
                     email="Friedrich.Leisch@R-project.org",
 		    role=c("aut", "cre"),
 		    comment = c(ORCID = "0000-0001-7278-1983")),
 	     person(given="Evgenia", family="Dimitriadou", role="ctb"),
-	     person("Bettina", "Gruen", role = "aut",
+	     person("Bettina", "Gruen", role = "ctb",
                     comment = c(ORCID = "0000-0001-7265-4773")))
 Title: Flexible Cluster Algorithms
 Depends: R (>= 2.14.0), graphics, grid, lattice, modeltools
@@ -22,10 +22,10 @@ Description: The main function kcca implements a general framework for
 License: GPL-2
 LazyLoad: yes
 NeedsCompilation: yes
-Packaged: 2018-09-20 11:08:49 UTC; leisch
+Packaged: 2022-04-08 10:29:28 UTC; gruen
 Author: Friedrich Leisch [aut, cre] (<https://orcid.org/0000-0001-7278-1983>),
   Evgenia Dimitriadou [ctb],
-  Bettina Gruen [aut] (<https://orcid.org/0000-0001-7265-4773>)
+  Bettina Gruen [ctb] (<https://orcid.org/0000-0001-7265-4773>)
 Maintainer: Friedrich Leisch <Friedrich.Leisch@R-project.org>
 Repository: CRAN
-Date/Publication: 2018-09-24 22:50:03 UTC
+Date/Publication: 2022-04-08 11:30:46 UTC

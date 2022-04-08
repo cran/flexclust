@@ -5,7 +5,7 @@
  *
  *  Copyright (C) 2005 Friedrich Leisch
  *
- *  $Id: cclust.c 252 2018-09-17 08:40:24Z gruen $
+ *  $Id: cclust.c 354 2022-04-08 10:20:27Z gruen $
  */
 
 #include <math.h>
@@ -21,7 +21,7 @@ double median(double *x, int n)
 
   if(n == 0) {
       /* Empty clusters are deleted in the R code */
-      xmed = DOUBLE_XMAX;
+      xmed = DBL_MAX;
   } else {
       R_rsort (x, n);  
       n2 = n / 2;

@@ -1,3 +1,10 @@
+Changes in flexclust version 1.4-1
+
+  o stepFlexclust now ensures that group is a factor. Thanks to
+    Bernhard Mutius for pointing the issue out.
+
+  o Remove use of deprecated legacy S constants in C code.
+
 Changes in flexclust version 1.4-0
 
   o Bettina Grün is new co-author.
@@ -8,7 +15,8 @@ Changes in flexclust version 1.4-0
     Leisch (Springer, 2018). 
     http://dx.doi.org/10.1007/978-981-10-8818-6
 
-Changes in flexclust version 1.3-5
+
+Changes in flexclust version 1.3-6
 
   o Clusters in priceFeature(n, which="3clust") got re-arranged, old layout 
     is available via priceFeature(n, which="3clustold").
@@ -25,6 +33,12 @@ Changes in flexclust version 1.3-5
 
   o New histogram() methods for kcca objects.
 
+
+Changes in flexclust version 1.3-5
+
+  o Brian Ripley corrected the Canberra distance (similar to the
+    change in stats::dist in 2018) and made several other corrections
+    such as adding missing imports.
 
 
 Changes in flexclust version 1.3-4
