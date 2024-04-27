@@ -22,10 +22,10 @@
   variables on travel motives. Data frame \code{vacmotdesc} has 1000
   observation on sociodemographic descriptor variables, mean moral
   obligation to protect the environment score, mean NEP score, and
-  mean environmental behaviour score, see Dolnicar \& Leisch
+  mean environmental behaviour score, see Dolnicar & Leisch
   (2008) for details.
   In addition integer vector \code{vacmot6} contains the 6
-  cluster partition presented in Dolnicar \& Leisch (2008).
+  cluster partition presented in Dolnicar & Leisch (2008).
 }
 \source{
 The data set was collected by the Institute for Innovation in

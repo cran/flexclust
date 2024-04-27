@@ -5,12 +5,13 @@
 \alias{histogram,kccasimple,matrix-method}
 \title{Methods for Function histogram in Package `flexclust'}
 \description{
-  Plot a histogram of the 
+  Plot a histogram of the similarity of each observation to each
+  cluster. 
 }
 \usage{
 \S4method{histogram}{kccasimple,missing}(x, data, xlab="", ...)
 \S4method{histogram}{kccasimple,data.frame}(x, data, xlab="", ...)
-\S4method{histogram}{kccasimple,matrix}(x, data, xlab="similarity",
+\S4method{histogram}{kccasimple,matrix}(x, data, xlab="Similarity",
           power=1, ...)
 }
 \arguments{

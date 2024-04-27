@@ -1,6 +1,6 @@
-d1bdc488fded6c67944fba138c20d3a7 *DESCRIPTION
+d706a0232e1285bd36b0c5626c956746 *DESCRIPTION
 02d57ff29f0e3672d841bf730095d2c4 *NAMESPACE
-efb8752bedf6c95f7ca0c0b0926f376a *NEWS
+5734555a716efe444531697b3d5d70c8 *NEWS
 99c0e056ee9fc53eee75a47e3de96f49 *R/AAA-classes.R
 78cf9b9270cfa12e83d0a3703b0914c8 *R/barplot.R
 02c885fa0ce0d617deeaf5d97cf48ac3 *R/bclust.R
@@ -12,7 +12,7 @@ b4e10a628c04a2ddce1e50587b4577a5 *R/conversion.R
 b79b673d11c0bfc3a2659dc850b3573c *R/distances.R
 e5c180ad14107a56f5a43522126d7dd4 *R/family.R
 5b7d739dc8ed972fff59fd9c3efe99de *R/grouping.R
-2742c618c7f073064a7f0a7191b0f795 *R/histogram.R
+d26a3a6b35a8d82392c6501505b5b16c *R/histogram.R
 09d4dea8cb3625225e3841320bf6ced5 *R/info.R
 ac1f59d104dd82128de81912b9474fbf *R/kcca.R
 0dcd86529c9eb3e4c75cb1c83ae3c8bc *R/plot.R
@@ -40,7 +40,7 @@ bc67ed05fe33ab4f4c04c9787143a0ee *data/dentitio.txt.gz
 7298df802bda9b0ab525d05ccd32a5b7 *data/nutrient.txt.gz
 0c7880c2f4eaa37d8cf536237c482bdb *data/vacmot.RData
 46e5926c999c58f105d84844e7a16d86 *data/volunteers.RData
-2b897bed2853631f5b66ebab5f738df2 *inst/CITATION
+938a2c3f0581b65699bd9e5114a6ee6c *inst/CITATION
 bb9ec72b08a02c0b7d3093261dae6cfe *man/Nclus.Rd
 9defea65dc6f54744f7f9f11f29e1944 *man/achieve.Rd
 7ae4211e66a93989c272dfdbf1f85687 *man/auto.Rd
@@ -50,7 +50,7 @@ f7f9825e41cd495043740d2fb1b536ba *man/birth.Rd
 d0af11b785cbb416b24528d583724443 *man/bootFlexclust.Rd
 2083a6d6a87e9e4e05ceb6512cb74d19 *man/bundestag.Rd
 4b5e090bea6e20cb3d45c15c044d0ac3 *man/bwplot-methods.Rd
-51539023a008d22c6b7bfc8512181000 *man/cclust.Rd
+005e58b3e6cfc71f319ad538358ea51c *man/cclust.Rd
 5e02f1572a42d0548d4812a685722002 *man/clusterSim.Rd
 6a189fd6bddd0823ece468a6bc9a1eeb *man/conversion.Rd
 0b3ceeefc0d601ca1d8065167ef17304 *man/dentitio.Rd
@@ -58,7 +58,7 @@ d0af11b785cbb416b24528d583724443 *man/bootFlexclust.Rd
 044239f0c7bdedf1a4d81f3335898cc6 *man/distances.Rd
 6dcf80e0271f8dda181cb32c850c4edd *man/flexclustControl-class.Rd
 0a31cd5a2e3fcc83ef4ce30a385fa19c *man/flxColors.Rd
-69a1c39a1c866db702bb90fd95a82a8b *man/histogram-methods.Rd
+e5a672588c42b16f34f7677119116158 *man/histogram-methods.Rd
 c161744ccec3ef1b2d60686f122b797b *man/image-methods.Rd
 8794478377935438cfe46953a454105b *man/info.Rd
 25cede2c40e1f357be4eec250a3964ed *man/kcca.Rd
@@ -73,7 +73,7 @@ ed38e77a4a1a7f5cb20f2c4d5a3d12c8 *man/predict-methods.Rd
 05bf8f9e5b586fe5d8f5bc24e90c944c *man/projAxes.Rd
 ce98ec2a6766e70dcb6780733bc72d30 *man/propBarchart.Rd
 afa8b9638098268ac4c03e16c1ddc367 *man/qtclust.Rd
-273ba4e020c5bd398e39caa964fe1a1e *man/randIndex.Rd
+e29db65a7487cb30c207a0043a89cefd *man/randIndex.Rd
 88a9df1152c621100eec896d378e3085 *man/randomTour.Rd
 c36f1a6de139a3557ec6e0407788e774 *man/relabel.Rd
 a9a703912fb827d82aa0ed86e9c068b7 *man/shadow.Rd
@@ -82,7 +82,7 @@ a9a703912fb827d82aa0ed86e9c068b7 *man/shadow.Rd
 32a90f12cd24b3c602fe0fb2925bb760 *man/slswFlexclust.Rd
 e41b3bdf365dce7d28587f6452545228 *man/stepFlexclust.Rd
 d3471b4ef9924056900d5d6399afc285 *man/stripes.Rd
-8d241ed125436ff9c77a0672854de89a *man/vacmot.Rd
+ff89ea2cc5ae594fa3ad6cd1f2848fe8 *man/vacmot.Rd
 06de32353f6404697fbc887d792c0891 *man/volunteers.Rd
 5775838fdffe3044a5fef3b4a876b407 *src/cclust.c
 f56cfccd3dddb18c080e48329f132cbe *src/flexclust.h

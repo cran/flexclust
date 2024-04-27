@@ -15,7 +15,7 @@ function(x, data, xlab="", ...)
 })
 
 setMethod("histogram",signature(x="kccasimple", data="matrix"),
-function(x, data, xlab="similarity", power=1, ...)
+function(x, data, xlab="Similarity", power=1, ...)
 {
     dists <- x@family@dist(data, x@centers)
     dists <- dists[rowSums(is.na(dists)) != ncol(dists),]

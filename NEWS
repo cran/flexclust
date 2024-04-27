@@ -1,3 +1,7 @@
+Changes in flexclust version 1.4-2
+
+  o Bettina Grün is now maintainer. 
+
 Changes in flexclust version 1.4-1
 
   o stepFlexclust now ensures that group is a factor. Thanks to

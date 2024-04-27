@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2009 Friedrich Leisch
-%  $Id: randIndex.Rd 3 2013-06-12 10:06:43Z leisch $
+%  $Id: randIndex.Rd 358 2022-04-18 18:06:13Z gruen $
 %
 \name{randIndex}
 \alias{comPart}
@@ -50,7 +50,7 @@ randIndex(x, y, correct=TRUE, original=!correct)
 
   The index has to be corrected for agreement by chance if the sizes
   of the clusters are not uniform (which is usually the case), or if there
-  are many clusters, see Hubert \& Arabie (1985) for details.
+  are many clusters, see Hubert & Arabie (1985) for details.
 }
 \section{Jaccard Index}{
   If the number of clusters is very large, then usually the vast

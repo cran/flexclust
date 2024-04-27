@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: cclust.Rd 257 2020-05-28 07:53:10Z leisch $
+%  $Id: cclust.Rd 358 2022-04-18 18:06:13Z gruen $
 %
 \name{cclust}
 \title{Convex Clustering}
@@ -75,7 +75,7 @@ cclust(x, k, dist = "euclidean", method = "kmeans",
   MacQueen, J. (1967).  Some methods for classification and analysis of
   multivariate observations. In \emph{Proceedings of the Fifth Berkeley
   Symposium on  Mathematical Statistics and  Probability},
-  eds L. M. Le Cam \& J. Neyman, 1, pp. 281--297. Berkeley, CA:
+  eds L. M. Le Cam & J. Neyman, 1, pp. 281--297. Berkeley, CA:
   University of California Press.
 
   Martinetz T., Berkovich S., and Schulten K (1993). `Neural-Gas'
