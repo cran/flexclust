@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: shadow.R 222 2017-03-03 16:29:43Z leisch $
+#  $Id: shadow.R 388 2025-02-26 14:53:31Z gruen $
 #
 
 setClass("shadow",
@@ -110,7 +110,7 @@ function(object, data=NULL, ...)
         cluster <- object@cluster
     }
     else {
-        data <- as.matrix(data)
+        data <- data.matrix(data)
         cluster <- object@family@cluster(data, object@centers)
     }
     

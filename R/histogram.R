@@ -11,7 +11,7 @@ function(x, data, xlab="", ...)
 setMethod("histogram",signature(x="kccasimple", data="data.frame"),
 function(x, data, xlab="", ...)
 {
-    histogram(x, data=as.matrix(data), xlab=xlab, ...)
+    histogram(x, data=data.matrix(data), xlab=xlab, ...)
 })
 
 setMethod("histogram",signature(x="kccasimple", data="matrix"),

@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005-2012 Friedrich Leisch
-#  $Id: stepflexclust.R 256 2018-10-05 06:29:48Z gruen $
+#  $Id: stepflexclust.R 388 2025-02-26 14:53:31Z gruen $
 #
 
 
@@ -63,7 +63,7 @@ stepFlexclust <- function(x, k, nrep=3, verbose=TRUE,
         z[[kn]]@call <- MYCALL1
 
         if(!simple){
-            ## x is usually at the beginning of kcca() pre-porcessed,
+            ## x is usually pre-processed at the beginning of kcca(),
             ## here we have to do it manually!
             z[[kn]] <- simple2kcca(x=z[[kn]]@family@preproc(x),
                                    from=z[[kn]], group=group)

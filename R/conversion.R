@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005 Friedrich Leisch
-#  $Id: conversion.R 222 2017-03-03 16:29:43Z leisch $
+#  $Id: conversion.R 388 2025-02-26 14:53:31Z gruen $
 #
 
 as.kcca <- function(object, ...) UseMethod("as.kcca")
@@ -10,11 +10,11 @@ as.kcca.kmeans <- function(object, data, save.data=FALSE, ...)
     call <- match.call()
     call[[1]] <- as.name("as.kcca")
     
-    data <- as.matrix(data)
+    data <- data.matrix(data)
     fam <- kccaFamily("kmeans")
 
     z <- newKccaObject(x=data,
-                                   family=fam, centers=object$centers)
+                       family=fam, centers=object$centers)
     z@converged <- TRUE
     z@iter <- as.integer(1)
     z@call <- call
@@ -32,9 +32,9 @@ as.kcca.skmeans <- function(object, data, save.data = FALSE, ...)
     call <- match.call()
     call[[1]] <- as.name("as.kcca")
     fam <- kccaFamily("angle")
-    data <- fam@preproc(as.matrix(data))
+    data <- fam@preproc(data.matrix(data))
     z <- newKccaObject(x = data, family = fam,
-                                   centers = object$prototypes)
+                       centers = object$prototypes)
     z@converged <- TRUE
     z@iter <- as.integer(1)
     z@call <- call
@@ -57,7 +57,7 @@ as.kcca.partition <- function(object, data=NULL, save.data=FALSE, ...)
             data <- object$data
     }
     else{
-        data <- as.matrix(data)
+        data <- data.matrix(data)
     }
 
     fam <- kccaFamily("kmeans")
@@ -102,7 +102,7 @@ Cutree <- function(tree, k=NULL, h=NULL)
 
 as.kcca.hclust <- function(object, data, k, family=NULL, save.data=FALSE, ...)
 {
-    data <- as.matrix(data)
+    data <- data.matrix(data)
     call <- match.call()
     call[[1]] <- as.name("as.kcca")
 

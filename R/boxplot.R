@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2013 Friedrich Leisch
-#  $Id: boxplot.R 222 2017-03-03 16:29:43Z leisch $
+#  $Id: boxplot.R 388 2025-02-26 14:53:31Z gruen $
 #
 
 setMethod("bwplot", "kccasimple",
@@ -139,7 +139,7 @@ kcca2df <- function(object, data=NULL)
     }
     else
     {
-        data <- as.matrix(data)
+        data <- data.matrix(data)
         cluster <- predict(object, data)
     }
     if(is.null(colnames(data)))
@@ -169,7 +169,7 @@ groupBWplot <- function(x, g, alpha=0.05, correct="holm", xlab="", col=NULL,
 {
     ## body very similar to bwplot,kcca-method -> fix bugs in both
     
-    x <- as.matrix(x)
+    x <- data.matrix(x)
     g <- as.factor(g)
     
     if(!is.null(which))

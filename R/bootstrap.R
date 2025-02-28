@@ -1,28 +1,7 @@
 #
 #  Copyright (C) 2009 Friedrich Leisch
-#  $Id: bootstrap.R 251 2018-04-30 10:37:30Z gruen $
+#  $Id: bootstrap.R 388 2025-02-26 14:53:31Z gruen $
 #
-
-disp <- function(x, clus, square = TRUE) {
-  n <- length(clus)
-  k <- max(clus)
-  clus <- as.numeric(clus)
-  x <- as.matrix(x)
-  centers <- matrix(nrow = k, ncol = ncol(x))
-  for (i in 1:k) {
-    tryCatch(centers[i, ] <- apply(x[clus == i, ], 2, mean), 
-             error = function(e) {print(dim(x))})
-  }
-  sumsq <- rep(0, k)
-  if(square == TRUE) 
-    x <- (x - centers[clus, ])^2
-  else
-    x <- abs((x - centers[clus, ]))
-  for (i in 1:k) {
-    sumsq[i] <- sum(x[clus == i, ])
-  }
-  sumsq
-}
 
 bootFlexclust <- function(x, k, nboot=100, correct=TRUE, seed=NULL,
                           multicore=TRUE, verbose=FALSE, ...)
@@ -68,7 +47,6 @@ bootFlexclust <- function(x, k, nboot=100, correct=TRUE, seed=NULL,
                     any(table(m@cluster)<2) ||
                     length(table(m@cluster)) != m@k ||
                     any(m@clusinfo[,2] == 0) #||
-                    #any(disp(x[index1[[b]],,drop=FALSE], m@cluster) == 0)
                 })
             })
 

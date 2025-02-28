@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2001-2016 Friedrich Leisch
-#  $Id: bclust.R 252 2018-09-17 08:40:24Z gruen $
+#  $Id: bclust.R 388 2025-02-26 14:53:31Z gruen $
 #
 
 bclust <- function (x, k = 2, base.iter = 10, base.k = 20, minsize = 0,
@@ -9,7 +9,7 @@ bclust <- function (x, k = 2, base.iter = 10, base.k = 20, minsize = 0,
                     resample=TRUE, weights=NULL, maxcluster=base.k, ...) 
 {
     MYCALL <- match.call()
-    x <- as.matrix(x)
+    x <- data.matrix(x)
     xr <- nrow(x)
     xc <- ncol(x)
 

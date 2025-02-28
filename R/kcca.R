@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005-2009 Friedrich Leisch
-#  $Id: kcca.R 222 2017-03-03 16:29:43Z leisch $
+#  $Id: kcca.R 388 2025-02-26 14:53:31Z gruen $
 #
 
 normWeights <- function(x) x/mean(x)
@@ -12,13 +12,21 @@ mlogit <- function(x){
     
 ###**********************************************************
 
-
 kcca <- function(x, k, family=kccaFamily("kmeans"), weights=NULL,
                  group=NULL, control=NULL, simple=FALSE, save.data=FALSE)
 {
     MYCALL <- match.call()
     control <- as(control, "flexclustControl")
-    x <- as(x, "matrix")
+
+    # if the genDist slot does not contain a function with body NULL,
+    # modify the family object by calling the genDist function with
+    # the data and the family to re-define the family in a
+    # data-dependent way.
+    if(!is.null(body(family@genDist))) {
+        family <- family@genDist(x, family)
+    }
+    
+    x <- data.matrix(x) # previously: x <- as(x, "matrix")
     x <- family@preproc(x)
     N <- nrow(x)
     

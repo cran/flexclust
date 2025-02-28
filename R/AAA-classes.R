@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2005-2016 Friedrich Leisch
-#  $Id: AAA-classes.R 222 2017-03-03 16:29:43Z leisch $
+#  $Id: AAA-classes.R 388 2025-02-26 14:53:31Z gruen $
 #
 
 setOldClass("hclust")
@@ -86,7 +86,8 @@ setClass("kccaFamily",
                         weighted="logical",
                         cluster="function",
                         preproc="function",
-                        groupFun="function"),
+                        groupFun="function",
+                        genDist="function"),
          prototype(weighted=FALSE,
                    preproc=function(x) x))
 

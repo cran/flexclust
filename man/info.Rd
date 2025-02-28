@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005 Friedrich Leisch
-%  $Id: info.Rd 252 2018-09-17 08:40:24Z gruen $
+%  $Id: info.Rd 388 2025-02-26 14:53:31Z gruen $
 %
 \name{info}
 \alias{info,flexclust,character-method}
@@ -28,7 +28,7 @@
   objects in a portable way, and in addition computes some
   meta-information like sum of within-cluster distances.
 
-  Function \code{infoCheck} returns a logical value that is \code{TRUE}
+  Function \code{\link[modeltools]{infoCheck}} returns a logical value that is \code{TRUE}
   if the requested information can be computed from the \code{object}.
 }
 \seealso{\code{\link[modeltools]{info}}}
@@ -62,11 +62,11 @@ stopifnot(all.equal(sum(i1*i2), i3))
 
 
 ## This should return TRUE
-infoCheck(cl1, "size")
+modeltools::infoCheck(cl1, "size")
 ## and this FALSE
-infoCheck(cl1, "Homer Simpson")
+modeltools::infoCheck(cl1, "Homer Simpson")
 ## both combined
-i4 <- infoCheck(cl1, c("size", "Homer Simpson"))
+i4 <- modeltools::infoCheck(cl1, c("size", "Homer Simpson"))
 i4
 
 stopifnot(all.equal(i4, c(TRUE, FALSE)))

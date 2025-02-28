@@ -1,6 +1,6 @@
 %
 %  Copyright (C) 2005-2009 Friedrich Leisch
-%  $Id: kcca.Rd 252 2018-09-17 08:40:24Z gruen $
+%  $Id: kcca.Rd 392 2025-02-27 21:16:50Z gruen $
 %
 \name{kcca}
 \alias{kcca}
@@ -16,17 +16,16 @@
   Perform k-centroids clustering on a data matrix.
 }
 \usage{
-kcca(x, k, family=kccaFamily("kmeans"), weights=NULL, group=NULL,
-     control=NULL, simple=FALSE, save.data=FALSE)
-kccaFamily(which=NULL, dist=NULL, cent=NULL, name=which,
-           preproc = NULL, trim=0, groupFun = "minSumClusters")
+kcca(x, k, family=kccaFamily("kmeans"), weights=NULL,
+     group=NULL, control=NULL, simple=FALSE, save.data=FALSE)
+kccaFamily(which=NULL, dist=NULL, cent=NULL, name=which, preproc = NULL,
+           genDist=NULL, trim=0, groupFun = "minSumClusters")
 
 \S4method{summary}{kccasimple}(object)
 }
 \arguments{
   \item{x}{A numeric matrix of data, or an object that can be coerced to
-    such a matrix (such as a numeric vector or a data frame with all
-    numeric columns).}
+    such a matrix using \link[base]{data.matrix}.}
   
   \item{k}{Either the number of clusters, or a vector of cluster
     assignments, or a matrix of initial
@@ -58,8 +57,12 @@ kccaFamily(which=NULL, dist=NULL, cent=NULL, name=which,
   \item{cent}{A function for centroid computation, ignored
     if \code{which} is specified.}
 
-  \item{preproc}{Function for data preprocessing.}
-
+  \item{preproc}{Function for data preprocessing. Defaults to
+    \code{function(x) x}.}
+  
+  \item{genDist}{Function for updating the family object based on
+    \code{x}.}
+    
   \item{trim}{A number in between 0 and 0.5, if non-zero then trimmed
     means are used for the \code{kmeans} family, ignored by all other
     families.}

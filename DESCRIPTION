@@ -1,17 +1,22 @@
 Package: flexclust
-Version: 1.4-2
-Date: 2024-04-26
+Version: 1.5.0
+Date: 2025-02-27
 Encoding: UTF-8
 Authors@R: c(person("Friedrich", "Leisch", role="aut",
 		    comment = c(ORCID = "0000-0001-7278-1983",
 		                "maintainer up to 2024")),
 	     person("Evgenia", "Dimitriadou", role="ctb"),
-	     person("Bettina", "Grün", role=c("ctb", "cre"),
+	     person("Lena", "Ortega Menjivar", role="ctb",
+                    comment = c(ORCID = "0000-0001-5785-4021")),
+             person("Dominik", "Ernst", role="ctb",
+                    comment = c(ORCID = "0009-0005-5579-2636")),
+ 	     person("Bettina", "Grün", role=c("ctb", "cre"),
                     email = "Bettina.Gruen@R-project.org",
                     comment = c(ORCID = "0000-0001-7265-4773")))
 Title: Flexible Cluster Algorithms
-Depends: R (>= 2.14.0), graphics, grid, lattice, modeltools
-Imports: methods, parallel, stats, stats4, class
+Depends: R (>= 2.14.0)
+Imports: graphics, grid, lattice, methods, modeltools, parallel, stats,
+        stats4, class
 Suggests: ellipse, clue, cluster, seriation, skmeans
 Description: The main function kcca implements a general framework for
   k-centroids cluster analysis supporting arbitrary distance measures
@@ -23,11 +28,13 @@ Description: The main function kcca implements a general framework for
 License: GPL-2
 LazyLoad: yes
 NeedsCompilation: yes
-Packaged: 2024-04-26 18:09:42 UTC; gruen
+Packaged: 2025-02-27 21:19:24 UTC; gruen
 Author: Friedrich Leisch [aut] (<https://orcid.org/0000-0001-7278-1983>,
     maintainer up to 2024),
   Evgenia Dimitriadou [ctb],
+  Lena Ortega Menjivar [ctb] (<https://orcid.org/0000-0001-5785-4021>),
+  Dominik Ernst [ctb] (<https://orcid.org/0009-0005-5579-2636>),
   Bettina Grün [ctb, cre] (<https://orcid.org/0000-0001-7265-4773>)
 Maintainer: Bettina Grün <Bettina.Gruen@R-project.org>
 Repository: CRAN
-Date/Publication: 2024-04-27 06:32:37 UTC
+Date/Publication: 2025-02-28 06:40:02 UTC

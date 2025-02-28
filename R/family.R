@@ -1,11 +1,11 @@
 #
 #  Copyright (C) 2009 Friedrich Leisch
-#  $Id: family.R 222 2017-03-03 16:29:43Z leisch $
+#  $Id: family.R 388 2025-02-26 14:53:31Z gruen $
 #
 
 kccaFamily <- function(which=NULL, dist=NULL,
                        cent=NULL, name=which,
-                       preproc=NULL,
+                       preproc=NULL, genDist=NULL,
                        trim=0, groupFun="minSumClusters")
 {
     if(is.null(which) && is.null(dist))
@@ -17,6 +17,8 @@ kccaFamily <- function(which=NULL, dist=NULL,
     z <- new("kccaFamily", name=name)
 
     if(!is.null(preproc)) z@preproc <- preproc
+    
+    if(!is.null(genDist)) z@genDist <- genDist
 
     if(!is.null(which)){
         which <- match.arg(which, c("kmeans", "kmedians",
@@ -117,4 +119,5 @@ FAMILY_CLUSTER_ALLCENT <- expression({
         centers
     }
 })
+
 
